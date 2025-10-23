@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>My Tags</ion-title>
+    <ion-button class="ion-padding" size="small" slot="end" (click)="openPopup()">
+      <ion-icon name="add">
+      </ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Tags</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <div *ngFor="let tag of tags$ | async">
+    <app-tagcard [tag]="tag">
+    </app-tagcard>
+  </div>
+
+
+</ion-content>

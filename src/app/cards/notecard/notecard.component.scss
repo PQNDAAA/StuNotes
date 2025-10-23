@@ -1,0 +1,46 @@
+ion-button{
+  --color: #717070;
+}
+ion-title{
+  font-weight: bold;
+  --color:black;
+}
+ion-label{
+  padding-bottom: 1%;
+}
+#datelabel{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  font-size: 12px;
+}
+
+#tag{
+  font-size: 13px;
+  background-color: orange;
+  color: #424242;
+  font-weight: bold;
+  width: min-content;
+  display: inline-block;
+  border-radius: 4px;
+  padding: 0.85%;
+}
+
+@media screen and (min-width: 601px) {
+  #tag{
+    padding: 0.35%;
+  }
+}
+
+
+
+ion-card-content{
+ // margin-left: 1.2%;
+  display: flex;
+  flex-direction: column;
+}
+#cardbtn{
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}

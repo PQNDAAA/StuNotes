@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>My Notes</ion-title>
+    <ion-button id="addbtn" class="ion-padding" size="small" slot="end" (click)="openPopup()">
+      <ion-icon name="add">
+    </ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">My Notes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-searchbar (ionInput)="eventInput($event)"></ion-searchbar>
+
+  <div *ngFor="let card of results | async">
+    <app-notecard [card]="card">
+    </app-notecard>
+  </div>
+
+</ion-content>

@@ -1,0 +1,50 @@
+import { Injectable } from '@angular/core';
+import {Tags} from "../tags";
+import Dexie, { Table } from 'dexie';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TagsService extends Dexie{
+  private tagsSubject = new BehaviorSubject<Tags[]>([]);
+  tags$ = this.tagsSubject.asObservable();
+
+  tags!: Table<Tags, number>;
+
+  constructor() {
+    super('TagsDB');
+    this.version(1).stores({
+      tags: '++id, name'
+    });
+    this.tags = this.table('tags');
+
+    this.refreshTags();
+  }
+
+  getTags() : Promise<Tags[]> {
+    return this.tags.toArray();
+  }
+
+  async addTag(tag : Tags){
+    const id = await this.tags.add(tag);
+    tag.id = id;
+
+    await this.refreshTags();
+    return id;
+  }
+
+  async deleteTag(id : number){
+
+    this.tags.delete(id);
+
+    await this.refreshTags();
+    console.log("Tag deleted.");
+  }
+
+  async refreshTags(){
+    const allTags = await this.getTags();
+    this.tagsSubject.next(allTags);
+  }
+
+}

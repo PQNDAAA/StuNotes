@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Stu\'Notes</string>
+    <string name="title_activity_main">Stu\'Notes</string>
+    <string name="package_name">fr.dgsd.stunotes</string>
+    <string name="custom_url_scheme">fr.dgsd.stunotes</string>
+</resources>

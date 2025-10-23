@@ -1,0 +1,23 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>
+      {{this.card.name}}
+    </ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-label>{{this.card.description}}</ion-label>
+    <ion-label id="tag">{{this.card.tag}}</ion-label>
+
+    <div id="cardbtn">
+    <ion-button fill="clear"(click)="this.openPopup()">
+      <ion-icon name="create"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" (click)="deleteCard()">
+      <ion-icon name="trash"></ion-icon>
+    </ion-button>
+    </div>
+    <ion-label id="datelabel">Crée le {{this.dateCard}}</ion-label>
+
+  </ion-card-content>
+</ion-card>

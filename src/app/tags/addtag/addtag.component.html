@@ -1,0 +1,27 @@
+
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        Add a tag
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-input label="Tag Name" [(ngModel)]="tag.name" labelPlacement="fixed" [clearInput]="true">
+      </ion-input>
+    </ion-item>
+  </ion-list>
+
+  <div id="formbtn">
+    <ion-button id="validbtn"  slot="end" (click)="valid()" [strong]="true">
+      Save
+    </ion-button>
+    <ion-button id="cancelbtn" slot="end" (click)="closePopUp()">
+      Cancel
+    </ion-button>
+  </div>
+
+</ion-content>

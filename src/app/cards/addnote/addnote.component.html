@@ -1,0 +1,37 @@
+<ion-content>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>
+        {{isEditable ? 'Edit this note' : 'Add a note'}}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-input label="Note Title" [(ngModel)]="this.card.name" labelPlacement="fixed" [clearInput]="true" placeholder="Enter your title"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea label="Description" [(ngModel)]="this.card.description" labelPlacement="fixed" [autoGrow]="true" placeholder="Enter your description" [counter]="true" [maxlength]="300"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label>Tags</ion-label>
+      <ion-select placeholder="Choose your tag" interface="popover" [(ngModel)]="this.card.tag">
+        <ion-select-option *ngFor="let tag of tags">
+          {{tag.name}}
+        </ion-select-option>
+      </ion-select>
+
+    </ion-item>
+  </ion-list>
+
+  <div id="formbtn">
+  <ion-button id="validbtn"  slot="end" (click)="valid()" [strong]="true">
+    Save
+  </ion-button>
+    <ion-button id="cancelbtn" slot="end" (click)="closePopUp()">
+      Cancel
+    </ion-button>
+  </div>
+
+</ion-content>
