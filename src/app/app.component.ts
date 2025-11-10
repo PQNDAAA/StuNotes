@@ -13,7 +13,7 @@ export class AppComponent {
   }
   async showSplash(){
     await SplashScreen.show({
-      showDuration: 3000,
+      showDuration: 3500,
       autoHide: true,
     });
   }

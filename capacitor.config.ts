@@ -7,12 +7,12 @@ const config: CapacitorConfig = {
 
   plugins: {
     SplashScreen: {
-      launchShowDuration: 2000, // durée d’affichage en ms
+      launchShowDuration: 0, // durée d’affichage en ms
       launchAutoHide: true,     // se cache automatiquement
       backgroundColor: "#FFFFFFFF", // couleur de fond
-      showSpinner: false,       // désactiver le spinner
+      androidScaleType: 'CENTER_INSIDE',
       splashFullScreen: true,   // mode plein écran
-      splashImmersive: true,    // cacher la barre système
+      splashImmersive: false,    // cacher la barre système
     },
   },
 };
