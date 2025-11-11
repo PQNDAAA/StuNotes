@@ -17,6 +17,6 @@
 
 
   <style name="LaunchTheme" parent="Theme.SplashScreen">
-    <item name="windowSplashScreenBackground">#FFFFFF</item>
+    <item name="windowSplashScreenBackground">#ff8228</item>
   </style>
 </resources>
