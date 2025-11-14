@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 import {ModalController} from "@ionic/angular";
-import{CardsService} from "../cards-service/cards-service";
+import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
 import {Tags} from "../../tags/tags";
 import {TagsService} from "../../tags/tags-service/tags-service";
+import {Cardstatus} from "../cardstatus";
 
 @Component({
   selector: 'app-addnote',
@@ -14,16 +15,18 @@ import {TagsService} from "../../tags/tags-service/tags-service";
 })
 export class AddnoteComponent {
 
-  @Input() card: Card = {createdAt: new Date(), description: "", name: "", tag: ""}
+  @Input() card: Card = {status: Cardstatus.InProcress, createdAt: new Date(), description: "", name: "", tag: ""}
 
   @Input() isEditable: boolean = false;
 
-  @Input() cardEdited: Card = {createdAt: new Date(), description: "", name: "", tag: ""};
+  //@Input() cardEdited: Card = {status: Cardstatus.InProcress, createdAt: new Date(), description: "", name: "", tag: ""};
 
   tags!: Tags[];
 
+  statusValues = Object.values(Cardstatus);
+
   constructor(private mc : ModalController, private cs : CardsService, private ts:TagsService) {
-  this.getTags();
+    this.getTags();
   }
 
   async getTags(){
@@ -44,4 +47,6 @@ export class AddnoteComponent {
     }
     await this.mc.dismiss();
   }
+
+  protected readonly Cardstatus = Cardstatus;
 }

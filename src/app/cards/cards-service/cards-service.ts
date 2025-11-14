@@ -17,7 +17,7 @@ export class CardsService extends Dexie{
   constructor(private mc : ModalController) {
     super('CardsDB');
     this.version(1).stores({
-      cards: '++id, name, description, createdAt'
+      cards: '++id, name, description, createdAt, status'
     });
     this.cards = this.table('cards');
 

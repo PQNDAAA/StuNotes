@@ -21,7 +21,14 @@
           {{tag.name}}
         </ion-select-option>
       </ion-select>
-
+    </ion-item>
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select placeholder="Choose the status" interface="popover" [(ngModel)]="this.card.status">
+        <ion-select-option *ngFor="let status of statusValues">
+          {{status}}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 
