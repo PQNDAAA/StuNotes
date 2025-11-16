@@ -7,4 +7,5 @@ export interface Card {
   tag: string;
   createdAt: Date;
   status: Cardstatus;
+  important: boolean;
 }

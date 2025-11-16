@@ -1,8 +1,9 @@
 <ion-card>
-  <ion-card-header>
+  <ion-card-header class="card-header">
     <ion-card-title>
       {{this.card.name}}
     </ion-card-title>
+    <ion-icon name="alert-circle-outline" id="important" *ngIf="this.card.important"></ion-icon>
   </ion-card-header>
 
   <ion-card-content>
@@ -18,7 +19,7 @@
     </ion-button>
     </div>
     <ion-label id="datelabel">Crée le {{this.dateCard}}</ion-label>
-    <ion-label id="datelabel">Etat: {{this.card.status}}</ion-label>
+    <ion-label id="datelabel">État : {{this.card.status}}</ion-label>
 
   </ion-card-content>
 </ion-card>

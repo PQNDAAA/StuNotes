@@ -14,10 +14,24 @@ ion-label{
   justify-content: end;
   font-size: 12px;
 }
+#important{
+  color: #ff8228;
+  align-items: end;
+  font-size: 24px;
+}
+.card-header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+ion-card-title{
+}
 
 #tag{
   font-size: 13px;
-  background-color: orange;
+  background-color: #ff8228;
   color: #424242;
   font-weight: bold;
   width: min-content;

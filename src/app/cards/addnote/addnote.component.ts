@@ -15,7 +15,7 @@ import {Cardstatus} from "../cardstatus";
 })
 export class AddnoteComponent {
 
-  @Input() card: Card = {status: Cardstatus.InProcress, createdAt: new Date(), description: "", name: "", tag: ""}
+  @Input() card: Card = {important: false,status: Cardstatus.InProcress, createdAt: new Date(), description: "", name: "", tag: ""}
 
   @Input() isEditable: boolean = false;
 
