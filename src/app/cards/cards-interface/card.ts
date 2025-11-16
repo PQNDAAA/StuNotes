@@ -8,4 +8,5 @@ export interface Card {
   createdAt: Date;
   status: Cardstatus;
   important: boolean;
+  deadline: string;
 }

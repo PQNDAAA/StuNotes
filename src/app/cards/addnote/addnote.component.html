@@ -30,6 +30,18 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
+
+    <ion-item>
+      <ion-label>Dead Line</ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="datetime" [(ngModel)]="this.card.deadline"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+
     <ion-item>
       <ion-checkbox [(ngModel)]="this.card.important">Important</ion-checkbox>
     </ion-item>

@@ -19,7 +19,7 @@
     </ion-button>
     </div>
     <ion-label id="datelabel">Crée le {{this.dateCard}}</ion-label>
-    <ion-label id="datelabel">État : {{this.card.status}}</ion-label>
+    <ion-label id="datelabel" [ngStyle]="{'color': getStatusColor(card.status)}">État : {{card.status}}</ion-label>
 
   </ion-card-content>
 </ion-card>

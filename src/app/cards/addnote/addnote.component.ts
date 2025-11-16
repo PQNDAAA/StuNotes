@@ -15,7 +15,7 @@ import {Cardstatus} from "../cardstatus";
 })
 export class AddnoteComponent {
 
-  @Input() card: Card = {important: false,status: Cardstatus.InProcress, createdAt: new Date(), description: "", name: "", tag: ""}
+  @Input() card: Card = {deadline: new Date().toISOString(), important: false,status: Cardstatus.InProgress, createdAt: new Date(), description: "", name: "", tag: ""}
 
   @Input() isEditable: boolean = false;
 
@@ -45,6 +45,7 @@ export class AddnoteComponent {
       await this.cs.updateCard(this.card);
       this.isEditable = false;
     }
+    console.log(this.card.deadline);
     await this.mc.dismiss();
   }
 
