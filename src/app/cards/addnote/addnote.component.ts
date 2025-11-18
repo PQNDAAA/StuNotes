@@ -15,7 +15,7 @@ import {Cardstatus} from "../cardstatus";
 })
 export class AddnoteComponent {
 
-  @Input() card: Card = {deadline: new Date().toISOString(), important: false,status: Cardstatus.InProgress, createdAt: new Date(), description: "", name: "", tag: ""}
+  @Input() card: Card = {deadline: new Date().toISOString(), important: false, status: Cardstatus.ToDo, createdAt: new Date(), description: "", name: "", tag: ""}
 
   @Input() isEditable: boolean = false;
 
@@ -35,6 +35,7 @@ export class AddnoteComponent {
 
   async closePopUp(){
     await this.mc.dismiss(null,'cancel');
+    console.log(this.card);
   }
 
   async valid(){
@@ -48,6 +49,4 @@ export class AddnoteComponent {
     console.log(this.card.deadline);
     await this.mc.dismiss();
   }
-
-  protected readonly Cardstatus = Cardstatus;
 }

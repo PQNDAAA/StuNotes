@@ -1,6 +1,7 @@
 <ion-card>
   <ion-card-header class="card-header">
     <ion-card-title>
+      <ion-badge [ngStyle]="{'background-color': getStatusColor(card.status)}">{{card.status}}</ion-badge>
       {{this.card.name}}
     </ion-card-title>
     <ion-icon name="alert-circle-outline" id="important" *ngIf="this.card.important"></ion-icon>
@@ -14,12 +15,12 @@
     <ion-button fill="clear"(click)="this.openPopup()">
       <ion-icon name="create"></ion-icon>
     </ion-button>
-    <ion-button fill="clear" (click)="deleteCard()">
+
+    <ion-button fill="clear" (click)="presentAlert()">
       <ion-icon name="trash"></ion-icon>
     </ion-button>
     </div>
     <ion-label id="datelabel">Crée le {{this.dateCard}}</ion-label>
-    <ion-label id="datelabel" [ngStyle]="{'color': getStatusColor(card.status)}">État : {{card.status}}</ion-label>
 
   </ion-card-content>
 </ion-card>

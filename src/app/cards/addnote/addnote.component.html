@@ -16,7 +16,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Tags</ion-label>
-      <ion-select placeholder="Choose your tag" interface="popover" [(ngModel)]="this.card.tag">
+      <ion-select placeholder="Choose your tag" interface="popover" [(ngModel)]="card.tag">
         <ion-select-option *ngFor="let tag of tags">
           {{tag.name}}
         </ion-select-option>
@@ -24,7 +24,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Status</ion-label>
-      <ion-select placeholder="Choose the status" interface="popover" [(ngModel)]="this.card.status">
+      <ion-select placeholder="Choose the status" interface="popover" [(ngModel)]="card.status">
         <ion-select-option *ngFor="let status of statusValues">
           {{status}}
         </ion-select-option>

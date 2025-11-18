@@ -29,6 +29,14 @@ ion-label{
 ion-card-title{
 }
 
+ion-badge{
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+  margin-bottom: 3%;
+}
+
 #tag{
   font-size: 13px;
   background-color: #ff8228;

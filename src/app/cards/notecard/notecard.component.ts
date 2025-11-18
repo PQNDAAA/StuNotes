@@ -3,6 +3,7 @@ import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
 import {CardstatusColors} from "../cardstatus-colors";
 import {Cardstatus} from "../cardstatus";
+import {AlertController} from "@ionic/angular";
 
 @Component({
   selector: 'app-notecard',
@@ -19,7 +20,43 @@ export class NotecardComponent implements OnInit {
 
   statusColors = CardstatusColors;
 
-  constructor(private cs: CardsService) {
+  public alertButtons = [
+    {
+      text:"Cancel",
+      role:"cancel",
+      handler:() => {
+      }
+    },
+    {
+      text:"OK",
+      role:"confirm",
+      handler:async () => {
+        await this.deleteCard();
+      }
+    }
+  ]
+
+  constructor(private cs: CardsService, private ac: AlertController) {
+  }
+
+  async presentAlert(){
+    const alert = await this.ac.create({
+      header: 'Are you sure to delete this note ?',
+      buttons: [
+        {text:"Cancel",
+          role:"cancel"},
+        {
+          text:"OK",
+          role:"confirm",
+          handler:async () => {
+            await this.deleteCard();
+            await alert.dismiss();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async deleteCard(){
