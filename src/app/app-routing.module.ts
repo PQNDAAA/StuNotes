@@ -22,6 +22,10 @@ const routes: Routes = [
     path: 'search',
     loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
   },
+  {
+    path: 'notes-tab',
+    loadChildren: () => import('./notes-tab/notes-tab.module').then( m => m.NotesTabPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -1,15 +1,21 @@
 <ion-card>
   <ion-card-header class="card-header">
+    <div id="deadline">
     <ion-card-title>
       <ion-badge [ngStyle]="{'background-color': getStatusColor(card.status)}">{{card.status}}</ion-badge>
-      {{this.card.name}}
+      {{card.name}}
     </ion-card-title>
-    <ion-icon name="alert-circle-outline" id="important" *ngIf="this.card.important"></ion-icon>
+      <div id="deadline-items">
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-label>{{deadLineStr}}</ion-label>
+      </div>
+    </div>
+    <ion-icon name="alert-circle-outline" id="important" *ngIf="card.important"></ion-icon>
   </ion-card-header>
 
   <ion-card-content>
-    <ion-label>{{this.card.description}}</ion-label>
-    <ion-label id="tag">{{this.card.tag}}</ion-label>
+    <ion-label>{{card.description}}</ion-label>
+    <ion-label id="tag">{{card.tag}}</ion-label>
 
     <div id="cardbtn">
     <ion-button fill="clear"(click)="this.openPopup()">

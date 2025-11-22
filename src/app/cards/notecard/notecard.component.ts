@@ -18,7 +18,8 @@ export class NotecardComponent implements OnInit {
 
   dateCard!: string;
 
-  statusColors = CardstatusColors;
+  deadLine!: Date;
+  deadLineStr!: string;
 
   public alertButtons = [
     {
@@ -74,12 +75,12 @@ export class NotecardComponent implements OnInit {
   }
 
   getStatusColor(status: string): string{
-    const normalized = status.trim() as Cardstatus;
-    return this.statusColors[normalized];
+    return this.cs.getStatusColor(status);
   }
 
 
   ngOnInit() {
+    // CREATEAT DATE FORMAT
    this.dateCard = this.card.createdAt.toLocaleString("fr-FR",{
       year: "numeric",
       month:"long",
@@ -87,6 +88,16 @@ export class NotecardComponent implements OnInit {
      hour: "numeric",
      minute:"2-digit"
     });
+
+   // DEADLINE FORMAT
+   this.deadLine = new Date(this.card.deadline);
+   this.deadLineStr = this.deadLine.toLocaleString("fr-FR", {
+     year: "numeric",
+     month:"long",
+     day:"numeric",
+     hour: "numeric",
+     minute:"2-digit"
+   });
   }
 
 }

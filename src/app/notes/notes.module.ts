@@ -9,16 +9,18 @@ import { NotesPageRoutingModule } from './notes-routing.module';
 import { NotesPage } from './notes.page';
 import {AddnoteModule} from "../cards/addnote/addnote.module";
 import {NotecardModule} from "../cards/notecard/notecard.module";
+import {NotesTabPageModule} from "../notes-tab/notes-tab.module";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    NotesPageRoutingModule,
-    AddnoteModule,
-    NotecardModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        NotesPageRoutingModule,
+        AddnoteModule,
+        NotecardModule,
+        NotesTabPageModule
+    ],
   declarations: [NotesPage]
 })
 export class NotesPageModule {}

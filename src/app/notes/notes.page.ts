@@ -4,6 +4,7 @@ import {AddnoteComponent} from "../cards/addnote/addnote.component";
 import { CardsService } from "../cards/cards-service/cards-service";
 import {map, Observable} from "rxjs";
 import {Card} from "../cards/cards-interface/card";
+import {Cardstatus} from "../cards/cardstatus";
 
 @Component({
   selector: 'app-notes',
@@ -34,6 +35,10 @@ export class NotesPage implements OnInit {
     const query = target.value?.toLowerCase() || '';
     this.results = this.cards$.pipe(
       map(cards => cards.filter(c => c.name.toLowerCase().includes(query))));
+  }
+
+  onFilterChanged(status: Cardstatus){
+    this.results = this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)));
   }
 
   ngOnInit() {

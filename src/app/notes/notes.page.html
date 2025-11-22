@@ -17,6 +17,8 @@
 
   <ion-searchbar (ionInput)="eventInput($event)"></ion-searchbar>
 
+  <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
+
   <div *ngFor="let card of results | async">
     <app-notecard [card]="card">
     </app-notecard>

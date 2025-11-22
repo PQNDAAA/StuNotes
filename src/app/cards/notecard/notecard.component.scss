@@ -26,13 +26,33 @@ ion-label{
   justify-content: space-between;
 }
 
-ion-card-title{
+#deadline{
+  display: flex;
+  flex-direction: column;
+}
+#deadline-items{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2%;
+}
+
+#deadline-items ion-icon{
+  font-size: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#deadline-items ion-label{
+  line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 ion-badge{
   font-size: 12px;
   display: flex;
-  flex-direction: column;
   width: min-content;
   margin-bottom: 3%;
 }

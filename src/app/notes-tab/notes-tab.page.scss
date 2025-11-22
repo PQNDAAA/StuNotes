@@ -1,0 +1,32 @@
+ion-segment{
+
+}
+
+ion-segment-button{
+  --color-checked: #000;
+  --indicator-color: #ff8228;
+}
+
+.segment-item{
+  display: flex;
+  flex-direction: row;
+}
+
+ion-label{
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: none;
+}
+ion-badge{
+  margin: -4px;
+  margin-left: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 50%;
+  font-size: 10px;
+  aspect-ratio: 1 / 1; //ARRONDI A LA PERFECTION de facon ovale
+}

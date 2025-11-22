@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, map, Observable} from 'rxjs';
 import { Card } from "../cards-interface/card";
 import Dexie, { Table } from 'dexie';
 import {ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../addnote/addnote.component";
+import {Cardstatus} from "../cardstatus";
+import {CardstatusColors} from "../cardstatus-colors";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,8 @@ export class CardsService extends Dexie{
   cards$ = this.cardsSubject.asObservable();
 
   cards! : Table<Card, number>;
+
+  statusColors = CardstatusColors;
 
   constructor(private mc : ModalController) {
     super('CardsDB');
@@ -85,5 +89,15 @@ export class CardsService extends Dexie{
 
     await this.refreshCards();
     console.log("Card edited");
+  }
+
+  filterCardsCount(status: Cardstatus): Observable<number>{
+    return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status).length));
+  }
+
+  getStatusColor(status: string): string{
+    const normalized = status.trim() as Cardstatus;
+
+    return this.statusColors[normalized];
   }
 }
