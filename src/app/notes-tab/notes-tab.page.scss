@@ -1,10 +1,13 @@
 ion-segment{
-
+  //width: max-content;
+  //display: inline-flex;
 }
 
 ion-segment-button{
+  min-width: 115px;
   --color-checked: #000;
   --indicator-color: #ff8228;
+  justify-content: center;
 }
 
 .segment-item{

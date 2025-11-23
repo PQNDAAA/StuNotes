@@ -78,7 +78,6 @@ export class NotecardComponent implements OnInit {
     return this.cs.getStatusColor(status);
   }
 
-
   ngOnInit() {
     // CREATEAT DATE FORMAT
    this.dateCard = this.card.createdAt.toLocaleString("fr-FR",{
