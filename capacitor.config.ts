@@ -12,7 +12,7 @@ const config: CapacitorConfig = {
       backgroundColor: "#FFFFFFFF", // couleur de fond
       androidScaleType: 'CENTER_INSIDE',
       splashFullScreen: true,   // mode plein écran
-      splashImmersive: false,    // cacher la barre système
+      splashImmersive: true,    // cacher la barre système
     },
   },
 };

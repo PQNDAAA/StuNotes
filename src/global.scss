@@ -35,3 +35,15 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+ion-header,
+ion-toolbar {
+  padding-top: calc(56px + var(--ion-safe-area-top));
+}
+
+ion-content {
+  /* Pour que le contenu ne soit jamais caché derrière le header */
+  //padding-top: calc(56px + var(--ion-safe-area-top));
+}
+
+
