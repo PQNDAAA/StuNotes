@@ -38,7 +38,11 @@
 
 ion-header,
 ion-toolbar {
-  padding-top: calc(56px + var(--ion-safe-area-top));
+  padding-top: 56px;
+}
+
+ion-header{
+  //position: relative !important;
 }
 
 ion-content {

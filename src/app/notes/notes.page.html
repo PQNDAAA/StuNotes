@@ -1,18 +1,10 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>My Notes</ion-title>
-    <ion-button id="addbtn" shape="round" slot="end" (click)="openPopup()">
-      <ion-icon name="add-outline" slot="icon-only"></ion-icon>
-    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">My Notes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
   <ion-searchbar (ionInput)="eventInput($event)"></ion-searchbar>
 

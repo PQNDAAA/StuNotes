@@ -1,1 +1,47 @@
+.center-btn {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+
+  width: 85px;
+  height: 65px;
+
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+ion-button{
+  width: 85px;
+  height: 65px;
+
+  font-size: 24px;
+}
+
+.custom-tab-bar{
+  display: flex;
+  height: 70px;
+  background: white;
+
+  border-radius: 20% 20% 0 0;
+  box-shadow: 0 -2px 20px rgba(0,0,0,0.15);
+
+  z-index: 999;
+}
+
+#addbtn{
+  --background: #ff8228;
+}
+
+ion-tab-button{
+  --color-selected: #ff8228;
+}
+
+#separator-tab-bar{
+  --ripple-color: transparent;
+}
+
 
