@@ -1,4 +1,17 @@
 ion-title{
-  font-weight: bold;
   font-size: 28px;
+  transition: font-size 0.3s ease;
+}
+
+ion-title.condensate {
+  font-size: 20px;
+  font-weight: 600;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.cancelSettings{
+  --ripple-color: transparent;
 }
