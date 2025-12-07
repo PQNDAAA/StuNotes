@@ -2,13 +2,11 @@
   <ion-toolbar>
     <ion-title>My Notes</ion-title>
   </ion-toolbar>
+  <ion-searchbar (ionInput)="eventInput($event)"></ion-searchbar>
+  <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
 </ion-header>
 
 <ion-content>
-
-  <ion-searchbar (ionInput)="eventInput($event)"></ion-searchbar>
-
-  <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
 
   <div *ngFor="let card of results | async">
     <app-notecard [card]="card">
