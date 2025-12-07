@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ModalController} from "@ionic/angular";
+import {CardsService} from "../cards/cards-service/cards-service";
 
 @Component({
   selector: 'app-settings',
@@ -11,7 +12,7 @@ export class SettingsPage implements OnInit {
 
   isCondensate = false;
 
-  constructor(private mc: ModalController) { }
+  constructor(private mc: ModalController, private cs: CardsService) { }
 
   ngOnInit() {
   }
@@ -19,6 +20,10 @@ export class SettingsPage implements OnInit {
   async cancelModal(){
     await this.mc.dismiss();
   }
+
+  async deleteAllCards(){
+    await this.cs.deleteAllCards();
+}
 
   onScroll(event: any){
     const scrollTop = event.detail.scrollTop;

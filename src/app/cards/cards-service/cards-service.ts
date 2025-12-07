@@ -66,6 +66,11 @@ export class CardsService extends Dexie{
     console.log(this.getCards());
   }
 
+  async deleteAllCards(){
+    this.cards.clear();
+    await this.refreshCards();
+  }
+
   async openPopupEditCard(card: Card){
     const modal = await this.mc.create({
       component: AddnoteComponent,

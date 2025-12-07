@@ -26,3 +26,13 @@ ion-checkbox{
 ion-checkbox::part(container){
   border: 1px solid #ff8228;
 }
+
+ion-list{
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 4%;
+  margin: 15px;
+  padding: 20px;
+}
+ion-content{
+  --background: #F7F6F3;
+}

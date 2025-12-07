@@ -1,4 +1,4 @@
-<ion-content>
+
   <ion-header>
     <ion-toolbar>
       <ion-title>
@@ -7,7 +7,8 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
+  <ion-content>
+  <ion-list lines="none">
     <ion-item>
       <ion-input label="Note Title" [(ngModel)]="this.card.name" labelPlacement="fixed" [clearInput]="true" placeholder="Enter your title"></ion-input>
     </ion-item>

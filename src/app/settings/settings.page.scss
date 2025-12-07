@@ -15,3 +15,19 @@ ion-title.condensate {
 .cancelSettings{
   --ripple-color: transparent;
 }
+
+ion-list{
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 4%;
+  margin: 15px;
+  padding: 20px;
+
+}
+
+h3{
+font-weight: 600;
+}
+
+ion-content{
+  --background: #F7F6F3;
+}
