@@ -1,3 +1,6 @@
+<ion-list lines="none">
+  <ion-item-sliding>
+    <ion-item>
 <ion-card>
   <ion-card-content>
     <ion-label>{{this.tag.name}}</ion-label>
@@ -6,3 +9,9 @@
     </ion-button>
   </ion-card-content>
 </ion-card>
+    </ion-item>
+    <ion-item-options side="end" (ionSwipe)="onSwipe()">
+      <ion-item-option color="danger" [expandable]="true" (click)="deleteTagCard()">Delete</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>

@@ -19,6 +19,10 @@ export class TagcardComponent  implements OnInit {
 
   ngOnInit() {}
 
+  async onSwipe(){
+    await this.deleteTagCard();
+  }
+
   async deleteTagCard(){
     const id = this.tag.id;
 

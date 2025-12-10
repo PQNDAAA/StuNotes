@@ -6,4 +6,10 @@ ion-title{
   font-size: 24px;
   text-align: center;
 }
+ion-header{
+  display: flex;
+  flex-direction: column;
 
+  border-radius: 0 0 4% 4%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}

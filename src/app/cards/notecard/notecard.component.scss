@@ -86,3 +86,13 @@ ion-card-content{
   flex-direction: row;
   justify-content: end;
 }
+
+ion-card{
+  width: 100%;
+  border-radius: 4%;
+  box-shadow: 0 -2 20px rgba(0,0,0,0.15);
+}
+
+ion-list {
+ // border: 1px solid black;
+}

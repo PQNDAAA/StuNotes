@@ -3,6 +3,24 @@ ion-card-content{
   align-items: center;
   flex-direction: row;
 }
+ion-card{
+  margin:14px;
+  border-radius: 4%;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  width: 100%;
+}
 ion-button{
   color: #424242;
 }
+
+ion-item-option{
+  border-radius: 6%;
+
+  height: 60px;
+  line-height: 60px;
+
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 14px;
+}
+

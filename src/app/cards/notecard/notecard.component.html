@@ -1,3 +1,6 @@
+<ion-list lines="none">
+  <ion-item-sliding>
+    <ion-item>
 <ion-card>
   <ion-card-header class="card-header">
     <div id="deadline">
@@ -30,3 +33,9 @@
 
   </ion-card-content>
 </ion-card>
+    </ion-item>
+    <ion-item-options side="end">
+      <ion-item-option color="danger" [expandable]="true">Delete</ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+</ion-list>
