@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {Tags} from "../tags";
 import {TagsService} from "../tags-service/tags-service";
+import {Haptics, ImpactStyle} from "@capacitor/haptics";
 
 @Component({
   selector: 'app-tagcard',
@@ -28,6 +29,7 @@ export class TagcardComponent  implements OnInit {
 
     if(id !== undefined){
       await this.ts.deleteTag(id);
+      await Haptics.impact({style: ImpactStyle.Medium});
     } else {
       console.log("ID undefined");
     }

@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
-import {CardstatusColors} from "../cardstatus-colors";
-import {Cardstatus} from "../cardstatus";
 import {AlertController} from "@ionic/angular";
+import {Haptics, ImpactStyle} from "@capacitor/haptics";
 
 @Component({
   selector: 'app-notecard',
@@ -40,6 +39,10 @@ export class NotecardComponent implements OnInit {
   constructor(private cs: CardsService, private ac: AlertController) {
   }
 
+  async onSwipe(){
+    await this.presentAlert();
+  }
+
   async presentAlert(){
     const alert = await this.ac.create({
       header: 'Are you sure to delete this note ?',
@@ -51,6 +54,7 @@ export class NotecardComponent implements OnInit {
           role:"confirm",
           handler:async () => {
             await this.deleteCard();
+            await Haptics.impact({style: ImpactStyle.Medium});
             await alert.dismiss();
           }
         }

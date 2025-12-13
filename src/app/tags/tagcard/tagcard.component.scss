@@ -4,13 +4,20 @@ ion-card-content{
   flex-direction: row;
 }
 ion-card{
-  margin:14px;
+  margin:10px;
   border-radius: 4%;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   width: 100%;
 }
 ion-button{
   color: #424242;
+}
+ion-item{
+}
+ion-item-sliding{
+}
+ion-list{
+  padding: 0;
 }
 
 ion-item-option{
@@ -21,6 +28,6 @@ ion-item-option{
 
   margin-top: auto;
   margin-bottom: auto;
-  margin-right: 14px;
+  margin-right: 24px;
 }
 

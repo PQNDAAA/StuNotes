@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {SplashScreen} from "@capacitor/splash-screen";
+import {Haptics} from "@capacitor/haptics";
 
 @Component({
   selector: 'app-root',
