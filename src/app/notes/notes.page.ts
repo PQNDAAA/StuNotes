@@ -18,6 +18,10 @@ export class NotesPage implements OnInit {
 
   results: Observable<Card[]>;
 
+  currentStatus!: Cardstatus;
+
+  hasResultData = true;
+
   constructor(private mc : ModalController, private cs : CardsService) {
     this.cards$ = this.cs.cards$;
     this.results = this.cards$;
@@ -33,12 +37,20 @@ export class NotesPage implements OnInit {
   eventInput(event: Event){
     const target = event.target as HTMLIonSearchbarElement;
     const query = target.value?.toLowerCase() || '';
-    this.results = this.cards$.pipe(
-      map(cards => cards.filter(c => c.name.toLowerCase().includes(query))));
+
+    if(query) {
+      this.results = this.cards$.pipe(
+        map(cards => cards.filter(c => c.name.toLowerCase().includes(query))));
+    }
   }
 
   onFilterChanged(status: Cardstatus){
+    this.currentStatus = status;
     this.results = this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)));
+
+    this.results.subscribe(data => {
+      this.hasResultData = !(!data || data.length === 0);
+    })
   }
 
   ngOnInit() {

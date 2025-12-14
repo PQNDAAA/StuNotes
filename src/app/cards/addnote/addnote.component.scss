@@ -22,11 +22,9 @@ ion-checkbox{
   --checkbox-background-checked: #ff8228;
   --size: 24px
 }
-
 ion-checkbox::part(container){
   border: 1px solid #ff8228;
 }
-
 ion-list{
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   border-radius: 4%;

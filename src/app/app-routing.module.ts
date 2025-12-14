@@ -26,6 +26,14 @@ const routes: Routes = [
     path: 'notes-tab',
     loadChildren: () => import('./notes-tab/notes-tab.module').then( m => m.NotesTabPageModule)
   },
+  {
+    path: 'settings-home',
+    loadChildren: () => import('./settings-home/settings-home.module').then( m => m.SettingsHomePageModule)
+  },
+  {
+    path: 'settings-dltallnotes',
+    loadChildren: () => import('./settings-dltallnotes/settings-dltallnotes.module').then( m => m.SettingsDltallnotesPageModule)
+  },
 ];
 @NgModule({
   imports: [

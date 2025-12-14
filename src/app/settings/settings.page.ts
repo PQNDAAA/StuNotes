@@ -8,7 +8,11 @@ import {CardsService} from "../cards/cards-service/cards-service";
   styleUrls: ['./settings.page.scss'],
   standalone: false,
 })
+
+
 export class SettingsPage implements OnInit {
+
+  //step: SettingsStep = 'home';
 
   isCondensate = false;
 

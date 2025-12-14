@@ -7,45 +7,6 @@
 
 <ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true">
 
-  <ion-list lines="none">
-    <ion-item>
-      <h3>Data</h3>
-    </ion-item>
-    <ion-item [button]="true" [detail]="false" (click)="deleteAllCards()">
-      <ion-label>Notes</ion-label>
-      <ion-icon color="medium" name="chevron-forward"></ion-icon>
-    </ion-item>
-    <ion-item [button]="true" [detail]="false">
-      <ion-label>Tags</ion-label>
-      <ion-icon color="medium" name="chevron-forward"></ion-icon>
-    </ion-item>
-  </ion-list>
-
-  <ion-list lines="none">
-    <ion-item>
-      <h3>Appearance</h3>
-    </ion-item>
-    <ion-item [button]="true">
-      <ion-toggle>
-      <ion-label>Dark mode</ion-label>
-      </ion-toggle>
-    </ion-item>
-  </ion-list>
-
-  <ion-list lines="none">
-    <ion-item>
-      <h3>Notifications</h3>
-    </ion-item>
-    <ion-item [button]="true">
-      <ion-toggle>
-      <ion-label>Enable reminders</ion-label>
-      </ion-toggle>
-    </ion-item>
-    <ion-item [button]="true">
-      <ion-toggle>
-      <ion-label>Urgent deadline alerts</ion-label>
-      </ion-toggle>
-    </ion-item>
-  </ion-list>
+  <app-settings-home></app-settings-home>
 
 </ion-content>
