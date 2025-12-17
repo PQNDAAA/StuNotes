@@ -30,7 +30,6 @@ export class TagcardComponent  implements OnInit {
 
     if(id !== undefined){
       await this.ts.deleteTag(id);
-      await Haptics.impact({style: ImpactStyle.Medium});
     } else {
       console.log("ID undefined");
     }

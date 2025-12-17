@@ -37,6 +37,10 @@ export class TabsPage {
     }
   }
 
+  hasOpenSettings():boolean{
+    return this.router.url.includes('tabs/settings');
+  }
+
   async openSettings(){
     const modal = await this.mc.create({
       component: SettingsPage,
@@ -46,7 +50,5 @@ export class TabsPage {
 
     await modal.present();
   }
-
-
 }
 

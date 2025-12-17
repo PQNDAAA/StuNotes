@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <h3>
+      Data
+    </h3>
+    <ion-item [button]="true" [detail]="false" (click)="deleteAllCards()">Delete all notes</ion-item>
+  </ion-list>
+</ion-content>

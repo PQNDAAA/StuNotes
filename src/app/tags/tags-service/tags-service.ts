@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Tags} from "../tags";
 import Dexie, { Table } from 'dexie';
 import { BehaviorSubject } from 'rxjs';
+import {Haptics, ImpactStyle} from "@capacitor/haptics";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,15 @@ export class TagsService extends Dexie{
     this.tags.delete(id);
 
     await this.refreshTags();
+    await Haptics.impact({style: ImpactStyle.Medium});
     console.log("Tag deleted.");
+  }
+
+  async deleteAllTags(){
+    this.tags.clear();
+    await this.refreshTags();
+    await Haptics.impact({style: ImpactStyle.Medium});
+    console.log("Tags deleted.");
   }
 
   async refreshTags(){

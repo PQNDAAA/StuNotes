@@ -1,8 +1,17 @@
-ion-title{
-  font-size: 28px;
-  transition: font-size 0.3s ease;
+ion-list{
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 4%;
+  margin: 15px;
+  padding: 20px;
 }
 
+h3{
+  font-weight: 600;
+}
+ion-title{
+  font-size: 24px;
+  transition: font-size 0.3s ease;
+}
 ion-title.condensate {
   font-size: 20px;
   font-weight: 600;
@@ -10,22 +19,6 @@ ion-title.condensate {
   position: absolute;
   top: 50%;
   transform: translate(-50%,-50%);
-}
-
-.cancelSettings{
-  --ripple-color: transparent;
-}
-
-ion-list{
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  border-radius: 4%;
-  margin: 15px;
-  padding: 20px;
-
-}
-
-h3{
-  font-weight: 600;
 }
 
 ion-content{

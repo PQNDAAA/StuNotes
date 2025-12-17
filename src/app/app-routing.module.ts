@@ -31,8 +31,12 @@ const routes: Routes = [
     loadChildren: () => import('./settings-home/settings-home.module').then( m => m.SettingsHomePageModule)
   },
   {
-    path: 'settings-dltallnotes',
-    loadChildren: () => import('./settings-dltallnotes/settings-dltallnotes.module').then( m => m.SettingsDltallnotesPageModule)
+    path: 'settings-data-tags',
+    loadChildren: () => import('./settings-data-tags/settings-data-tags.module').then( m => m.SettingsDataTagsPageModule)
+  },
+  {
+    path: 'settings-data-notes',
+    loadChildren: () => import('./settings-data-notes/settings-data-notes.module').then( m => m.SettingsDataNotesPageModule)
   },
 ];
 @NgModule({

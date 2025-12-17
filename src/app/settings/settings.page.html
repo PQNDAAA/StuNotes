@@ -1,12 +1,2 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title [class.condensate]="isCondensate">Settings</ion-title>
-    <ion-button class="cancelSettings" fill="clear" slot="end" (click)="cancelModal()"><ion-label>OK</ion-label></ion-button>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true">
-
-  <app-settings-home></app-settings-home>
-
-</ion-content>
+<ion-router-outlet></ion-router-outlet>

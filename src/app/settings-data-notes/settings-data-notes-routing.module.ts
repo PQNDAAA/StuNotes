@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SettingsDltallnotesPage } from './settings-dltallnotes.page';
+import { SettingsDataNotesPage } from './settings-data-notes.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: SettingsDltallnotesPage
+    component: SettingsDataNotesPage
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SettingsDltallnotesPageRoutingModule {}
+export class SettingsDataNotesPageRoutingModule {}

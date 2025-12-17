@@ -68,7 +68,6 @@ export class NotecardComponent implements OnInit {
 
     if(id !== undefined) {
       await this.cs.deleteCard(id);
-      await Haptics.impact({style: ImpactStyle.Medium});
     } else {
       console.log("ID undefined");
     }

@@ -6,6 +6,7 @@ import {ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../addnote/addnote.component";
 import {Cardstatus} from "../cardstatus";
 import {CardstatusColors} from "../cardstatus-colors";
+import {Haptics, ImpactStyle} from "@capacitor/haptics";
 
 @Injectable({
   providedIn: 'root'
@@ -63,12 +64,14 @@ export class CardsService extends Dexie{
      // this.cards[i].id = i + 1;
     //}
     await this.refreshCards();
+    await Haptics.impact({style: ImpactStyle.Medium});
     console.log(this.getCards());
   }
 
   async deleteAllCards(){
     this.cards.clear();
     await this.refreshCards();
+    await Haptics.impact({style: ImpactStyle.Medium});
   }
 
   async openPopupEditCard(card: Card){

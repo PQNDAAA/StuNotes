@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {RouterLink} from "@angular/router";
-import {SettingsDltallnotesPageModule} from "../settings-dltallnotes/settings-dltallnotes.module";
-import {SettingsDltallnotesPage} from "../settings-dltallnotes/settings-dltallnotes.page";
 
 @Component({
   selector: 'app-settings-home',
@@ -14,6 +12,8 @@ export class SettingsHomePage implements OnInit {
 
   constructor(private mc : ModalController) { }
 
+  isCondensate = false;
+
   ngOnInit() {
   }
 
@@ -21,12 +21,25 @@ export class SettingsHomePage implements OnInit {
     await this.mc.dismiss();
 
     const modal = await this.mc.create({
-      component: SettingsDltallnotesPage,
+      component: "",
       breakpoints: [0, 0.93, 1],
       initialBreakpoint: 0.93
     });
 
     await modal.present();
+  }
+
+  onScroll(event: any){
+    const scrollTop = event.detail.scrollTop;
+    console.log("Scroll position ",scrollTop);
+
+    if(scrollTop > 60){
+      console.log("Atteint");
+      this.isCondensate = true;
+    } else {
+      this.isCondensate = false;
+      console.log("<60");
+    }
   }
 
 }

@@ -16,10 +16,6 @@ const routes: Routes = [
         loadChildren: () => import('../tags/tags.module').then(m => m.TagsPageModule)
       },
       {
-        path: 'settings',
-        loadChildren: () => import('../settings/settings.module').then(m => m.SettingsPageModule)
-      },
-      {
         path: 'search',
         loadChildren: () => import('../search/search.module').then(m => m.SearchPageModule)
       },
