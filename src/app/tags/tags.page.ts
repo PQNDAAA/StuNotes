@@ -16,11 +16,17 @@ export class TagsPage implements OnInit {
 
   tags$: Observable<Tags[]>;
 
+  hasEmptyTags = false;
+
   constructor(private mc : ModalController, private ts: TagsService) {
     this.tags$ = this.ts.tags$;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tags$.subscribe(data => {
+      this.hasEmptyTags = (!data || data.length === 0);
+    })
+  }
 
   async openPopup(){
     const modal = await this.mc.create({
