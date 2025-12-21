@@ -68,10 +68,17 @@ export class CardsService extends Dexie{
     console.log(this.getCards());
   }
 
-  async deleteAllCards(){
-    this.cards.clear();
-    await this.refreshCards();
-    await Haptics.impact({style: ImpactStyle.Medium});
+  async deleteAllCards(): Promise<boolean>{
+    const cards = await this.getCards();
+
+    if(!cards || cards.length === 0){
+      return false;
+    } else {
+      this.cards.clear();
+      await this.refreshCards();
+      await Haptics.impact({style: ImpactStyle.Medium});
+      return true;
+    }
   }
 
   async openPopupEditCard(card: Card){

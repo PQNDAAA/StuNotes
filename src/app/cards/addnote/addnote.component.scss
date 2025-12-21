@@ -10,6 +10,7 @@
 }
 #validbtn{
   --background: #ff8228;
+  --color: white;
 }
 #cancelbtn{
   --background: white;
@@ -30,7 +31,4 @@ ion-list{
   border-radius: 4%;
   margin: 15px;
   padding: 20px;
-}
-ion-content{
-  --background: #F7F6F3;
 }

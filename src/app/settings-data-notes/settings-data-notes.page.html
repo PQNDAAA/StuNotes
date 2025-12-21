@@ -13,5 +13,6 @@
       Data
     </h3>
     <ion-item [button]="true" [detail]="false" (click)="deleteAllCards()">Delete all notes</ion-item>
+    <ion-label class="StateText" *ngIf="hasCards !== undefined">{{hasCards ? 'All notes deleted' : 'No notes deleted'}}</ion-label>
   </ion-list>
 </ion-content>

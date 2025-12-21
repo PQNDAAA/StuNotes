@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {RouterLink} from "@angular/router";
+import {Settings} from "../settings";
 
 @Component({
   selector: 'app-settings-home',
@@ -10,7 +11,11 @@ import {RouterLink} from "@angular/router";
 })
 export class SettingsHomePage implements OnInit {
 
-  constructor(private mc : ModalController) { }
+  isDarkMode = false;
+
+  constructor(private mc : ModalController, private settingsservice: Settings) {
+    this.isDarkMode = this.settingsservice.isDarkMode;
+  }
 
   isCondensate = false;
 
@@ -40,6 +45,12 @@ export class SettingsHomePage implements OnInit {
       this.isCondensate = false;
       console.log("<60");
     }
+  }
+
+  onToggleDarkMode(event: any){
+    this.isDarkMode = event.detail.checked;
+    this.settingsservice.isDarkMode = this.isDarkMode;
+    document.body.classList.toggle('dark',this.isDarkMode);
   }
 
 }

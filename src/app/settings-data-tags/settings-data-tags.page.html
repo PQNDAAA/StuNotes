@@ -13,6 +13,7 @@
       Data
     </h3>
     <ion-item [button]="true" [detail]="false" (click)="deleteAllTags()">Delete all tags</ion-item>
+    <ion-label class="StateText" *ngIf="hasTags !== undefined">{{hasTags ? 'All tags deleted' : 'No tags deleted'}}</ion-label>
   </ion-list>
 </ion-content>
 

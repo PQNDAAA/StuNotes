@@ -44,16 +44,21 @@ export class TagsService extends Dexie{
     console.log("Tag deleted.");
   }
 
-  async deleteAllTags(){
-    this.tags.clear();
-    await this.refreshTags();
-    await Haptics.impact({style: ImpactStyle.Medium});
-    console.log("Tags deleted.");
+  async deleteAllTags() : Promise<boolean> {
+    const tags = await this.getTags();
+
+    if(!tags || tags.length === 0){
+      return false;
+    } else {
+      this.tags.clear();
+      await this.refreshTags();
+      await Haptics.impact({style: ImpactStyle.Medium});
+      return true;
+    }
   }
 
   async refreshTags(){
     const allTags = await this.getTags();
     this.tagsSubject.next(allTags);
   }
-
 }

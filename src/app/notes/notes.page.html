@@ -13,8 +13,8 @@
     </app-notecard>
   </div>
 
-  <div class="emptyData">
-  <ion-item *ngIf="!hasResultData" lines="none"><ion-label>No tasks for the status at the moment.</ion-label></ion-item>
+  <div class="emptyData" *ngIf="!hasResultData">
+  <ion-label>No tasks for the status at the moment.</ion-label>
   </div>
 
 </ion-content>

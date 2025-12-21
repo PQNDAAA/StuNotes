@@ -9,6 +9,8 @@ import {CardsService} from "../cards/cards-service/cards-service";
 })
 export class SettingsDataNotesPage implements OnInit {
 
+  hasCards: boolean | undefined;
+
   constructor(private cs: CardsService) { }
 
   ngOnInit() {
@@ -16,7 +18,7 @@ export class SettingsDataNotesPage implements OnInit {
 
 
   async deleteAllCards(){
-    await this.cs.deleteAllCards();
+    this.hasCards = await this.cs.deleteAllCards();
   }
 
 }

@@ -5,6 +5,7 @@ ion-title{
   font-weight: bold;
   --color:black;
 }
+
 ion-label{
   padding-bottom: 1%;
 }
@@ -55,12 +56,13 @@ ion-badge{
   display: flex;
   width: min-content;
   margin-bottom: 3%;
+  --color: #fdfdfd;
 }
 
 #tag{
   font-size: 13px;
   background-color: #ff8228;
-  color: #424242;
+  --color: #fdfdfd;
   font-weight: bold;
   width: min-content;
   display: inline-block;

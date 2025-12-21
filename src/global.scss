@@ -25,6 +25,59 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+
+body.dark {
+  --ion-background-color: #121212; /* fond général */
+  --ion-text-color: #ffffff; /* texte général */
+  --ion-color-primary: #3880ff;
+  --ion-color-secondary: #0cd1e8;
+  --ion-color-tertiary: #7044ff;
+  --ion-color-success: #10dc60;
+  --ion-color-warning: #ffce00;
+  --ion-color-danger: #f04141;
+  --ion-color-medium: #a0a0a0;
+  --ion-color-light: #222222;
+
+  /* Composants spécifiques */
+  ion-item {
+    --background: #1e1e1e;
+    --color: #ffffff;
+  }
+
+  ion-card {
+    --background: #1e1e1e;
+    --color: #ffffff;
+  }
+
+  ion-label {
+    color: #ffffff;
+  }
+
+  ion-searchbar {
+    color: #ffffff;
+  }
+
+  ion-datetime {
+    --background: #121212;
+  }
+
+  ion-datetime-button::part(native) {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  ion-card-title{
+    color: #ffffff;
+  }
+}
+
+body.dark .settings-theme-content,
+body.dark .background-theme{
+  --background: #121212;
+}
+
+/* -------------------------------------------------------------------- */
+
+
 ion-header,
 ion-toolbar {
   padding-top: 56px;
@@ -40,7 +93,6 @@ ion-content {
 }
 
 /* Theme Header Settings */
-
 .settings-theme-header{
   ion-title{
     font-size: 24px;
@@ -55,10 +107,10 @@ ion-content {
     transform: translate(-50%,-50%);
   }
 }
-
 /* Theme du contenu Settings */
-
 .settings-theme-content{
+  --background: #F7F6F3;
+
   ion-list{
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     border-radius: 4%;
@@ -69,10 +121,50 @@ ion-content {
   h3{
     font-weight: 600;
   }
+}
 
-  ion-content{
-    --background: #F7F6F3;
+/* Theme des textes ERROR */
+.errorText{
+  color: var(--ion-color-danger);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Theme des textes pour savoir l'état de l'action faite */
+.StateText{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--ion-color-medium);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 20px;
+}
+
+/* Theme BACKGROUND */
+.background-theme{
+  --background: #F7F6F3;
+}
+
+/* Theme des textes s'il n'y a aucun contenu dans les pages */
+.emptyData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+
+  ion-label{
+    width: 80%;
+    text-align: center;
+    font-size: 16px;
+    color: rgba(28, 28, 28, 0.55);
   }
 }
 
-
+ion-datetime-button::part(native) {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  background-color: #F7F6F3;
+  color: #000000;
+}

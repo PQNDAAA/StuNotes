@@ -9,13 +9,17 @@ import {TagsService} from "../tags/tags-service/tags-service";
 })
 export class SettingsDataTagsPage implements OnInit {
 
-  constructor(private ts: TagsService) { }
+  hasTags: boolean | undefined;
+
+  constructor(private ts: TagsService) {
+    console.log(this.hasTags);
+  }
 
   ngOnInit() {
   }
 
   async deleteAllTags(){
-    await this.ts.deleteAllTags();
+    this.hasTags = await this.ts.deleteAllTags();
   }
 
 }

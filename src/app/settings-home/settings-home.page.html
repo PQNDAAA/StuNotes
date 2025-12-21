@@ -27,7 +27,7 @@
     <h3>Appearance</h3>
   </ion-item>
   <ion-item [button]="true">
-    <ion-toggle>
+    <ion-toggle (ionChange)="onToggleDarkMode($event)" [(ngModel)]="isDarkMode">
       <ion-label>Dark mode</ion-label>
     </ion-toggle>
   </ion-item>
