@@ -28,7 +28,9 @@ export class TabsPage {
 
     if (componentToLoad) {
       const modal = await this.mc.create({
-        component: componentToLoad
+        component: componentToLoad,
+        breakpoints: [0, 0.8, 1],
+        initialBreakpoint: 0.8
       });
 
       await modal.present();

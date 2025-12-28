@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {TagsService} from "../tags-service/tags-service";
 import {Tags} from "../tags";
@@ -15,7 +15,9 @@ import {FormsModule} from "@angular/forms";
 })
 export class AddtagComponent  implements OnInit {
 
-  tag: Tags = {name : ""};
+  @Input() tag: Tags = {name : ""};
+
+  @Input() editMode = false;
 
   constructor(private mc : ModalController, private ts : TagsService) { }
 
@@ -26,7 +28,12 @@ export class AddtagComponent  implements OnInit {
   }
 
   async valid() {
-    await this.ts.addTag(this.tag);
+    if(!this.editMode){
+      await this.ts.addTag(this.tag);
+    } else {
+      await this.ts.updateTag(this.tag)
+      this.editMode = false;
+    }
     await this.mc.dismiss();
   }
 }

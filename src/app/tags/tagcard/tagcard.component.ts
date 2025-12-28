@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AlertController, IonicModule} from "@ionic/angular";
+import {AlertController, IonicModule, ModalController} from "@ionic/angular";
 import {Tags} from "../tags";
 import {TagsService} from "../tags-service/tags-service";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {async} from "rxjs";
+import {AddtagComponent} from "../addtag/addtag.component";
 
 @Component({
   selector: 'app-tagcard',
@@ -17,7 +18,7 @@ export class TagcardComponent  implements OnInit {
 
   @Input() tag!: Tags;
 
-  constructor(private ts: TagsService, private ac : AlertController) { }
+  constructor(private ts: TagsService,private mc : ModalController, private ac : AlertController) { }
 
   ngOnInit() {}
 
@@ -33,6 +34,10 @@ export class TagcardComponent  implements OnInit {
     } else {
       console.log("ID undefined");
     }
+  }
+
+  async openEditMode(){
+    return await this.ts.openEditMode(this.tag);
   }
 
   async presentAlert(){

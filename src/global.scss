@@ -40,12 +40,12 @@ body.dark {
 
   /* Composants spécifiques */
   ion-item {
-    --background: #1e1e1e;
+    --background: #121212;
     --color: #ffffff;
   }
 
   ion-card {
-    --background: #1e1e1e;
+    --background: #121212;
     --color: #ffffff;
   }
 
@@ -72,7 +72,7 @@ body.dark {
 
 body.dark .settings-theme-content,
 body.dark .background-theme{
-  --background: #121212;
+  --background: #1e1e1e;
 }
 
 /* -------------------------------------------------------------------- */
@@ -167,4 +167,10 @@ ion-datetime-button::part(native) {
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   background-color: #F7F6F3;
   color: #000000;
+}
+
+ion-item-option{
+  border-radius: 8%;
+  margin-top: auto;
+  margin-bottom: auto;
 }

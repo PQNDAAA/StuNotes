@@ -1,10 +1,59 @@
 import { Injectable } from '@angular/core';
+import Dexie, {Table} from "dexie";
+import {BehaviorSubject} from "rxjs";
+import {settings} from "ionicons/icons";
+import {default_settings, ISettingsHome} from "./isettings-home";
 
 @Injectable({
   providedIn: 'root',
 })
-export class Settings {
+export class Settings extends Dexie {
 
   isDarkMode = false;
+
+  private settingsHomeSubject = new BehaviorSubject<ISettingsHome>(default_settings);
+  settingsHome$ = this.settingsHomeSubject.asObservable();
+
+  settingsHomeTable !: Table<ISettingsHome,number>;
+
+  constructor() {
+    super('SettingsHomeDB');
+    this.version(1).stores({
+      settings:'id, darkMode'
+    });
+    this.settingsHomeTable = this.table('settings');
+
+    //this.settingsHomeTable.clear();
+    this.addDefaultSettings();
+  }
+
+  async addDefaultSettings(){
+    let row = await this.settingsHomeTable.get(1);
+    if(!row){
+      this.settingsHomeTable.put(default_settings,1);
+      console.log(row);
+      await this.refreshValues();
+    }
+    await this.refreshValues();
+    console.log(row);
+  }
+
+  async changeValueDarkMode(value:boolean){
+    const row = await this.settingsHomeTable.get(1);
+    if(!row) return;
+    row.darkMode = value;
+    this.settingsHomeTable.put(row, 1);
+    await this.refreshValues();
+
+    console.log(row);
+    console.log(this.settingsHome$);
+  }
+
+  async refreshValues(){
+    const allValues = await this.settingsHomeTable.get(1);
+    if(!allValues) return;
+    this.settingsHomeSubject.next(allValues);
+  }
+
 
 }

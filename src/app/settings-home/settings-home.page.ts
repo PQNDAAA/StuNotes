@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {RouterLink} from "@angular/router";
 import {Settings} from "../settings";
+import {ISettingsHome} from "../isettings-home";
+import {async, Observable} from "rxjs";
 
 @Component({
   selector: 'app-settings-home',
@@ -13,25 +15,20 @@ export class SettingsHomePage implements OnInit {
 
   isDarkMode = false;
 
-  constructor(private mc : ModalController, private settingsservice: Settings) {
-    this.isDarkMode = this.settingsservice.isDarkMode;
-  }
+  settings$: Observable<ISettingsHome>;
 
   isCondensate = false;
 
-  ngOnInit() {
+  constructor(private mc : ModalController, private settingsservice: Settings) {
+    this.settings$ = this.settingsservice.settingsHome$;
+    console.log(this.settings$);
   }
 
-  async openModal(){
-    await this.mc.dismiss();
-
-    const modal = await this.mc.create({
-      component: "",
-      breakpoints: [0, 0.93, 1],
-      initialBreakpoint: 0.93
-    });
-
-    await modal.present();
+  ngOnInit() {
+    this.settings$.subscribe(data => {
+      this.isDarkMode = data.darkMode
+      console.log(this.isDarkMode)
+    })
   }
 
   onScroll(event: any){
@@ -47,10 +44,10 @@ export class SettingsHomePage implements OnInit {
     }
   }
 
-  onToggleDarkMode(event: any){
+  async onToggleDarkMode(event: any){
     this.isDarkMode = event.detail.checked;
-    this.settingsservice.isDarkMode = this.isDarkMode;
-    document.body.classList.toggle('dark',this.isDarkMode);
-  }
 
+    document.body.classList.toggle('dark',this.isDarkMode);
+    await this.settingsservice.changeValueDarkMode(this.isDarkMode);
+  }
 }

@@ -3,6 +3,8 @@ import {Tags} from "../tags";
 import Dexie, { Table } from 'dexie';
 import { BehaviorSubject } from 'rxjs';
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
+import {ModalController} from "@ionic/angular";
+import {AddtagComponent} from "../addtag/addtag.component";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ export class TagsService extends Dexie{
 
   tags!: Table<Tags, number>;
 
-  constructor() {
+  constructor(private mc : ModalController) {
     super('TagsDB');
     this.version(1).stores({
       tags: '++id, name'
@@ -44,6 +46,18 @@ export class TagsService extends Dexie{
     console.log("Tag deleted.");
   }
 
+  async updateTag(tagEdited: Tags){
+
+    const tags = await this.getTags();
+    const id = tags.findIndex(tag => tag.id === tagEdited.id);
+
+    if(id !== -1){
+      tags[id] = tagEdited;
+      await this.tags.put(tags[id]);
+    }
+    await this.refreshTags();
+  }
+
   async deleteAllTags() : Promise<boolean> {
     const tags = await this.getTags();
 
@@ -60,5 +74,16 @@ export class TagsService extends Dexie{
   async refreshTags(){
     const allTags = await this.getTags();
     this.tagsSubject.next(allTags);
+  }
+
+  async openEditMode(tag: Tags){
+    const modal = await this.mc.create({
+      component: AddtagComponent,
+      componentProps: {
+        tag: tag,
+        editMode: true
+      }
+    });
+    await modal.present();
   }
 }

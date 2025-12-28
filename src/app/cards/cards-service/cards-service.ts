@@ -103,7 +103,6 @@ export class CardsService extends Dexie{
     }
 
     await this.refreshCards();
-    console.log("Card edited");
   }
 
   filterCardsCount(status: Cardstatus): Observable<number>{

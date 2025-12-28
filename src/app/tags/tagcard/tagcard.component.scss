@@ -21,15 +21,17 @@ ion-list{
 }
 
 ion-item-option{
-  border-radius: 6%;
-
   font-size: 13px;
+}
 
+.option-delete{
+  margin-right: 24px;
   height: 47px;
   line-height: 47px;
-
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-right: 24px;
+}
+.option-edit{
+  height: 39px;
+  line-height: 39px;
+  margin-right: 4px;
 }
 

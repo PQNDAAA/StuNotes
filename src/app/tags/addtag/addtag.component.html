@@ -1,9 +1,7 @@
 
   <ion-header>
     <ion-toolbar>
-      <ion-title>
-        Add a tag
-      </ion-title>
+      <ion-title>{{editMode ?'Edit tag' : 'Add tag'}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -16,7 +14,7 @@
     </ion-item>
   </ion-list>
 
-  <div id="formbtn">
+  <div class="formbtn">
     <ion-button id="validbtn"  slot="end" (click)="valid()" [strong]="true">
       Save
     </ion-button>
