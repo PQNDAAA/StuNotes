@@ -9,8 +9,6 @@ import {default_settings, ISettingsHome} from "./isettings-home";
 })
 export class Settings extends Dexie {
 
-  isDarkMode = false;
-
   private settingsHomeSubject = new BehaviorSubject<ISettingsHome>(default_settings);
   settingsHome$ = this.settingsHomeSubject.asObservable();
 
@@ -29,10 +27,9 @@ export class Settings extends Dexie {
 
   async addDefaultSettings(){
     let row = await this.settingsHomeTable.get(1);
-    if(!row){
+
+    if(!row) {
       this.settingsHomeTable.put(default_settings,1);
-      console.log(row);
-      await this.refreshValues();
     }
     await this.refreshValues();
     console.log(row);
@@ -40,7 +37,9 @@ export class Settings extends Dexie {
 
   async changeValueDarkMode(value:boolean){
     const row = await this.settingsHomeTable.get(1);
+
     if(!row) return;
+
     row.darkMode = value;
     this.settingsHomeTable.put(row, 1);
     await this.refreshValues();

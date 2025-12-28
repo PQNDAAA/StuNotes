@@ -13,7 +13,7 @@ import {async, Observable} from "rxjs";
 })
 export class SettingsHomePage implements OnInit {
 
-  isDarkMode = false;
+  isDarkMode = false; // prévoir de créér ISettingsHome a la place
 
   settings$: Observable<ISettingsHome>;
 
@@ -28,7 +28,7 @@ export class SettingsHomePage implements OnInit {
     this.settings$.subscribe(data => {
       this.isDarkMode = data.darkMode
       console.log(this.isDarkMode)
-    })
+    });
   }
 
   onScroll(event: any){

@@ -26,7 +26,7 @@
   <ion-item>
     <h3>Appearance</h3>
   </ion-item>
-  <ion-item [button]="true">
+  <ion-item [button]="true" [detail]="false">
     <ion-toggle (ionChange)="onToggleDarkMode($event)" [(ngModel)]="isDarkMode">
       <ion-label>Dark mode</ion-label>
     </ion-toggle>
@@ -37,12 +37,12 @@
   <ion-item>
     <h3>Notifications</h3>
   </ion-item>
-  <ion-item [button]="true">
+  <ion-item [button]="true" [detail]="false">
     <ion-toggle>
       <ion-label>Enable reminders</ion-label>
     </ion-toggle>
   </ion-item>
-  <ion-item [button]="true">
+  <ion-item [button]="true" [detail]="false">
     <ion-toggle>
       <ion-label>Urgent deadline alerts</ion-label>
     </ion-toggle>
