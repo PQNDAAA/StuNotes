@@ -5,14 +5,23 @@ const config: CapacitorConfig = {
   appName: "Stu'Notes",
   webDir: 'www',
 
+  //fr.dgsd.stunotes
+
   plugins: {
     SplashScreen: {
-      launchShowDuration: 0, // durée d’affichage en ms
-      launchAutoHide: true,     // se cache automatiquement
-      backgroundColor: "#FFFFFFFF", // couleur de fond
-      androidScaleType: 'CENTER_INSIDE',
-      splashFullScreen: true,   // mode plein écran
-      splashImmersive: true,    // cacher la barre système
+      launchShowDuration: 3000,
+      launchAutoHide: false,
+      backgroundColor: "#FFFFFF",
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
+      androidSpinnerStyle: "large",
+      iosSpinnerStyle: "small",
+      spinnerColor: "#999999",
+      splashFullScreen: true,
+      splashImmersive: true,
+      layoutName: "launch_screen",
+      useDialog: true,
     },
   },
 };

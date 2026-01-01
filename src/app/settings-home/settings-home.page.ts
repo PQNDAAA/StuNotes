@@ -13,7 +13,7 @@ import {async, Observable} from "rxjs";
 })
 export class SettingsHomePage implements OnInit {
 
-  isDarkMode = false; // prévoir de créér ISettingsHome a la place
+  settings!: ISettingsHome;
 
   settings$: Observable<ISettingsHome>;
 
@@ -26,8 +26,8 @@ export class SettingsHomePage implements OnInit {
 
   ngOnInit() {
     this.settings$.subscribe(data => {
-      this.isDarkMode = data.darkMode
-      console.log(this.isDarkMode)
+      this.settings = data
+      console.log(this.settings)
     });
   }
 
@@ -44,10 +44,21 @@ export class SettingsHomePage implements OnInit {
     }
   }
 
-  async onToggleDarkMode(event: any){
-    this.isDarkMode = event.detail.checked;
+  async onToggle(settings: string,event: any){
+    const value = event.detail.checked;
 
-    document.body.classList.toggle('dark',this.isDarkMode);
-    await this.settingsservice.changeValueDarkMode(this.isDarkMode);
+    switch (settings) {
+      case 'darkMode':
+        this.settings.darkMode = value;
+        document.body.classList.toggle('dark',this.settings.darkMode);
+        break;
+      case 'reminders':
+        this.settings.reminders = value;
+        break;
+      case 'urgentDeadlineAlerts':
+        this.settings.urgentDeadlineAlerts = value;
+        break;
+    }
+    await this.settingsservice.changeSettingsValue(this.settings);
   }
 }

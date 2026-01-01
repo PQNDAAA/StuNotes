@@ -24,7 +24,10 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
-
+:root {
+  --ion-background-color: #F7F6F3; /* Votre couleur de fond clair */
+  --ion-text-color: #000000;
+}
 
 body.dark {
   --ion-background-color: #121212; /* fond général */

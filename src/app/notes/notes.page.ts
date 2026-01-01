@@ -22,6 +22,8 @@ export class NotesPage implements OnInit {
 
   hasResultData = true;
 
+  query!: string;
+
   constructor(private mc : ModalController, private cs : CardsService) {
     this.cards$ = this.cs.cards$;
     this.results = this.cards$;
@@ -36,11 +38,11 @@ export class NotesPage implements OnInit {
 
   eventInput(event: Event){
     const target = event.target as HTMLIonSearchbarElement;
-    const query = target.value?.toLowerCase() || '';
+    this.query = target.value?.toLowerCase() || '';
 
-    if(query) {
+    if(this.query) {
       this.results = this.cards$.pipe(
-        map(cards => cards.filter(c => c.name.toLowerCase().includes(query))));
+        map(cards => cards.filter(c => c.name.toLowerCase().includes(this.query))));
     }
   }
 

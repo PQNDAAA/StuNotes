@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {SplashScreen} from "@capacitor/splash-screen";
 import {Haptics} from "@capacitor/haptics";
 import {Settings} from "./settings";
+import {Platform} from "@ionic/angular";
+import {NavigationBar} from "@capgo/capacitor-navigation-bar";
+import {StatusBar, Style} from "@capacitor/status-bar";
 
 @Component({
   selector: 'app-root',
@@ -9,16 +12,29 @@ import {Settings} from "./settings";
   styleUrls: ['app.component.scss'],
   standalone: false,
 })
-export class AppComponent implements OnInit{
-  constructor(private settingsService: Settings) {
-    this.showSplash();
+export class AppComponent implements OnInit {
+  constructor(private settingsService: Settings, private platform: Platform) {
+    this.initializeApp();
   }
 
-  ngOnInit(){
-    this.settingsService.settingsHome$.subscribe(data => {
-      document.body.classList.toggle('dark',data.darkMode);
+  ngOnInit() {
+    this.settingsService.settingsHome$.subscribe(async data => {
+      document.body.classList.toggle('dark', data.darkMode);
     });
-    }
+
+   // this.initializeApp();
+  }
+
+  async initializeApp() {
+    // 1. On attend que la plateforme (Android/iOS) soit prête
+    await this.platform.ready();
+
+    setTimeout(async () => {
+      await SplashScreen.hide({
+        fadeOutDuration: 500 // Effet de fondu progressif très propre
+      });
+    }, 500);
+  }
 
   async showSplash(){
     await SplashScreen.show({
@@ -28,5 +44,15 @@ export class AppComponent implements OnInit{
   }
 
 
+
+
+
+
+  async test(){
+    if(this.platform.is('android')){
+      // @ts-ignore
+      await NavigationBar.setNavigationBarColor();
+    }
+  }
 
 }

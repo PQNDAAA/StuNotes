@@ -35,16 +35,14 @@ export class Settings extends Dexie {
     console.log(row);
   }
 
-  async changeValueDarkMode(value:boolean){
+  async changeSettingsValue(settings: ISettingsHome){
     const row = await this.settingsHomeTable.get(1);
 
     if(!row) return;
-
-    row.darkMode = value;
-    this.settingsHomeTable.put(row, 1);
+    this.settingsHomeTable.put(settings, 1);
     await this.refreshValues();
 
-    console.log(row);
+    console.log(settings);
     console.log(this.settingsHome$);
   }
 
