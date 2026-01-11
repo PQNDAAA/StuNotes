@@ -30,60 +30,60 @@
   --ion-text-color: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    --ion-background-color: #121212 !important; /* fond général */
-    --ion-text-color: #ffffff !important; /* texte général */
-    --ion-color-primary: #3880ff;
-    --ion-color-secondary: #0cd1e8;
-    --ion-color-tertiary: #7044ff;
-    --ion-color-success: #10dc60;
-    --ion-color-warning: #ffce00;
-    --ion-color-danger: #f04141;
-    --ion-color-medium: #a0a0a0;
-    --ion-color-light: #222222;
-
-    --ion-color-step-50: #121212 !important;
-    --ion-color-step-100: #1a1a1a !important;
-  }
-
-  /* Composants spécifiques */
-  ion-item, ion-list {
-    --background: #121212!important;
-    --color: #ffffff;
-  }
-
-  ion-card {
-    --background: #121212;
-    --color: #ffffff;
-  }
-
-  ion-label {
-    color: #ffffff;
-  }
-
-  ion-searchbar {
-    color: #ffffff;
-  }
-
-  ion-datetime {
-    --background: #121212;
-  }
-
-  ion-datetime-button::part(native) {
-    background-color: #121212;
-    color: #ffffff;
-  }
-  ion-card-title {
-    color: #ffffff;
-  }
-
-  body .settings-theme-content,
-  body .background-theme {
-    --background: #1e1e1e;
-  }
-}
-
+// (prefers-color-scheme: dark) {
+// {
+//ion-background-color: #121212 !important; /* fond général */
+//ion-text-color: #ffffff !important; /* texte général */
+//ion-color-primary: #3880ff;
+//ion-color-secondary: #0cd1e8;
+//ion-color-tertiary: #7044ff;
+//ion-color-success: #10dc60;
+//ion-color-warning: #ffce00;
+//ion-color-danger: #f04141;
+//ion-color-medium: #a0a0a0;
+//ion-color-light: #222222;
+//
+//ion-color-step-50: #121212 !important;
+//ion-color-step-100: #1a1a1a !important;
+//
+//
+//omposants spécifiques */
+//item, ion-list {
+//background: #121212!important;
+//color: #ffffff;
+//
+//
+//card {
+//background: #121212;
+//color: #ffffff;
+//
+//
+//label {
+//lor: #ffffff;
+//
+//
+//searchbar {
+//lor: #ffffff;
+//
+//
+//datetime {
+//background: #121212;
+//
+//
+//datetime-button::part(native) {
+//ckground-color: #121212;
+//lor: #ffffff;
+//
+//card-title {
+//lor: #ffffff;
+//
+//
+// .settings-theme-content,
+// .background-theme {
+//background: #1e1e1e;
+//
+//
+//
 /* ---------------------DARK MODE APP------------------------- */
 
 body.dark {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-    <item name="windowSplashScreenBackground">#121212</item>
+    <item name="windowSplashScreenBackground">#ff8228</item>
+    <item name="android:windowBackground">#ff8228</item>
   </style>
 </resources>
