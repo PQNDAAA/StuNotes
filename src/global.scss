@@ -21,29 +21,35 @@
  * https://ionicframework.com/docs/theming/dark-mode
  */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+//@import "@ionic/angular/css/palettes/dark.always.css";
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+//@import "@ionic/angular/css/palettes/dark.system.css";
+
 :root {
   --ion-background-color: #F7F6F3; /* Votre couleur de fond clair */
   --ion-text-color: #000000;
 }
 
-body.dark {
-  --ion-background-color: #121212; /* fond général */
-  --ion-text-color: #ffffff; /* texte général */
-  --ion-color-primary: #3880ff;
-  --ion-color-secondary: #0cd1e8;
-  --ion-color-tertiary: #7044ff;
-  --ion-color-success: #10dc60;
-  --ion-color-warning: #ffce00;
-  --ion-color-danger: #f04141;
-  --ion-color-medium: #a0a0a0;
-  --ion-color-light: #222222;
+@media (prefers-color-scheme: dark) {
+  body {
+    --ion-background-color: #121212 !important; /* fond général */
+    --ion-text-color: #ffffff !important; /* texte général */
+    --ion-color-primary: #3880ff;
+    --ion-color-secondary: #0cd1e8;
+    --ion-color-tertiary: #7044ff;
+    --ion-color-success: #10dc60;
+    --ion-color-warning: #ffce00;
+    --ion-color-danger: #f04141;
+    --ion-color-medium: #a0a0a0;
+    --ion-color-light: #222222;
+
+    --ion-color-step-50: #121212 !important;
+    --ion-color-step-100: #1a1a1a !important;
+  }
 
   /* Composants spécifiques */
-  ion-item {
-    --background: #121212;
+  ion-item, ion-list {
+    --background: #121212!important;
     --color: #ffffff;
   }
 
@@ -68,8 +74,62 @@ body.dark {
     background-color: #121212;
     color: #ffffff;
   }
+  ion-card-title {
+    color: #ffffff;
+  }
+
+  body .settings-theme-content,
+  body .background-theme {
+    --background: #1e1e1e;
+  }
+}
+
+/* ---------------------DARK MODE APP------------------------- */
+
+body.dark {
+  --ion-background-color: #121212; /* fond général */
+  --ion-text-color: #ffffff; /* texte général */
+  --ion-color-primary: #3880ff;
+  --ion-color-secondary: #0cd1e8;
+  --ion-color-tertiary: #7044ff;
+  --ion-color-success: #10dc60;
+  --ion-color-warning: #ffce00;
+  --ion-color-danger: #f04141;
+  --ion-color-medium: #a0a0a0;
+  --ion-color-light: #222222;
+
+  /* Composants spécifiques */
+  ion-item {
+    --background: #121212;
+    --color: #ffffff;
+  }
+
+  ion-card {
+    --background: #pink;
+    --color: #ffffff;
+  }
+
+  ion-label {
+    color: #ffffff;
+  }
+
+  ion-searchbar {
+    color: #ffffff;
+  }
+
+  ion-datetime {
+    --background: #121212;
+  }
+
+  ion-datetime-button::part(native) {
+    background-color: #121212;
+    color: #ffffff;
+  }
   ion-card-title{
     color: #ffffff;
+  }
+  ion-list {
+    --background: pink;
   }
 }
 
