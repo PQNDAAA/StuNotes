@@ -5,6 +5,8 @@ import {Settings} from "./settings";
 import {Platform} from "@ionic/angular";
 import {NavigationBar} from "@capgo/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
+import {Fcm} from "./fcm";
+import {LocalNotificationService} from "./local-notification-service";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,7 @@ import {StatusBar, Style} from "@capacitor/status-bar";
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  constructor(private settingsService: Settings, private platform: Platform) {
+  constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm, private lns: LocalNotificationService) {
     this.initializeApp();
   }
 
@@ -25,15 +27,18 @@ export class AppComponent implements OnInit {
    // this.initializeApp();
   }
 
-  async initializeApp() {
+ initializeApp() {
     // 1. On attend que la plateforme (Android/iOS) soit prête
-    await this.platform.ready();
+    this.platform.ready().then(() => {
+      this.fcm.initPush();
+      this.lns.initLocalNotifications();
 
-    setTimeout(async () => {
-      await SplashScreen.hide({
-        fadeOutDuration: 500 // Effet de fondu progressif très propre
-      });
-    }, 500);
+      setTimeout(async () => {
+        await SplashScreen.hide({
+          fadeOutDuration: 500 // Effet de fondu progressif très propre
+        });
+      }, 500);
+    });
   }
 
   async showSplash(){

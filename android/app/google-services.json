@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "257842785862",
+    "project_id": "stu-notes-d96d3",
+    "storage_bucket": "stu-notes-d96d3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257842785862:android:56ec6dc58ea46118ed6447",
+        "android_client_info": {
+          "package_name": "fr.dgsd.stunotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaRiN0IlJTZTEzpMe_haNy0PyPVhLiIIY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

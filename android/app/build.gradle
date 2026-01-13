@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
 
 android {
     namespace "fr.dgsd.stunotes"
@@ -7,8 +9,8 @@ android {
         applicationId "fr.dgsd.stunotes"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -41,6 +43,9 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22"
   implementation project(':capacitor-cordova-android-plugins')
+  implementation platform('com.google.firebase:firebase-bom:34.7.0')
+  implementation 'com.google.firebase:firebase-messaging:25.0.1'
+  implementation 'com.google.firebase:firebase-analytics'
 }
 
 apply from: 'capacitor.build.gradle'
