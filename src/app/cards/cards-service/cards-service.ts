@@ -7,6 +7,7 @@ import {AddnoteComponent} from "../addnote/addnote.component";
 import {Cardstatus} from "../cardstatus";
 import {CardstatusColors} from "../cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
+import {LocalNotificationService} from "../../local-notification-service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class CardsService extends Dexie{
 
   statusColors = CardstatusColors;
 
-  constructor(private mc : ModalController) {
+  constructor(private mc : ModalController, private lns : LocalNotificationService) {
     super('CardsDB');
     this.version(1).stores({
       cards: '++id, name, description, createdAt, status'
@@ -47,6 +48,7 @@ export class CardsService extends Dexie{
     newCard.id = id;
 
     await this.refreshCards();
+    await this.lns.ScheduleToDo(card);
     return id;
   }
 

@@ -6,6 +6,7 @@ import {Card} from "../cards-interface/card";
 import {Tags} from "../../tags/tags";
 import {TagsService} from "../../tags/tags-service/tags-service";
 import {Cardstatus} from "../cardstatus";
+import {LocalNotificationService} from "../../local-notification-service";
 
 @Component({
   selector: 'app-addnote',
