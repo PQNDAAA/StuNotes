@@ -18,40 +18,53 @@ export class LocalNotificationService {
 
     let reminderDate = 0;
 
-    const alerts = [
-      {title : '12h', time: 12*60}
+    let alerts = [
+      {title : '', time: 0}
     ];
+
+    // TRAVAILLER SUR L'ID DE LA TACHE / FAIRE EN SORTE DE SUPPRIMER LE RAPPEL QUAND LA TACHE EST DELETE
+    // clean le code de service.
 
     if(task.id !== undefined) {
       if (deadLineMs > now) {
         if(diff > 24 * 60 * 60 * 1000){
-          reminderDate = deadLineMs - (12 * 60 * 60 * 1000); // 12h avant
+          // 12h avant reminderDate = deadLineMs - (12 * 60 * 60 * 1000);
+          alerts = [{title: '12h', time: 12 * 60 * 60 * 1000},
+            {title: '1h', time: 60 * 60 * 1000},];
           console.log("12h avant");
+
         } else if(diff > 12 * 60 * 60 * 1000){
-          reminderDate = deadLineMs - (4 * 60 * 60 * 1000); // 4h avant
+         //reminderDate = deadLineMs - (4 * 60 * 60 * 1000); // 4h avant
+          alerts = [{title: '4h', time: 4 * 60 * 60 * 1000}];
           console.log("4h avant");
+
         } else if(diff > 2 * 60 * 60 * 1000){
-          reminderDate = deadLineMs - (60 * 60 * 1000); // 1h avant
+          //reminderDate = deadLineMs - (60 * 60 * 1000); // 1h avant
+          alerts = [{title: '1h', time: 60 * 60 * 1000}];
           console.log("1h avant");
+
         } else {
-          reminderDate = Math.floor(deadLineMs - (diff / 2)); // Moitie du temps
+          //reminderDate = Math.floor(deadLineMs - (diff / 2)); // Moitie du temps
+          alerts = [{title: 'Half Time', time: Math.floor(diff/2)}];
           console.log("juste avant");
         }
 
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: "Rappel de tâche : " + task.name,
-              body: task.description,
-              id: task.id,
-              schedule: {at: new Date(reminderDate - 120000)}, // Date précise
-              sound: 'default',
-              extra: {
-                taskId: task.id // Donnée utile
+        for(let alert of alerts) {
+          await LocalNotifications.schedule({
+            notifications: [
+              {
+                title: "Rappel de tâche : " + task.name,
+                body: task.description,
+                id: task.id+alert.time,
+                schedule: {at: new Date(deadLineMs - alert.time)}, // Date précise
+                sound: 'default',
+                extra: {
+                  taskId: task.id+alert.time // Donnée utile
+                }
               }
-            }
-          ]
-        })
+            ]
+          })
+        }
       } else {
         console.log("Impossible de créer un rappel inférieur.");
       }
@@ -59,8 +72,9 @@ export class LocalNotificationService {
       console.log("ID Error");
     }
     console.log("Deadline : ", deadLineMs);
-    console.log(reminderDate);
+    console.log(alerts);
   }
+
 
   async getAllScheduled(){
     const list = await LocalNotifications.getPending();
@@ -78,11 +92,7 @@ export class LocalNotificationService {
       if(permission.display !== 'granted'){
         await LocalNotifications.requestPermissions();
       } else {
-        await LocalNotifications.schedule({
-          notifications: [
-            { id: 10, title: "Salut", body: "Notification Ionic", schedule: { at: new Date(Date.now()+3000) } }
-          ]
-        });
+        console.log(this.getAllScheduled());
       }
     })
   }
