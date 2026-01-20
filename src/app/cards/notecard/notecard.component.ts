@@ -64,13 +64,7 @@ export class NotecardComponent implements OnInit {
   }
 
   async deleteCard(){
-    const id = this.card.id;
-
-    if(id !== undefined) {
-      await this.cs.deleteCard(id);
-    } else {
-      console.log("ID undefined");
-    }
+    await this.cs.deleteCard(this.card);
   }
 
   async openPopup(){

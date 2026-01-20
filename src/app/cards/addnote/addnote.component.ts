@@ -16,7 +16,8 @@ import {LocalNotificationService} from "../../local-notification-service";
 })
 export class AddnoteComponent {
 
-  @Input() card: Card = {deadline: new Date().toISOString(), important: false, status: Cardstatus.ToDo, createdAt: new Date(), description: "", name: "", tag: ""}
+  @Input() card: Card = {taskId: [], deadline: new Date().toISOString(), important: false,
+    status: Cardstatus.ToDo, createdAt: new Date(), description: "", name: "", tag: ""}
 
   @Input() isEditable: boolean = false;
 

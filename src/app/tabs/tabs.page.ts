@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {AddtagComponent} from "../tags/addtag/addtag.component";
 import {SettingsPageModule} from "../settings/settings.module";
 import {SettingsPage} from "../settings/settings.page";
+import {CardsService} from "../cards/cards-service/cards-service";
 
 @Component({
   selector: 'app-tabs',
@@ -14,7 +15,7 @@ import {SettingsPage} from "../settings/settings.page";
 })
 export class TabsPage {
 
-  constructor(private mc : ModalController, private router : Router) {}
+  constructor(private mc : ModalController, private router : Router, private cards: CardsService) {}
 
   async openPopup() {
     const currentUrl = this.router.url;
@@ -37,6 +38,10 @@ export class TabsPage {
     } else {
       console.log("Error.");
     }
+  }
+
+  async showAllNotes(){
+    console.log(await this.cards.getCards());
   }
 
   hasOpenSettings():boolean{

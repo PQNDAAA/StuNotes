@@ -22,8 +22,8 @@ export class CardsService extends Dexie{
 
   constructor(private mc : ModalController, private lns : LocalNotificationService) {
     super('CardsDB');
-    this.version(1).stores({
-      cards: '++id, name, description, createdAt, status'
+    this.version(2).stores({
+      cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId'
     });
     this.cards = this.table('cards');
 
@@ -40,15 +40,14 @@ export class CardsService extends Dexie{
   }
 
   async addCard(card:Card){
-    //this.cards.push({id: this.cards.length + 1,name: title,
-      //description: desc, createdAt: new Date()});
     const newCard: Card = card;
 
     const id = await this.cards.add(newCard);
-    newCard.id = id;
+
+    newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard),newCard);
+    await this.updateCard(newCard);
 
     await this.refreshCards();
-    await this.lns.ScheduleToDo(card);
     return id;
   }
 
@@ -57,17 +56,17 @@ export class CardsService extends Dexie{
     await this.refreshCards();
   }
 
-  async deleteCard(id: number){
-    //this.cards = this.cards.filter(card => card.id !== id);
+  async deleteCard(card: Card){
+    if(card.id !== undefined){
+      await this.lns.clearScheduled(card.taskId);
+      this.cards.delete(card.id);
 
-    this.cards.delete(id);
-
-   // for(let i = 0; i < this.cards.length; i++){
-     // this.cards[i].id = i + 1;
-    //}
-    await this.refreshCards();
-    await Haptics.impact({style: ImpactStyle.Medium});
-    console.log(this.getCards());
+      await this.refreshCards();
+      await Haptics.impact({style: ImpactStyle.Medium});
+      console.log(this.getCards());
+    } else {
+      console.log("ID Error");
+    }
   }
 
   async deleteAllCards(): Promise<boolean>{
@@ -76,7 +75,9 @@ export class CardsService extends Dexie{
     if(!cards || cards.length === 0){
       return false;
     } else {
-      this.cards.clear();
+      await this.lns.clearAll(); // clear all scheduled
+      this.cards.clear(); // clear all cards
+
       await this.refreshCards();
       await Haptics.impact({style: ImpactStyle.Medium});
       return true;
