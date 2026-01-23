@@ -28,6 +28,9 @@ export class CardsService extends Dexie {
     this.cards = this.table('cards');
 
     this.refreshCards();
+
+    //Subscribe to this event
+    this.lns.notificationReceived$.subscribe(id => this.removeTaskId(id));
   }
 
   async getCards(): Promise<Card[]> {
@@ -101,7 +104,7 @@ export class CardsService extends Dexie {
     const id = cards.findIndex(card => card.id === cardEdited.id);
 
     if (id !== -1) {
-      if (cardEdited.status === Cardstatus.Finished && cardEdited.taskId.length !== 0) {
+      if (cardEdited.status.trim() === Cardstatus.Finished && cardEdited.taskId.length !== 0) {
         await this.lns.clearScheduled(cardEdited.taskId);
         cardEdited.taskId = [];
       }
@@ -117,9 +120,35 @@ export class CardsService extends Dexie {
     return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status).length));
   }
 
+  async removeTaskId(id : number){
+    const allCards = await this.getCards();
+
+    for(const card of allCards){
+      if(card.taskId.includes(id)){
+        card.taskId = card.taskId.filter(ids => ids !== id);
+        await this.updateCard(card);
+      }
+    }
+  }
+
   getStatusColor(status: string): string {
     const normalized = status.trim() as Cardstatus;
 
     return this.statusColors[normalized];
+  }
+
+  async updateOverdueTasks() {
+    const allCards = await this.getCards();
+    const now = Date.now();
+
+    for (const card of allCards) {
+      const deadLineMs = new Date(card.deadline).getTime();
+      if (card.status.trim() !== Cardstatus.Finished && card.status.trim() !== Cardstatus.Late
+        && deadLineMs < now) {
+        card.status = Cardstatus.Late;
+        console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
+        await this.updateCard(card);
+      }
+    }
   }
 }

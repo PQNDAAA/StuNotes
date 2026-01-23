@@ -1,14 +1,21 @@
 import {Injectable} from '@angular/core';
 import {LocalNotifications} from "@capacitor/local-notifications";
 import {Card} from "./cards/cards-interface/card";
+import {CardsService} from "./cards/cards-service/cards-service";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalNotificationService {
 
-  initLocalNotifications() {
-    this.registerLocalNotifications();
+  public notificationReceived$ = new Subject<number>();
+
+  constructor() {
+  }
+
+  async initLocalNotifications() {
+    await this.registerLocalNotifications();
   }
 
   CalculateSchedule(card: Card) {
@@ -95,13 +102,18 @@ export class LocalNotificationService {
     console.log("Toutes les notifications ont été supprimées")
   }
 
-  private registerLocalNotifications() {
+  private async registerLocalNotifications() {
     LocalNotifications.checkPermissions().then(async (permission) => {
       if (permission.display !== 'granted') {
         await LocalNotifications.requestPermissions();
       } else {
         console.log(this.getAllScheduled());
       }
+    })
+
+    await LocalNotifications.addListener("localNotificationReceived", (notification) => {
+      console.log("Notification reçue par l'utilisateur", notification);
+      this.notificationReceived$.next(notification.id);
     })
   }
 }

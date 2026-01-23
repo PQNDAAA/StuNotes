@@ -7,6 +7,7 @@ import {NavigationBar} from "@capgo/capacitor-navigation-bar";
 import {StatusBar, Style} from "@capacitor/status-bar";
 import {Fcm} from "./fcm";
 import {LocalNotificationService} from "./local-notification-service";
+import {CardsService} from "./cards/cards-service/cards-service";
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import {LocalNotificationService} from "./local-notification-service";
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm, private lns: LocalNotificationService) {
+  constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm,
+              private lns: LocalNotificationService, private cards : CardsService) {
     this.initializeApp();
   }
 
@@ -28,10 +30,11 @@ export class AppComponent implements OnInit {
   }
 
  initializeApp() {
-    // 1. On attend que la plateforme (Android/iOS) soit prête
+    //On attend que la plateforme (Android/iOS) soit prête
     this.platform.ready().then(() => {
       this.fcm.initPush();
-      this.lns.initLocalNotifications();
+      this.checkLocalNotifications();
+      this.checkOverdueTasks();
 
       setTimeout(async () => {
         await SplashScreen.hide({
@@ -41,6 +44,13 @@ export class AppComponent implements OnInit {
     });
   }
 
+  private async checkLocalNotifications(){
+    await this.lns.initLocalNotifications();
+  }
+
+  private async checkOverdueTasks(){
+    await this.cards.updateOverdueTasks();
+  }
   async showSplash(){
     await SplashScreen.show({
       showDuration: 3500,
