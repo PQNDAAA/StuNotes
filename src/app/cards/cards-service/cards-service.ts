@@ -137,6 +137,13 @@ export class CardsService extends Dexie {
     return this.statusColors[normalized];
   }
 
+  toLocalISOString(date: Date) {
+    const offset = date.getTimezoneOffset() * 60000; // retourne juste un nombre en ms
+    return new Date(date.getTime() - offset).toISOString().slice(0, -1);
+    // GetTime va nous servir a ajuster la date par rapport a notre offset (ex : date en UTC , offset = -60min donc
+    // date = UTC + 60min ce qui donne la date au moment present
+  }
+
   async updateOverdueTasks() {
     const allCards = await this.getCards();
     const now = Date.now();
