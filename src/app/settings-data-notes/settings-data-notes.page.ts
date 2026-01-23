@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CardsService} from "../cards/cards-service/cards-service";
 
 @Component({
@@ -11,13 +11,14 @@ export class SettingsDataNotesPage implements OnInit {
 
   hasCards: boolean | undefined;
 
-  constructor(private cs: CardsService) { }
+  constructor(private cs: CardsService) {
+  }
 
   ngOnInit() {
   }
 
 
-  async deleteAllCards(){
+  async deleteAllCards() {
     this.hasCards = await this.cs.deleteAllCards();
   }
 

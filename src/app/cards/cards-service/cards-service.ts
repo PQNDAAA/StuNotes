@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, map, Observable} from 'rxjs';
-import { Card } from "../cards-interface/card";
-import Dexie, { Table } from 'dexie';
+import {Card} from "../cards-interface/card";
+import Dexie, {Table} from 'dexie';
 import {ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../addnote/addnote.component";
 import {Cardstatus} from "../cardstatus";
@@ -12,15 +12,15 @@ import {LocalNotificationService} from "../../local-notification-service";
 @Injectable({
   providedIn: 'root'
 })
-export class CardsService extends Dexie{
+export class CardsService extends Dexie {
   private cardsSubject = new BehaviorSubject<Card[]>([]);
   cards$ = this.cardsSubject.asObservable();
 
-  cards! : Table<Card, number>;
+  cards!: Table<Card, number>;
 
   statusColors = CardstatusColors;
 
-  constructor(private mc : ModalController, private lns : LocalNotificationService) {
+  constructor(private mc: ModalController, private lns: LocalNotificationService) {
     super('CardsDB');
     this.version(2).stores({
       cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId'
@@ -30,34 +30,34 @@ export class CardsService extends Dexie{
     this.refreshCards();
   }
 
-  async getCards() : Promise<Card[]> {
+  async getCards(): Promise<Card[]> {
     return this.cards.toArray();
   }
 
-  async refreshCards(){
+  async refreshCards() {
     const allCards = await this.getCards();
     this.cardsSubject.next(allCards);
   }
 
-  async addCard(card:Card){
+  async addCard(card: Card) {
     const newCard: Card = card;
 
     const id = await this.cards.add(newCard);
 
-    newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard),newCard);
+    newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
     await this.updateCard(newCard);
 
     await this.refreshCards();
     return id;
   }
 
-  async resetCards(){
+  async resetCards() {
     this.cards.clear();
     await this.refreshCards();
   }
 
-  async deleteCard(card: Card){
-    if(card.id !== undefined){
+  async deleteCard(card: Card) {
+    if (card.id !== undefined) {
       await this.lns.clearScheduled(card.taskId);
       this.cards.delete(card.id);
 
@@ -69,10 +69,10 @@ export class CardsService extends Dexie{
     }
   }
 
-  async deleteAllCards(): Promise<boolean>{
+  async deleteAllCards(): Promise<boolean> {
     const cards = await this.getCards();
 
-    if(!cards || cards.length === 0){
+    if (!cards || cards.length === 0) {
       return false;
     } else {
       await this.lns.clearAll(); // clear all scheduled
@@ -84,7 +84,7 @@ export class CardsService extends Dexie{
     }
   }
 
-  async openPopupEditCard(card: Card){
+  async openPopupEditCard(card: Card) {
     const modal = await this.mc.create({
       component: AddnoteComponent,
       componentProps: {
@@ -95,24 +95,29 @@ export class CardsService extends Dexie{
     await modal.present();
   }
 
-  async updateCard(cardEdited: Card){
+  async updateCard(cardEdited: Card) {
 
     const cards = await this.getCards();
     const id = cards.findIndex(card => card.id === cardEdited.id);
 
-    if(id !== -1) {
+    if (id !== -1) {
+      if (cardEdited.status === Cardstatus.Finished && cardEdited.taskId.length !== 0) {
+        await this.lns.clearScheduled(cardEdited.taskId);
+        cardEdited.taskId = [];
+      }
       cards[id] = cardEdited;
       await this.cards.put(cards[id]);
+    } else {
+      console.log("ID Error.");
     }
-
     await this.refreshCards();
   }
 
-  filterCardsCount(status: Cardstatus): Observable<number>{
+  filterCardsCount(status: Cardstatus): Observable<number> {
     return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status).length));
   }
 
-  getStatusColor(status: string): string{
+  getStatusColor(status: string): string {
     const normalized = status.trim() as Cardstatus;
 
     return this.statusColors[normalized];

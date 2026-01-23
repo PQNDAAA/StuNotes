@@ -16,8 +16,10 @@ import {LocalNotificationService} from "../../local-notification-service";
 })
 export class AddnoteComponent {
 
-  @Input() card: Card = {taskId: [], deadline: new Date().toISOString(), important: false,
-    status: Cardstatus.ToDo, createdAt: new Date(), description: "", name: "", tag: ""}
+  @Input() card: Card = {
+    taskId: [], deadline: new Date().toISOString(), important: false,
+    status: Cardstatus.ToDo, createdAt: new Date(), description: "", name: "", tag: ""
+  }
 
   @Input() isEditable: boolean = false;
 
@@ -27,21 +29,21 @@ export class AddnoteComponent {
 
   statusValues = Object.values(Cardstatus);
 
-  constructor(private mc : ModalController, private cs : CardsService, private ts:TagsService) {
+  constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService) {
     this.getTags();
   }
 
-  async getTags(){
+  async getTags() {
     this.tags = await this.ts.getTags();
   }
 
-  async closePopUp(){
-    await this.mc.dismiss(null,'cancel');
+  async closePopUp() {
+    await this.mc.dismiss(null, 'cancel');
     console.log(this.card);
   }
 
-  async valid(){
-    if(!this.isEditable) {
+  async valid() {
+    if (!this.isEditable) {
       await this.cs.addCard(this.card);
       console.log(this.card.name);
     } else {
