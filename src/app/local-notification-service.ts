@@ -18,6 +18,9 @@ export class LocalNotificationService {
     await this.registerLocalNotifications();
   }
 
+  // A FAIRE : Quand l'utilisateur edite la tache en la mettant en finished puis la remodifie en le mettant en en cours
+  // Il faut recalculer les rappels.
+
   CalculateSchedule(card: Card) {
     const deadLineMs = new Date(card.deadline).getTime();
     const now = Date.now();

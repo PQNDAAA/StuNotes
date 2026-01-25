@@ -46,6 +46,14 @@ export class NotesPage implements OnInit {
     }
   }
 
+  doRefresh(event : any){
+    setTimeout(async () => {
+      await this.cs.updateOverdueTasks();
+
+      event.target.complete();
+    })
+  }
+
   onFilterChanged(status: Cardstatus){
     this.currentStatus = status;
     this.results = this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)));

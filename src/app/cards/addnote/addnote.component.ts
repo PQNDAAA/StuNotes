@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {ModalController} from "@ionic/angular";
 import {CardsService} from "../cards-service/cards-service";
@@ -6,7 +6,6 @@ import {Card} from "../cards-interface/card";
 import {Tags} from "../../tags/tags";
 import {TagsService} from "../../tags/tags-service/tags-service";
 import {Cardstatus} from "../cardstatus";
-import {LocalNotificationService} from "../../local-notification-service";
 
 @Component({
   selector: 'app-addnote',
@@ -14,7 +13,7 @@ import {LocalNotificationService} from "../../local-notification-service";
   styleUrls: ['./addnote.component.scss'],
   standalone: false,
 })
-export class AddnoteComponent {
+export class AddnoteComponent implements OnInit{
 
   @Input() card: Card = {
     taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
@@ -22,15 +21,22 @@ export class AddnoteComponent {
   }
 
   @Input() isEditable: boolean = false;
-
-  //@Input() cardEdited: Card = {status: Cardstatus.InProcress, createdAt: new Date(), description: "", name: "", tag: ""};
-
   tags!: Tags[];
-
   statusValues = Object.values(Cardstatus);
+  currentStatus : Cardstatus = Cardstatus.ToDo;
+  minDeadline : string;
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService) {
     this.getTags();
+
+    //DEFINIT UNE DATE MINIMUM DANS LE FORMULAIRE
+    this.minDeadline = this.cs.toLocalISOString(new Date());
+  }
+
+  ngOnInit(){
+    this.currentStatus = this.card.status;
+
+    this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late);
   }
 
   async getTags() {
@@ -53,4 +59,6 @@ export class AddnoteComponent {
     console.log(this.card.deadline);
     await this.mc.dismiss();
   }
+
+  protected readonly Cardstatus = Cardstatus;
 }

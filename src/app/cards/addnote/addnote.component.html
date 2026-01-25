@@ -23,7 +23,7 @@
         </ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
       <ion-label>Status</ion-label>
       <ion-select placeholder="Choose the status" interface="popover" [(ngModel)]="card.status">
         <ion-select-option *ngFor="let status of statusValues">
@@ -32,13 +32,13 @@
       </ion-select>
     </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
       <ion-label>Dead Line</ion-label>
       <ion-datetime-button datetime="datetime"></ion-datetime-button>
 
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="datetime" [(ngModel)]="this.card.deadline"></ion-datetime>
+          <ion-datetime id="datetime" [(ngModel)]="this.card.deadline" [min]="minDeadline"></ion-datetime>
         </ng-template>
       </ion-modal>
     </ion-item>

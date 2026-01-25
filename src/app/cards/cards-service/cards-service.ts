@@ -8,6 +8,7 @@ import {Cardstatus} from "../cardstatus";
 import {CardstatusColors} from "../cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../local-notification-service";
+import {car} from "ionicons/icons";
 
 @Injectable({
   providedIn: 'root'
@@ -47,9 +48,10 @@ export class CardsService extends Dexie {
 
     const id = await this.cards.add(newCard);
 
-    newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
-    await this.updateCard(newCard);
-
+    if(newCard.status.trim() !== Cardstatus.Finished) {
+      newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
+      this.cards.put(newCard);
+    }
     await this.refreshCards();
     return id;
   }
@@ -104,10 +106,7 @@ export class CardsService extends Dexie {
     const id = cards.findIndex(card => card.id === cardEdited.id);
 
     if (id !== -1) {
-      if (cardEdited.status.trim() === Cardstatus.Finished && cardEdited.taskId.length !== 0) {
-        await this.lns.clearScheduled(cardEdited.taskId);
-        cardEdited.taskId = [];
-      }
+      cardEdited = await this.processUpdateCard(cardEdited);
       cards[id] = cardEdited;
       await this.cards.put(cards[id]);
     } else {
@@ -126,9 +125,10 @@ export class CardsService extends Dexie {
     for(const card of allCards){
       if(card.taskId.includes(id)){
         card.taskId = card.taskId.filter(ids => ids !== id);
-        await this.updateCard(card);
+        await this.cards.put(card);
       }
     }
+    await this.refreshCards();
   }
 
   getStatusColor(status: string): string {
@@ -150,12 +150,28 @@ export class CardsService extends Dexie {
 
     for (const card of allCards) {
       const deadLineMs = new Date(card.deadline).getTime();
+
       if (card.status.trim() !== Cardstatus.Finished && card.status.trim() !== Cardstatus.Late
         && deadLineMs < now) {
         card.status = Cardstatus.Late;
         console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
-        await this.updateCard(card);
+        await this.cards.put(card);
       }
     }
+    await this.refreshCards();
+  }
+
+  async processUpdateCard(card: Card) {
+
+    const hasFinished = card.status.trim() === Cardstatus.Finished;
+    const taskId = card.taskId.length !== 0;
+
+    if (hasFinished && taskId) {
+      await this.lns.clearScheduled(card.taskId);
+      card.taskId = [];
+    } else if (!hasFinished && !taskId) {
+      card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
+    }
+    return card;
   }
 }
