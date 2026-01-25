@@ -104,9 +104,10 @@ export class CardsService extends Dexie {
 
     const cards = await this.getCards();
     const id = cards.findIndex(card => card.id === cardEdited.id);
+    const oldCard = cards[id];
 
     if (id !== -1) {
-      cardEdited = await this.processUpdateCard(cardEdited);
+      cardEdited = await this.processUpdateCard(oldCard,cardEdited);
       cards[id] = cardEdited;
       await this.cards.put(cards[id]);
     } else {
@@ -161,15 +162,22 @@ export class CardsService extends Dexie {
     await this.refreshCards();
   }
 
-  async processUpdateCard(card: Card) {
+  async processUpdateCard(oldCard: Card,card: Card) {
 
     const hasFinished = card.status.trim() === Cardstatus.Finished;
     const taskId = card.taskId.length !== 0;
+
+    const deadLineHasChanged = oldCard.deadline !== card.deadline;
 
     if (hasFinished && taskId) {
       await this.lns.clearScheduled(card.taskId);
       card.taskId = [];
     } else if (!hasFinished && !taskId) {
+      card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
+    } else if (!hasFinished && deadLineHasChanged){
+      if(taskId){
+        await this.lns.clearScheduled(card.taskId);
+      }
       card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
     }
     return card;

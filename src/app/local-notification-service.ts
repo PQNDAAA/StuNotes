@@ -18,8 +18,8 @@ export class LocalNotificationService {
     await this.registerLocalNotifications();
   }
 
-  // A FAIRE : Quand l'utilisateur edite la tache en la mettant en finished puis la remodifie en le mettant en en cours
-  // Il faut recalculer les rappels.
+  // A FAIRE : Quand on modifie une note statut en cours avec deja des rappels, si l'utilisateur veut modifier
+  // la date déjà saisi, il faut recalculer les rappels
 
   CalculateSchedule(card: Card) {
     const deadLineMs = new Date(card.deadline).getTime();
