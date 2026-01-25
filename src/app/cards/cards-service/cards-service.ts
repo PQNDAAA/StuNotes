@@ -48,7 +48,7 @@ export class CardsService extends Dexie {
 
     const id = await this.cards.add(newCard);
 
-    if(newCard.status.trim() !== Cardstatus.Finished) {
+    if (newCard.status.trim() !== Cardstatus.Finished) {
       newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
       this.cards.put(newCard);
     }
@@ -107,7 +107,7 @@ export class CardsService extends Dexie {
     const oldCard = cards[id];
 
     if (id !== -1) {
-      cardEdited = await this.processUpdateCard(oldCard,cardEdited);
+      cardEdited = await this.processUpdateCard(oldCard, cardEdited);
       cards[id] = cardEdited;
       await this.cards.put(cards[id]);
     } else {
@@ -120,11 +120,11 @@ export class CardsService extends Dexie {
     return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status).length));
   }
 
-  async removeTaskId(id : number){
+  async removeTaskId(id: number) {
     const allCards = await this.getCards();
 
-    for(const card of allCards){
-      if(card.taskId.includes(id)){
+    for (const card of allCards) {
+      if (card.taskId.includes(id)) {
         card.taskId = card.taskId.filter(ids => ids !== id);
         await this.cards.put(card);
       }
@@ -162,7 +162,7 @@ export class CardsService extends Dexie {
     await this.refreshCards();
   }
 
-  async processUpdateCard(oldCard: Card,card: Card) {
+  async processUpdateCard(oldCard: Card, card: Card) {
 
     const hasFinished = card.status.trim() === Cardstatus.Finished;
     const taskId = card.taskId.length !== 0;
@@ -172,12 +172,10 @@ export class CardsService extends Dexie {
     if (hasFinished && taskId) {
       await this.lns.clearScheduled(card.taskId);
       card.taskId = [];
-    } else if (!hasFinished && !taskId) {
+    } else if (!hasFinished && deadLineHasChanged && taskId) {
+      await this.lns.clearScheduled(card.taskId);
       card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
-    } else if (!hasFinished && deadLineHasChanged){
-      if(taskId){
-        await this.lns.clearScheduled(card.taskId);
-      }
+    } else if (!hasFinished && !taskId) {
       card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
     }
     return card;
