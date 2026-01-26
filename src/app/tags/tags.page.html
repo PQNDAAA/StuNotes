@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>My Tags</ion-title>
+    <ion-title>My Subjects</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,6 +14,12 @@
   <div class="emptyData" *ngIf="hasEmptyTags">
     <ion-label>No tags have been added yet.</ion-label>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openPopup()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 
 </ion-content>

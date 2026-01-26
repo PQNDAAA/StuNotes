@@ -1,12 +1,9 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>My Notes</ion-title>
-  </ion-toolbar>
-  <ion-searchbar (ionInput)="eventInput($event)"></ion-searchbar>
-  <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
-</ion-header>
-
 <ion-content>
+
+  <div class="searchContainer">
+    <ion-searchbar (ionInput)="eventInput($event)" placeholder="Search your tasks"></ion-searchbar>
+    <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
+  </div>
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -20,5 +17,11 @@
   <div class="emptyData" *ngIf="!hasResultData && !query">
   <ion-label>No tasks for the status at the moment.</ion-label>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openPopup()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

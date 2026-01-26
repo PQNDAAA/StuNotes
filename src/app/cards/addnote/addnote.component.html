@@ -16,8 +16,8 @@
       <ion-textarea label="Description" [(ngModel)]="this.card.description" labelPlacement="fixed" [autoGrow]="true" placeholder="Enter your description" [counter]="true" [maxlength]="300"></ion-textarea>
     </ion-item>
     <ion-item>
-      <ion-label>Tags</ion-label>
-      <ion-select placeholder="Choose your tag" interface="popover" [(ngModel)]="card.tag">
+      <ion-label>Subject</ion-label>
+      <ion-select placeholder="Choose your subject" interface="popover" [(ngModel)]="card.tag">
         <ion-select-option *ngFor="let tag of tags">
           {{tag.name}}
         </ion-select-option>

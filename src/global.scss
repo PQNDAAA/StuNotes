@@ -141,13 +141,14 @@ body.dark .background-theme{
 /* -------------------------------------------------------------------- */
 
 
-ion-header,
 ion-toolbar {
-  padding-top: 56px;
-}
-
-ion-header{
-  //position: relative !important;
+  //min-height: 165px;
+  //padding-top: env(safe-area-inset-top);
+  //
+  //display: flex;
+  //justify-content: center;
+  //align-items: center;
+  //height: 100%;
 }
 
 ion-content {
@@ -214,13 +215,13 @@ ion-content {
 /* Theme des textes s'il n'y a aucun contenu dans les pages */
 .emptyData {
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 100%;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
 
   ion-label{
     width: 80%;
-    text-align: center;
     font-size: 16px;
     color: rgba(28, 28, 28, 0.55);
   }
@@ -236,4 +237,8 @@ ion-item-option{
   border-radius: 8%;
   margin-top: auto;
   margin-bottom: auto;
+}
+
+ion-fab-button{
+  --background: #ff8228;
 }

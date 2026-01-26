@@ -1,7 +1,7 @@
 
   <ion-header>
     <ion-toolbar>
-      <ion-title>{{editMode ?'Edit tag' : 'Add tag'}}</ion-title>
+      <ion-title>{{editMode ?'Edit Subject' : 'Add Subject'}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -9,7 +9,7 @@
 
   <ion-list>
     <ion-item>
-      <ion-input label="Tag Name" [(ngModel)]="tag.name" labelPlacement="fixed" [clearInput]="true">
+      <ion-input label="Subject Name" [(ngModel)]="tag.name" labelPlacement="fixed" [clearInput]="true">
       </ion-input>
     </ion-item>
   </ion-list>

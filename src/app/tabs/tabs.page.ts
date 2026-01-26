@@ -17,29 +17,6 @@ export class TabsPage {
 
   constructor(private mc : ModalController, private router : Router, private cards: CardsService) {}
 
-  async openPopup() {
-    const currentUrl = this.router.url;
-    let componentToLoad;
-
-    if (currentUrl.includes('/tabs/notes')) {
-      componentToLoad = AddnoteComponent;
-    } else if (currentUrl.includes('tabs/tags')) {
-      componentToLoad = AddtagComponent
-    }
-
-    if (componentToLoad) {
-      const modal = await this.mc.create({
-        component: componentToLoad,
-        breakpoints: [0, 0.8, 1],
-        initialBreakpoint: 0.8
-      });
-
-      await modal.present();
-    } else {
-      console.log("Error.");
-    }
-  }
-
   async showAllNotes(){
     console.log(await this.cards.getCards());
   }

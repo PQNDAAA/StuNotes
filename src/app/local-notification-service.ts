@@ -53,12 +53,12 @@ export class LocalNotificationService {
   async CreateLocalNotification(alerts: any[], card: Card) {
     const taskIds = [];
 
-    if (alerts.length == 0) {
+    if (alerts.length === 0 || card.id === undefined) {
       return [];
     }
 
     for (let alert of alerts) {
-      const taskId = card.id + alert.time;
+      const taskId = (card.id * 10) + alerts.indexOf(alert) ;
       await LocalNotifications.schedule({
         notifications: [
           {
@@ -101,8 +101,14 @@ export class LocalNotificationService {
   }
 
   async clearAll() {
-    await LocalNotifications.cancel(await LocalNotifications.getPending());
-    console.log("Toutes les notifications ont été supprimées")
+    const list = await LocalNotifications.getPending();
+
+    if(list.notifications.length !== 0){
+      await LocalNotifications.cancel(await LocalNotifications.getPending());
+      console.log("Toutes les notifications ont été supprimées");
+    } else {
+      console.log("Pas de notifications à supprimer");
+    }
   }
 
   private async registerLocalNotifications() {
