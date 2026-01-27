@@ -2,13 +2,12 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, map, Observable} from 'rxjs';
 import {Card} from "../cards-interface/card";
 import Dexie, {Table} from 'dexie';
-import {ModalController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../addnote/addnote.component";
 import {Cardstatus} from "../cardstatus";
 import {CardstatusColors} from "../cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../local-notification-service";
-import {car} from "ionicons/icons";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +20,7 @@ export class CardsService extends Dexie {
 
   statusColors = CardstatusColors;
 
-  constructor(private mc: ModalController, private lns: LocalNotificationService) {
+  constructor(private mc: ModalController, private lns: LocalNotificationService, private ac: AlertController) {
     super('CardsDB');
     this.version(2).stores({
       cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId'
@@ -32,6 +31,7 @@ export class CardsService extends Dexie {
 
     //Subscribe to this event
     this.lns.notificationReceived$.subscribe(id => this.removeTaskId(id));
+    this.lns.notificationActionPerformed$.subscribe(id => this.openTaskLocalNotificationPopup(id));
   }
 
   async getCards(): Promise<Card[]> {
@@ -179,5 +179,30 @@ export class CardsService extends Dexie {
       card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
     }
     return card;
+  }
+  async openTaskLocalNotificationPopup(id : number) {
+
+    const cards = await this.getCards();
+    const card = cards.find(card => card.id === id);
+
+    if(card === undefined){return;}
+
+    const modal = await this.ac.create({
+      header: "Task Status",
+      message:`⚠️Don't forget to finish ${card.name}`,
+      buttons: [
+        {text:"OK",
+          role:"cancel"},
+        {
+          text:"It's done!",
+          role:"confirm",
+          handler:async () => {
+            card.status = Cardstatus.Finished;
+            await this.updateCard(card);
+          }
+        }
+      ]
+    });
+    return modal.present();
   }
 }

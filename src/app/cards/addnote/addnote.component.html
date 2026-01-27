@@ -2,7 +2,7 @@
   <ion-header>
     <ion-toolbar>
       <ion-title>
-        {{isEditable ? 'Edit this note' : 'Add a note'}}
+        {{isEditable ? 'Edit this task' : 'Add a task'}}
       </ion-title>
     </ion-toolbar>
   </ion-header>
@@ -38,7 +38,7 @@
 
       <ion-modal [keepContentsMounted]="true">
         <ng-template>
-          <ion-datetime id="datetime" [(ngModel)]="this.card.deadline" [min]="minDeadline"></ion-datetime>
+          <ion-datetime id="datetime" locale="en-GB" [(ngModel)]="this.card.deadline" [min]="minDeadline"></ion-datetime>
         </ng-template>
       </ion-modal>
     </ion-item>

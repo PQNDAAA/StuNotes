@@ -77,7 +77,7 @@ export class NotecardComponent implements OnInit {
 
   ngOnInit() {
     // CREATEAT DATE FORMAT
-   this.dateCard = this.card.createdAt.toLocaleString("fr-FR",{
+   this.dateCard = this.card.createdAt.toLocaleString("en-GB",{
       year: "numeric",
       month:"long",
       day:"numeric",
@@ -87,7 +87,7 @@ export class NotecardComponent implements OnInit {
 
    // DEADLINE FORMAT
    this.deadLine = new Date(this.card.deadline);
-   this.deadLineStr = this.deadLine.toLocaleString("fr-FR", {
+   this.deadLineStr = this.deadLine.toLocaleString("en-GB", {
      year: "numeric",
      month:"long",
      day:"numeric",

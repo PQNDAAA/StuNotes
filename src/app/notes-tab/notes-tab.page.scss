@@ -15,6 +15,18 @@ ion-segment-button{
   flex-direction: row;
 }
 
+ion-segment-button.md::part(indicator-background) {
+  height: 4px;
+}
+
+.segment-button-checked.ios::part(native) {
+  color: #fff;
+}
+
+.segment-button-checked .segment-item ion-label {
+  font-size: 16px;
+}
+
 ion-label{
   --ion-text-color: #000;
   font-size: 14px;

@@ -3,6 +3,10 @@ import {LocalNotifications} from "@capacitor/local-notifications";
 import {Card} from "./cards/cards-interface/card";
 import {CardsService} from "./cards/cards-service/cards-service";
 import {Subject} from "rxjs";
+import {AlertController, ModalController} from "@ionic/angular";
+import {
+  TaskNotificationActionPerformedComponent
+} from "./task-notification-action-performed/task-notification-action-performed.component";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +14,7 @@ import {Subject} from "rxjs";
 export class LocalNotificationService {
 
   public notificationReceived$ = new Subject<number>();
+  public notificationActionPerformed$ = new Subject<number>();
 
   constructor() {
   }
@@ -62,13 +67,19 @@ export class LocalNotificationService {
       await LocalNotifications.schedule({
         notifications: [
           {
-            title: "Rappel de tâche : " + card.name,
-            body: card.description,
+            title: "⚠️Reminder: " + card.name,
+            body: "Due on "+ new Date(card.deadline).toLocaleString("en-GB", {
+              year: "numeric",
+              month:"long",
+              day:"numeric",
+              hour: "numeric",
+              minute:"2-digit"
+            }) + " •" + card.tag,
             id: taskId,
             schedule: {at: new Date(alert.time)}, // Date précise
             sound: 'default',
             extra: {
-              taskId: taskId
+              cardId: card.id
             }
           }]
       })
@@ -123,6 +134,13 @@ export class LocalNotificationService {
     await LocalNotifications.addListener("localNotificationReceived", (notification) => {
       console.log("Notification reçue par l'utilisateur", notification);
       this.notificationReceived$.next(notification.id);
+    })
+
+    await LocalNotifications.addListener("localNotificationActionPerformed", (notification) => {
+      console.log("L'utilisateur a intéragi avec la notification", notification);
+
+      const id = notification.notification.extra.cardId;
+      this.notificationActionPerformed$.next(id);
     })
   }
 }

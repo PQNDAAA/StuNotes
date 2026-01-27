@@ -1,92 +1,66 @@
-ion-button{
-  --color: #717070;
-}
-ion-title{
+.cardName{
   font-weight: bold;
-  --color:black;
+  font-size: 18px;
 }
-
 ion-label{
   padding-bottom: 1%;
 }
+
+//Créee le ....
 #datelabel{
   display: flex;
   flex-direction: row;
   justify-content: end;
   font-size: 12px;
 }
+// Petit badge important
 #important{
   color: #ff8228;
   align-items: end;
   font-size: 24px;
 }
+// Header
 .card-header{
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+ // border: 1px solid black;
+}
+//Badge deadline
+.deadLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #e3f0ff;       // bleu très clair
+  color: #5b6e80;            // gris bleuté
+}
+.deadLine ion-icon{
 }
 
-#deadline{
+//Badge au niveau du titre
+.badge-title{
   display: flex;
   flex-direction: column;
+  width: 100%;
+  gap: 8px;
 }
-#deadline-items{
+
+//Badge contenu
+.badge-content{
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 2%;
+  width: 100%;
+  gap: 8px;
+  margin: 12px 0 6px 0;
 }
-
-#deadline-items ion-icon{
-  font-size: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-}
-
-#deadline-items ion-label{
-  line-height: 1;
-  display: flex;
-  align-items: center;
-}
-
+// Badge global
 ion-badge{
-  font-size: 12px;
-  display: flex;
   width: min-content;
-  margin-bottom: 3%;
+  padding: 10px;
+  border-radius: 9999px;
   --color: #fdfdfd;
-}
-
-#tag{
-  font-size: 13px;
-  background-color: #ff8228;
-  --color: #fdfdfd;
-  font-weight: bold;
-  width: min-content;
-  display: inline-block;
-  border-radius: 4px;
-  padding: 0.85%;
-}
-
-@media screen and (min-width: 601px) {
-  #tag{
-    padding: 0.35%;
-  }
-}
-
-
-
-ion-card-content{
- // margin-left: 1.2%;
-  display: flex;
-  flex-direction: column;
-}
-#cardbtn{
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
 }
 
 ion-card{
