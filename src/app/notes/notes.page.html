@@ -1,13 +1,14 @@
 <ion-content>
 
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
   <div class="searchContainer">
     <ion-searchbar (ionInput)="eventInput($event)" placeholder="Search your tasks"></ion-searchbar>
     <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
   </div>
-
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
 
   <div *ngFor="let card of results | async">
     <app-notecard [card]="card">
