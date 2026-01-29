@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SplashScreen} from "@capacitor/splash-screen";
-import {Haptics} from "@capacitor/haptics";
 import {Settings} from "./settings";
 import {Platform} from "@ionic/angular";
-import {NavigationBar} from "@capgo/capacitor-navigation-bar";
-import {StatusBar, Style} from "@capacitor/status-bar";
 import {Fcm} from "./fcm";
 import {LocalNotificationService} from "./local-notification-service";
 import {CardsService} from "./cards/cards-service/cards-service";
