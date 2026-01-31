@@ -17,13 +17,13 @@ export class AddnoteComponent implements OnInit{
 
   @Input() card: Card = {
     taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
-    status: Cardstatus.ToDo, createdAt: new Date(), description: "", name: "", tag: ""
+    status: Cardstatus.Open, createdAt: new Date(), description: "", name: "", tag: ""
   }
 
   @Input() isEditable: boolean = false;
   tags!: Tags[];
   statusValues = Object.values(Cardstatus);
-  currentStatus : Cardstatus = Cardstatus.ToDo;
+  currentStatus : Cardstatus = Cardstatus.Open;
   minDeadline : string;
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService) {

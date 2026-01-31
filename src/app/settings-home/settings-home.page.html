@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title [class.condensate]="isCondensate">Settings</ion-title>
+    <ion-title [class.condensate]="isCondensate">{{ 'SETTINGS.SETTINGS' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,18 +13,18 @@
     <h3>Data</h3>
   </ion-item>
   <ion-item [button]="true" [detail]="false" [routerLink]="'data-notes'">
-    <ion-label>Notes</ion-label>
+    <ion-label>{{'SETTINGS.Tasks' | translate}}</ion-label>
     <ion-icon color="medium" name="chevron-forward"></ion-icon>
   </ion-item>
   <ion-item [button]="true" [detail]="false" [routerLink]="'data-tags'">
-    <ion-label>Tags</ion-label>
+    <ion-label>{{'SETTINGS.Subjects' | translate}}</ion-label>
     <ion-icon color="medium" name="chevron-forward"></ion-icon>
   </ion-item>
 </ion-list>
 
 <ion-list lines="none">
   <ion-item>
-    <h3>Appearance</h3>
+    <h3>{{'SETTINGS.Appearance' | translate}}</h3>
   </ion-item>
   <ion-item [button]="true" [detail]="false">
     <ion-toggle (ionChange)="onToggle('darkMode',$event)" [(ngModel)]="this.settings.darkMode">

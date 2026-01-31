@@ -1,6 +1,6 @@
 export enum Cardstatus {
-  ToDo = 'Open',
+  Open = 'Open',
   InProgress = 'In Progress',
-  Finished = 'Done',
+  Done = 'Done',
   Late = 'Late'
 }

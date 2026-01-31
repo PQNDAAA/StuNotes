@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { SettingsHomePageRoutingModule } from './settings-home-routing.module';
 
 import { SettingsHomePage } from './settings-home.page';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        SettingsHomePageRoutingModule
+        SettingsHomePageRoutingModule,
+        TranslatePipe
     ],
   exports: [
     SettingsHomePage,

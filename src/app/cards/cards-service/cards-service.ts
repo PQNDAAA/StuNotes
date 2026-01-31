@@ -48,7 +48,7 @@ export class CardsService extends Dexie {
 
     const id = await this.cards.add(newCard);
 
-    if (newCard.status.trim() !== Cardstatus.Finished) {
+    if (newCard.status.trim() !== Cardstatus.Done) {
       newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
       this.cards.put(newCard);
     }
@@ -152,7 +152,7 @@ export class CardsService extends Dexie {
     for (const card of allCards) {
       const deadLineMs = new Date(card.deadline).getTime();
 
-      if (card.status.trim() !== Cardstatus.Finished && card.status.trim() !== Cardstatus.Late
+      if (card.status.trim() !== Cardstatus.Done && card.status.trim() !== Cardstatus.Late
         && deadLineMs < now) {
         card.status = Cardstatus.Late;
         console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
@@ -164,7 +164,7 @@ export class CardsService extends Dexie {
 
   async processUpdateCard(oldCard: Card, card: Card) {
 
-    const hasFinished = card.status.trim() === Cardstatus.Finished;
+    const hasFinished = card.status.trim() === Cardstatus.Done;
     const taskId = card.taskId.length !== 0;
 
     const deadLineHasChanged = oldCard.deadline !== card.deadline;
@@ -197,7 +197,7 @@ export class CardsService extends Dexie {
           text:"It's done!",
           role:"confirm",
           handler:async () => {
-            card.status = Cardstatus.Finished;
+            card.status = Cardstatus.Done;
             await this.updateCard(card);
           }
         }

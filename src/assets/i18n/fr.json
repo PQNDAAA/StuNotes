@@ -4,12 +4,16 @@
     "WELCOME": "Bienvenue"
   },
   "SETTINGS": {
-    "LANGUAGE": "Langue"
+    "LANGUAGE": "Langue",
+    "SETTINGS": "Paramètres",
+    "Appearance": "Apparence",
+    "Tasks": "Tâches",
+    "Subjects": "Matières"
   },
   "STATUS": {
     "InProgress": "En Cours",
     "Late": "En Retard",
-    "Finished": "Fini",
-    "ToDo": "À Faire"
+    "Done": "Fini",
+    "Open": "À Faire"
   }
 }

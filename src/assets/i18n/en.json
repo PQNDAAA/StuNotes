@@ -4,12 +4,16 @@
     "WELCOME": "Welcome"
   },
   "SETTINGS": {
-    "LANGUAGE": "Language"
+    "LANGUAGE": "Language",
+    "SETTINGS": "Settings",
+    "Appearance": "Appearance",
+    "Tasks": "Tasks",
+    "Subjects": "Subjects"
   },
   "STATUS": {
     "InProgress": "In Progress",
     "Late": "Late",
-    "Finished": "Done",
-    "ToDo": "Open"
+    "Done": "Done",
+    "Open": "Open"
   }
 }
