@@ -61,7 +61,6 @@ export class LocalNotificationService {
     if (alerts.length === 0 || card.id === undefined) {
       return [];
     }
-
     for (let alert of alerts) {
       const taskId = (card.id * 10) + alerts.indexOf(alert) ;
       await LocalNotifications.schedule({

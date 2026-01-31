@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { NotesTabPageRoutingModule } from './notes-tab-routing.module';
 
 import { NotesTabPage } from './notes-tab.page';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    NotesTabPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        NotesTabPageRoutingModule,
+        TranslatePipe
+    ],
   exports: [
     NotesTabPage
   ],

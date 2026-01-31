@@ -1,0 +1,15 @@
+{
+  "HOME": {
+    "TITLE": "Accueil",
+    "WELCOME": "Bienvenue"
+  },
+  "SETTINGS": {
+    "LANGUAGE": "Langue"
+  },
+  "STATUS": {
+    "InProgress": "En Cours",
+    "Late": "En Retard",
+    "Finished": "Fini",
+    "ToDo": "À Faire"
+  }
+}

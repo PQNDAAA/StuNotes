@@ -5,6 +5,7 @@ import {Platform} from "@ionic/angular";
 import {Fcm} from "./fcm";
 import {LocalNotificationService} from "./local-notification-service";
 import {CardsService} from "./cards/cards-service/cards-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ import {CardsService} from "./cards/cards-service/cards-service";
 })
 export class AppComponent implements OnInit {
   constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm,
-              private lns: LocalNotificationService, private cards : CardsService) {
+              private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService) {
     this.initializeApp();
   }
 
@@ -47,24 +48,6 @@ export class AppComponent implements OnInit {
 
   private async checkOverdueTasks(){
     await this.cards.updateOverdueTasks();
-  }
-  async showSplash(){
-    await SplashScreen.show({
-      showDuration: 3500,
-      autoHide: true,
-    });
-  }
-
-
-
-
-
-
-  async test(){
-    if(this.platform.is('android')){
-      // @ts-ignore
-      await NavigationBar.setNavigationBarColor();
-    }
   }
 
 }
