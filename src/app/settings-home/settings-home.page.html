@@ -10,7 +10,7 @@
 <ion-content class="settings-theme-content" (ionScroll)="onScroll($event)" [scrollEvents]="true">
 <ion-list lines="none">
   <ion-item>
-    <h3>Data</h3>
+    <h3>{{'SETTINGS.Data' | translate}}</h3>
   </ion-item>
   <ion-item [button]="true" [detail]="false" [routerLink]="'data-notes'">
     <ion-label>{{'SETTINGS.Tasks' | translate}}</ion-label>
@@ -28,7 +28,7 @@
   </ion-item>
   <ion-item [button]="true" [detail]="false">
     <ion-toggle (ionChange)="onToggle('darkMode',$event)" [(ngModel)]="this.settings.darkMode">
-      <ion-label>Dark mode</ion-label>
+      <ion-label>{{ 'SETTINGS.DarkMode' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
 </ion-list>
@@ -39,12 +39,12 @@
   </ion-item>
   <ion-item [button]="true" [detail]="false">
     <ion-toggle (ionChange)="onToggle('reminders',$event)" [(ngModel)]="this.settings.reminders">
-      <ion-label>Enable reminders</ion-label>
+      <ion-label>{{ 'SETTINGS.Reminders' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
   <ion-item [button]="true" [detail]="false">
     <ion-toggle (ionChange)="onToggle('urgentDeadlineAlerts',$event)" [(ngModel)]="this.settings.urgentDeadlineAlerts">
-      <ion-label>Urgent deadline alerts</ion-label>
+      <ion-label>{{ 'SETTINGS.UrgentAlerts' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
 </ion-list>

@@ -20,8 +20,8 @@ import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
     TranslateDirective],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },provideHttpClient(),
     provideTranslateService({
-      lang: 'en',
-      fallbackLang: 'en',
+      lang: 'fr',
+      fallbackLang: 'fr',
       loader: provideTranslateHttpLoader({
         prefix: './assets/i18n/',
         suffix: '.json'

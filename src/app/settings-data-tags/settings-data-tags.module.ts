@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { SettingsDataTagsPageRoutingModule } from './settings-data-tags-routing.module';
 
 import { SettingsDataTagsPage } from './settings-data-tags.page';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SettingsDataTagsPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SettingsDataTagsPageRoutingModule,
+        TranslatePipe
+    ],
   declarations: [SettingsDataTagsPage]
 })
 export class SettingsDataTagsPageModule {}

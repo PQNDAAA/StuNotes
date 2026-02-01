@@ -1,14 +1,25 @@
 {
   "HOME": {
     "TITLE": "Accueil",
-    "WELCOME": "Bienvenue"
+    "WELCOME": "Bienvenue",
+    "Groups": "Groupes"
   },
   "SETTINGS": {
     "LANGUAGE": "Langue",
     "SETTINGS": "Paramètres",
+    "Data": "Données",
     "Appearance": "Apparence",
     "Tasks": "Tâches",
-    "Subjects": "Matières"
+    "Subjects": "Matières",
+    "DarkMode": "Mode Sombre",
+    "Reminders": "Activer les rappels",
+    "UrgentAlerts": "Alertes échéances urgentes",
+    "DeleteAllNotes": "Supprimer toutes les tâches",
+    "DeleteAllSubjects": "Supprimer toutes les matières",
+    "DeleteAllNotesMsg":"Toutes les tâches ont été supprimés",
+    "DeleteAllSubjectsMsg":"Toutes les matières ont été supprimés",
+    "NoNotesDeleted":"Pas de tâches à supprimer",
+    "NoSubjectsDeleted":"Pas de matières à supprimer"
   },
   "STATUS": {
     "InProgress": "En Cours",

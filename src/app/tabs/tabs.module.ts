@@ -7,6 +7,7 @@ import { TabsPageRoutingModule } from './tabs-routing.module';
 
 import { TabsPage } from './tabs.page';
 import {RouterLink} from "@angular/router";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import {RouterLink} from "@angular/router";
         CommonModule,
         FormsModule,
         TabsPageRoutingModule,
-        RouterLink
+        RouterLink,
+        TranslatePipe
     ],
   declarations: [TabsPage]
 })

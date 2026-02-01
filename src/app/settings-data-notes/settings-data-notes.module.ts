@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { SettingsDataNotesPageRoutingModule } from './settings-data-notes-routing.module';
 
 import { SettingsDataNotesPage } from './settings-data-notes.page';
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SettingsDataNotesPageRoutingModule
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        SettingsDataNotesPageRoutingModule,
+        TranslatePipe
+    ],
   declarations: [SettingsDataNotesPage]
 })
 export class SettingsDataNotesPageModule {}

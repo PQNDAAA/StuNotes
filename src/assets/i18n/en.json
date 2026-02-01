@@ -6,9 +6,19 @@
   "SETTINGS": {
     "LANGUAGE": "Language",
     "SETTINGS": "Settings",
+    "Data": "Data",
     "Appearance": "Appearance",
     "Tasks": "Tasks",
-    "Subjects": "Subjects"
+    "Subjects": "Subjects",
+    "DarkMode": "Dark Mode",
+    "Reminders": "Enable reminders",
+    "UrgentAlerts": "Enable urgent deadline alerts",
+    "DeleteAllNotes": "Delete all tasks",
+    "DeleteAllSubjects": "Delete all subjects",
+    "DeleteAllNotesMsg":"All tasks deleted",
+    "DeleteAllSubjectsMsg":"All subjects deleted",
+    "NoNotesDeleted":"No tasks deleted",
+    "NoSubjectsDeleted":"No Subjects deleted"
   },
   "STATUS": {
     "InProgress": "In Progress",

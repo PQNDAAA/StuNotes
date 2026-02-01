@@ -3,17 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Tags</ion-title>
+    <ion-title>{{ 'SETTINGS.Subjects' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="settings-theme-content">
   <ion-list lines="none">
     <h3>
-      Data
+      {{ 'SETTINGS.Data' | translate }}
     </h3>
-    <ion-item [button]="true" [detail]="false" (click)="deleteAllTags()">Delete all tags</ion-item>
-    <ion-label class="StateText" *ngIf="hasTags !== undefined">{{hasTags ? 'All tags deleted' : 'No tags deleted'}}</ion-label>
+    <ion-item [button]="true" [detail]="false" (click)="deleteAllTags()">{{ 'SETTINGS.DeleteAllSubjects' | translate }}</ion-item>
+    <ion-label class="StateText" *ngIf="hasTags !== undefined">{{hasTags ? ('SETTINGS.DeleteAllSubjectsMsg' | translate) : ('SETTINGS.NoSubjectsDeleted' | translate)}}</ion-label>
   </ion-list>
 </ion-content>
 

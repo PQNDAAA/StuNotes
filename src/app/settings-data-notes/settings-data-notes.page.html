@@ -3,16 +3,16 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Notes</ion-title>
+    <ion-title>{{ 'SETTINGS.Tasks' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="settings-theme-content">
   <ion-list lines="none">
     <h3>
-      Data
+      {{ 'SETTINGS.Data' | translate }}
     </h3>
-    <ion-item [button]="true" [detail]="false" (click)="deleteAllCards()">Delete all notes</ion-item>
-    <ion-label class="StateText" *ngIf="hasCards !== undefined">{{hasCards ? 'All notes deleted' : 'No notes deleted'}}</ion-label>
+    <ion-item [button]="true" [detail]="false" (click)="deleteAllCards()">{{ 'SETTINGS.DeleteAllNotes' | translate }}</ion-item>
+    <ion-label class="StateText" *ngIf="hasCards !== undefined">{{hasCards ? ('SETTINGS.DeleteAllNotesMsg' | translate) : ('SETTINGS.NoNotesDeleted' | translate)}}</ion-label>
   </ion-list>
 </ion-content>
