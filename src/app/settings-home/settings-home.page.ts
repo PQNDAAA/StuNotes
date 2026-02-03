@@ -4,6 +4,7 @@ import {RouterLink} from "@angular/router";
 import {Settings} from "../settings";
 import {ISettingsHome} from "../isettings-home";
 import {async, Observable} from "rxjs";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-settings-home',
@@ -19,7 +20,7 @@ export class SettingsHomePage implements OnInit {
 
   isCondensate = false;
 
-  constructor(private mc : ModalController, private settingsservice: Settings) {
+  constructor(private mc : ModalController, private settingsservice: Settings, private translate: TranslateService) {
     this.settings$ = this.settingsservice.settingsHome$;
     console.log(this.settings$);
   }
@@ -29,6 +30,21 @@ export class SettingsHomePage implements OnInit {
       this.settings = data
       console.log(this.settings)
     });
+  }
+
+  async onLanguageChange(event : any){
+    const detail = event.detail.value.trim();
+    this.translate.use(detail);
+    this.settings.currentLanguage = detail;
+    await this.settingsservice.changeSettingsValue(this.settings);
+  }
+
+  get getCurrentLanguage(): string{
+    return this.translate.getCurrentLang();
+  }
+
+  get getAllLanguages(){
+    return this.translate.getLangs();
   }
 
   onScroll(event: any){

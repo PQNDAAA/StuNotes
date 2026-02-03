@@ -6,6 +6,8 @@ import {Card} from "../cards-interface/card";
 import {Tags} from "../../tags/tags";
 import {TagsService} from "../../tags/tags-service/tags-service";
 import {Cardstatus} from "../cardstatus";
+import {CardStatusService} from "../../card-status-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-addnote',
@@ -26,7 +28,8 @@ export class AddnoteComponent implements OnInit{
   currentStatus : Cardstatus = Cardstatus.Open;
   minDeadline : string;
 
-  constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService) {
+  constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService,
+              private cardStatusService: CardStatusService, private translate: TranslateService) {
     this.getTags();
 
     //DEFINIT UNE DATE MINIMUM DANS LE FORMULAIRE
@@ -37,6 +40,13 @@ export class AddnoteComponent implements OnInit{
     this.currentStatus = this.card.status;
 
     this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late);
+  }
+
+  getStatus(key: Cardstatus){
+    return this.cardStatusService.getStatus(key);
+  }
+  get getCurrentLang() : string{
+    return this.translate.getCurrentLang();
   }
 
   async getTags() {
@@ -50,8 +60,9 @@ export class AddnoteComponent implements OnInit{
 
   async valid() {
     if (!this.isEditable) {
+      console.log(this.card.status);
       await this.cs.addCard(this.card);
-      console.log(this.card.name);
+      console.log(this.card);
     } else {
       await this.cs.updateCard(this.card);
       this.isEditable = false;

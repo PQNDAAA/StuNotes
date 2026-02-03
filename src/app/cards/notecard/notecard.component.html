@@ -18,20 +18,22 @@
           <ion-label>{{ card.description }}</ion-label>
 
           <div class="badge-content">
-          <ion-badge class="status-badge" [ngStyle]="{'background-color': getStatusColor(card.status)}">{{ card.status }}</ion-badge>
+          <ion-badge class="status-badge" [ngStyle]="{'background-color': getStatusColor(card.status)}">{{ getStatus(card.status) }}</ion-badge>
           <ion-badge class="deadLine"><ion-icon name="calendar-outline"></ion-icon>{{ deadLineStr }}</ion-badge>
           </div>
 
-          <ion-label id="datelabel">Created on {{ this.dateCard }}</ion-label>
+          <ion-label id="datelabel">{{'TASKS.Date' | translate}} {{ this.dateCard }}</ion-label>
 
         </ion-card-content>
       </ion-card>
     </ion-item>
 
     <ion-item-options side="end" (ionSwipe)="onSwipe()">
-      <ion-item-option class="option-edit" color="primary" [expandable]="true" (click)="this.openPopup()">Edit
+      <ion-item-option class="option-edit" color="primary" [expandable]="true" (click)="this.openPopup()">
+        {{'GENERAL.EditButton' | translate}}
       </ion-item-option>
-      <ion-item-option class="option-delete" color="danger" [expandable]="true" (click)="presentAlert()">Delete
+      <ion-item-option class="option-delete" color="danger" [expandable]="true" (click)="presentAlert()">
+        {{'GENERAL.DeleteButton' | translate}}
       </ion-item-option>
     </ion-item-options>
 

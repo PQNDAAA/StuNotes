@@ -5,13 +5,15 @@ import {TagsService} from "../tags-service/tags-service";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {async} from "rxjs";
 import {AddtagComponent} from "../addtag/addtag.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-tagcard',
   templateUrl: './tagcard.component.html',
   styleUrls: ['./tagcard.component.scss'],
   imports: [
-    IonicModule
+    IonicModule,
+    TranslatePipe
   ]
 })
 export class TagcardComponent  implements OnInit {

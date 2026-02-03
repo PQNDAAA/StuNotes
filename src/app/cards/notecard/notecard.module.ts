@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import { NotecardComponent} from "./notecard.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
-  imports: [IonicModule,FormsModule,CommonModule],
+    imports: [IonicModule, FormsModule, CommonModule, TranslatePipe],
   declarations: [NotecardComponent],
   exports: [NotecardComponent]
 })

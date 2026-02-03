@@ -1,27 +1,35 @@
-import { NgModule ,inject} from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {NgModule, inject, APP_INITIALIZER} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouteReuseStrategy} from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
 
 // import ngx-translate and the http loader
 import {provideHttpClient} from "@angular/common/http";
 import {provideTranslateService, TranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
+import {Settings} from "./settings";
 
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,TranslatePipe,
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, TranslatePipe,
     TranslateDirective],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },provideHttpClient(),
+  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (init: Settings) => () => init.init(),
+      deps: [Settings],
+      multi: true
+    }
+    , provideHttpClient(),
     provideTranslateService({
-      lang: 'fr',
-      fallbackLang: 'fr',
+      lang: 'en',
+      fallbackLang: 'en',
       loader: provideTranslateHttpLoader({
         prefix: './assets/i18n/',
         suffix: '.json'
@@ -29,4 +37,5 @@ import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
     })],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

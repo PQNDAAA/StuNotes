@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, {Table} from "dexie";
 import {BehaviorSubject} from "rxjs";
-import {settings} from "ionicons/icons";
 import {default_settings, ISettingsHome} from "./isettings-home";
 
 @Injectable({
@@ -17,13 +16,16 @@ export class Settings extends Dexie {
   constructor() {
     super('SettingsHomeDB');
     this.version(1).stores({
-      settings:'id, darkMode'
+      settings:'id, darkMode, reminders, urgentDeadlineAlerts, currentLanguage'
     });
     this.settingsHomeTable = this.table('settings');
-
-    //this.settingsHomeTable.clear();
-    this.addDefaultSettings();
   }
+
+  async init(): Promise<void> {
+    //this.settingsHomeTable.clear();
+    await this.addDefaultSettings();
+  }
+
 
   async addDefaultSettings(){
     let row = await this.settingsHomeTable.get(1);

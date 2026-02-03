@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>My Subjects</ion-title>
+    <ion-title>{{'SUBJECTS.Title' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,7 +12,7 @@
   </div>
 
   <div class="emptyData" *ngIf="hasEmptyTags">
-    <ion-label>No tags have been added yet.</ion-label>
+    <ion-label>{{ 'SUBJECTS.EmptyData' | translate}}</ion-label>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -1,10 +1,19 @@
 {
+  "GENERAL": {
+    "SaveButton": "Save",
+    "CancelButton": "Cancel",
+    "EditButton": "Edit",
+    "DeleteButton": "Delete"
+  },
   "HOME": {
     "TITLE": "Home",
-    "WELCOME": "Welcome"
+    "WELCOME": "Welcome",
+    "Groups": "Groups",
+    "SearchBar": "Search your tasks",
+    "EmptyData": "No tasks for the status at the moment."
   },
   "SETTINGS": {
-    "LANGUAGE": "Language",
+    "LANGUAGES": "Languages",
     "SETTINGS": "Settings",
     "Data": "Data",
     "Appearance": "Appearance",
@@ -21,9 +30,29 @@
     "NoSubjectsDeleted":"No Subjects deleted"
   },
   "STATUS": {
-    "InProgress": "In Progress",
+    "Ongoing": "Ongoing",
     "Late": "Late",
     "Done": "Done",
     "Open": "Open"
+  },
+  "TASKS": {
+    "Date": "Created on",
+    "AddTask": "Add task",
+    "EditTask": "Edit task",
+    "NoteTitle": "Title",
+    "Subject": "Subject",
+    "Status": "Status",
+    "Deadline": "Deadline",
+    "NoteTitlePlaceholder": "Enter the title",
+    "DescriptionPlaceholder": "Enter the description",
+    "SubjectPlaceholder": "Choose the subject"
+  },
+  "SUBJECTS": {
+    "Title": "My Subjects",
+    "AddSubject": "Add subject",
+    "EditSubject": "Edit subject",
+    "EmptyData": "No subjects have been added yet.",
+    "SubjectName": "Name",
+    "SubjectPlaceholder": "Mathematics"
   }
 }

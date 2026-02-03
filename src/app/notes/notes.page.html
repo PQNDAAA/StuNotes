@@ -6,7 +6,7 @@
 
 
   <div class="searchContainer">
-    <ion-searchbar (ionInput)="eventInput($event)" placeholder="Search your tasks"></ion-searchbar>
+    <ion-searchbar (ionInput)="eventInput($event)" placeholder="{{'HOME.SearchBar' |translate}}"></ion-searchbar>
     <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
   </div>
 
@@ -16,7 +16,7 @@
   </div>
 
   <div class="emptyData" *ngIf="!hasResultData && !query">
-  <ion-label>No tasks for the status at the moment.</ion-label>
+  <ion-label>{{'HOME.EmptyData' | translate}}</ion-label>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

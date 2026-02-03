@@ -5,6 +5,7 @@ import {Platform} from "@ionic/angular";
 import {Fcm} from "./fcm";
 import {LocalNotificationService} from "./local-notification-service";
 import {CardsService} from "./cards/cards-service/cards-service";
+import {LanguageService} from "./language-service";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({
@@ -15,7 +16,9 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class AppComponent implements OnInit {
   constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm,
-              private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService) {
+              private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService,private languageService: LanguageService) {
+
+    this.translate.addLangs(['fr','en']);
     this.initializeApp();
   }
 
@@ -23,16 +26,16 @@ export class AppComponent implements OnInit {
     this.settingsService.settingsHome$.subscribe(async data => {
       document.body.classList.toggle('dark', data.darkMode);
     });
-
-   // this.initializeApp();
   }
 
  initializeApp() {
     //On attend que la plateforme (Android/iOS) soit prête
     this.platform.ready().then(() => {
+      this.languageService.initLanguages();
       this.fcm.initPush();
       this.checkLocalNotifications();
       this.checkOverdueTasks();
+
 
       setTimeout(async () => {
         await SplashScreen.hide({

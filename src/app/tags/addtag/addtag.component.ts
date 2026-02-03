@@ -3,6 +3,7 @@ import {IonicModule, ModalController} from "@ionic/angular";
 import {TagsService} from "../tags-service/tags-service";
 import {Tags} from "../tags";
 import {FormsModule} from "@angular/forms";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-addtag',
@@ -10,7 +11,8 @@ import {FormsModule} from "@angular/forms";
   styleUrls: ['./addtag.component.scss'],
   imports: [
     IonicModule,
-    FormsModule
+    FormsModule,
+    TranslatePipe
   ]
 })
 export class AddtagComponent  implements OnInit {

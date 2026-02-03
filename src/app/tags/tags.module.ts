@@ -8,6 +8,7 @@ import { TagsPageRoutingModule } from './tags-routing.module';
 
 import { TagsPage } from './tags.page';
 import {TagcardComponent} from "./tagcard/tagcard.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {TagcardComponent} from "./tagcard/tagcard.component";
         FormsModule,
         IonicModule,
         TagsPageRoutingModule,
-        TagcardComponent
+        TagcardComponent,
+        TranslatePipe
     ],
   declarations: [TagsPage]
 })

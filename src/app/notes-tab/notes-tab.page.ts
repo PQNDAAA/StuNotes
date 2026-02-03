@@ -2,8 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Card} from "../cards/cards-interface/card";
 import {CardsService} from "../cards/cards-service/cards-service";
 import {Cardstatus} from "../cards/cardstatus";
-import {map, Observable} from "rxjs";
-import {TranslatePipe, TranslateDirective, TranslateService} from '@ngx-translate/core';
+import {Observable} from "rxjs";
+import {CardStatusService} from "../card-status-service";
 
 @Component({
   selector: 'app-notes-tab',
@@ -18,30 +18,18 @@ export class NotesTabPage implements OnInit {
   cards!: Observable<Card[]>;
 
   cardStatus = Cardstatus;
+  allStatus = Object.values(Cardstatus);
   defaultStatus = Cardstatus.InProgress;
-  cardStatusValues = Object.values(Cardstatus);
-  cardStatusKeys = Object.keys(Cardstatus);
 
-  statusLanguageValues : any[] = [];
+  constructor(private cs: CardsService, private cardStatusService : CardStatusService) {
 
-  constructor(private cs: CardsService, private translate: TranslateService) {
-    this.translate.get('STATUS').subscribe(value => {
-      this.checkStatusKeys(value);
-    });
+    console.log(this.cardStatusService.statusColorLanguage);
 
     this.cards = this.cs.cards$;
   }
 
-  checkStatusKeys(arrayLanguage : any){
-    const keysLanguage = Object.keys(arrayLanguage);
-
-    for(const key of this.cardStatusKeys){
-      if(keysLanguage.includes(key)){
-        const value = arrayLanguage[key];
-        this.statusLanguageValues.push(value);
-      }
-    }
-    console.log(this.statusLanguageValues);
+  getStatus(key: Cardstatus){
+    return this.cardStatusService.getStatus(key);
   }
 
   filterCardsCount(status: Cardstatus){
@@ -56,7 +44,7 @@ export class NotesTabPage implements OnInit {
     this.filterChanged.emit(value);
   }
 
-  getStatusColor(status: string): string{
+  getStatusColor(status: Cardstatus): string{
     return this.cs.getStatusColor(status);
   }
 

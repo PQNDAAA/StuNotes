@@ -3,6 +3,9 @@ import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
 import {AlertController} from "@ionic/angular";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
+import {Cardstatus} from "../cardstatus";
+import {CardStatusService} from "../../card-status-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-notecard',
@@ -36,7 +39,7 @@ export class NotecardComponent implements OnInit {
     }
   ]
 
-  constructor(private cs: CardsService, private ac: AlertController) {
+  constructor(private cs: CardsService, private ac: AlertController, private cardStatusService: CardStatusService, private translate : TranslateService) {
   }
 
   async onSwipe(){
@@ -75,9 +78,14 @@ export class NotecardComponent implements OnInit {
     return this.cs.getStatusColor(status);
   }
 
+  getStatus(key: Cardstatus){
+    return this.cardStatusService.getStatus(key);
+  }
+
   ngOnInit() {
     // CREATEAT DATE FORMAT
-   this.dateCard = this.card.createdAt.toLocaleString("en-GB",{
+   this.dateCard = this.card.createdAt.toLocaleString(this.translate.getCurrentLang(),
+     {
       year: "numeric",
       month:"long",
       day:"numeric",
@@ -87,7 +95,7 @@ export class NotecardComponent implements OnInit {
 
    // DEADLINE FORMAT
    this.deadLine = new Date(this.card.deadline);
-   this.deadLineStr = this.deadLine.toLocaleString("en-GB", {
+   this.deadLineStr = this.deadLine.toLocaleString(this.translate.getCurrentLang(), {
      year: "numeric",
      month:"long",
      day:"numeric",

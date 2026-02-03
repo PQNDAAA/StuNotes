@@ -1,11 +1,19 @@
 {
+  "GENERAL": {
+    "SaveButton": "Sauvegarder",
+    "CancelButton": "Annuler",
+    "EditButton": "Editer",
+    "DeleteButton": "Supprimer"
+  },
   "HOME": {
     "TITLE": "Accueil",
     "WELCOME": "Bienvenue",
-    "Groups": "Groupes"
+    "Groups": "Groupes",
+    "SearchBar": "Recherchez votre tâche",
+    "EmptyData": "Pas de tâches pour ce statut en ce moment."
   },
   "SETTINGS": {
-    "LANGUAGE": "Langue",
+    "LANGUAGES": "Langues",
     "SETTINGS": "Paramètres",
     "Data": "Données",
     "Appearance": "Apparence",
@@ -22,9 +30,29 @@
     "NoSubjectsDeleted":"Pas de matières à supprimer"
   },
   "STATUS": {
-    "InProgress": "En Cours",
+    "Ongoing": "En Cours",
     "Late": "En Retard",
     "Done": "Fini",
     "Open": "À Faire"
+  },
+  "TASKS": {
+    "Date": "Crée le",
+    "AddTask": "Ajouter une tâche",
+    "EditTask": "Modifier une tâche",
+    "NoteTitle": "Titre",
+    "Subject": "Matière",
+    "Status": "Statut",
+    "Deadline": "Date limite",
+    "NoteTitlePlaceholder": "Entrez le titre",
+    "DescriptionPlaceholder": "Entrez la description",
+    "SubjectPlaceholder": "Choisissez la matière"
+  },
+  "SUBJECTS": {
+    "Title": "Mes matières",
+    "AddSubject": "Ajouter une matière",
+    "EditSubject": "Modifier une matière",
+    "EmptyData": "Aucune matière ajoutée encore.",
+    "SubjectName": "Nom",
+    "SubjectPlaceholder": "Mathématiques"
   }
 }

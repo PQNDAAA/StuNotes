@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import {AddnoteComponent} from "./addnote.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
-  imports: [CommonModule,FormsModule,IonicModule],
+    imports: [CommonModule, FormsModule, IonicModule, TranslatePipe],
   declarations: [AddnoteComponent],
   exports: [AddnoteComponent]
 })

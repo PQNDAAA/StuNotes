@@ -10,6 +10,7 @@ import { NotesPage } from './notes.page';
 import {AddnoteModule} from "../cards/addnote/addnote.module";
 import {NotecardModule} from "../cards/notecard/notecard.module";
 import {NotesTabPageModule} from "../notes-tab/notes-tab.module";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import {NotesTabPageModule} from "../notes-tab/notes-tab.module";
         NotesPageRoutingModule,
         AddnoteModule,
         NotecardModule,
-        NotesTabPageModule
+        NotesTabPageModule,
+        TranslatePipe
     ],
   declarations: [NotesPage]
 })
