@@ -7,6 +7,8 @@ import {LocalNotificationService} from "./local-notification-service";
 import {CardsService} from "./cards/cards-service/cards-service";
 import {LanguageService} from "./language-service";
 import {TranslateService} from "@ngx-translate/core";
+import {ISettingsHome} from "./isettings-home";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -15,8 +17,12 @@ import {TranslateService} from "@ngx-translate/core";
   standalone: false,
 })
 export class AppComponent implements OnInit {
+
+  settings!: ISettingsHome;
+
   constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm,
-              private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService,private languageService: LanguageService) {
+              private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService,
+              private languageService: LanguageService, private router: Router) {
 
     this.translate.addLangs(['fr','en']);
     this.initializeApp();
@@ -25,7 +31,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.settingsService.settingsHome$.subscribe(async data => {
       document.body.classList.toggle('dark', data.darkMode);
+      this.settings = data;
     });
+
+    if(this.settings.firstLaunch){
+      //this.router.navigateByUrl('/first-launch', {replaceUrl:true});
+      //this.settings.firstLaunch = false;
+      //this.settingsService.changeSettingsValue(this.settings);
+    }
   }
 
  initializeApp() {

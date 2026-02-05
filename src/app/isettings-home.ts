@@ -4,6 +4,7 @@ export interface ISettingsHome {
   reminders: boolean,
   urgentDeadlineAlerts: boolean,
   currentLanguage: string,
+  firstLaunch: boolean,
 }
 
 export const default_settings : ISettingsHome = {
@@ -12,4 +13,5 @@ export const default_settings : ISettingsHome = {
   reminders: false,
   urgentDeadlineAlerts: false,
   currentLanguage: '',
+  firstLaunch: true,
 }

@@ -10,7 +10,8 @@
     "WELCOME": "Welcome",
     "Groups": "Groups",
     "SearchBar": "Search your tasks",
-    "EmptyData": "No tasks for the status at the moment."
+    "EmptyData": "No tasks for the status at the moment.",
+    "Account": "Profile"
   },
   "SETTINGS": {
     "LANGUAGES": "Languages",
@@ -54,5 +55,12 @@
     "EmptyData": "No subjects have been added yet.",
     "SubjectName": "Name",
     "SubjectPlaceholder": "Mathematics"
+  },
+  "NOTIFICATIONS": {
+    "Title": "⚠Reminder: ",
+    "Body": "Due on ",
+    "AlertTitle": "Task",
+    "AlertBody": "⚠Don't forget to finish ",
+    "AlertText": "It's done!"
   }
 }

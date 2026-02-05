@@ -38,8 +38,15 @@ ion-tab-button{
   --color-selected: #ff8228;
 }
 
-#separator-tab-bar{
-  --ripple-color: transparent;
+ion-tab-button.tab-selected{
+  transform: translateY(-10%);
+  transition: transform .2s;
+  border-radius: 0 0 40% 40%;
+  --background: rgba(255, 130, 40, 0.15);
+}
+
+ion-tab-button.tab-selected ion-label{
+  font-size: 14px;
 }
 
 

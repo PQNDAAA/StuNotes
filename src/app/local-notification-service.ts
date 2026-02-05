@@ -3,10 +3,7 @@ import {LocalNotifications} from "@capacitor/local-notifications";
 import {Card} from "./cards/cards-interface/card";
 import {CardsService} from "./cards/cards-service/cards-service";
 import {Subject} from "rxjs";
-import {AlertController, ModalController} from "@ionic/angular";
-import {
-  TaskNotificationActionPerformedComponent
-} from "./task-notification-action-performed/task-notification-action-performed.component";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +13,7 @@ export class LocalNotificationService {
   public notificationReceived$ = new Subject<number>();
   public notificationActionPerformed$ = new Subject<number>();
 
-  constructor() {
+  constructor(private translate: TranslateService) {
   }
 
   async initLocalNotifications() {
@@ -63,11 +60,13 @@ export class LocalNotificationService {
     }
     for (let alert of alerts) {
       const taskId = (card.id * 10) + alerts.indexOf(alert) ;
+      const title = this.translate.instant('NOTIFICATIONS.Title');
+      const body = this.translate.instant('NOTIFICATIONS.Body');
       await LocalNotifications.schedule({
         notifications: [
           {
-            title: "⚠️Reminder: " + card.name,
-            body: "Due on "+ new Date(card.deadline).toLocaleString("en-GB", {
+            title: title + card.name,
+            body: body + new Date(card.deadline).toLocaleString(this.translate.getCurrentLang(), {
               year: "numeric",
               month:"long",
               day:"numeric",

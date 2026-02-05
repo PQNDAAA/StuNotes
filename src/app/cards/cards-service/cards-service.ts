@@ -8,6 +8,7 @@ import {Cardstatus} from "../cardstatus";
 import {CardstatusColors} from "../cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../local-notification-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class CardsService extends Dexie {
 
   statusColors = CardstatusColors;
 
-  constructor(private mc: ModalController, private lns: LocalNotificationService, private ac: AlertController) {
+  constructor(private mc: ModalController, private lns: LocalNotificationService, private ac: AlertController,
+  private translate: TranslateService ) {
     super('CardsDB');
     this.version(2).stores({
       cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId'
@@ -188,13 +190,13 @@ export class CardsService extends Dexie {
     if(card === undefined){return;}
 
     const modal = await this.ac.create({
-      header: "Task Status",
-      message:`⚠️Don't forget to finish ${card.name}`,
+      header: this.translate.instant('NOTIFICATIONS.AlertTitle'),
+      message: this.translate.instant('NOTIFICATIONS.AlertBody')+ card.name,
       buttons: [
         {text:"OK",
           role:"cancel"},
         {
-          text:"It's done!",
+          text:this.translate.instant('NOTIFICATIONS.AlertText'),
           role:"confirm",
           handler:async () => {
             card.status = Cardstatus.Done;

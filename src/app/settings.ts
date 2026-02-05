@@ -16,7 +16,7 @@ export class Settings extends Dexie {
   constructor() {
     super('SettingsHomeDB');
     this.version(1).stores({
-      settings:'id, darkMode, reminders, urgentDeadlineAlerts, currentLanguage'
+      settings:'id, darkMode, reminders, urgentDeadlineAlerts, currentLanguage, firstLaunch'
     });
     this.settingsHomeTable = this.table('settings');
   }

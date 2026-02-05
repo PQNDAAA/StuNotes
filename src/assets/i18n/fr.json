@@ -10,7 +10,8 @@
     "WELCOME": "Bienvenue",
     "Groups": "Groupes",
     "SearchBar": "Recherchez votre tâche",
-    "EmptyData": "Pas de tâches pour ce statut en ce moment."
+    "EmptyData": "Pas de tâches pour ce statut en ce moment.",
+    "Account": "Profil"
   },
   "SETTINGS": {
     "LANGUAGES": "Langues",
@@ -54,5 +55,12 @@
     "EmptyData": "Aucune matière ajoutée encore.",
     "SubjectName": "Nom",
     "SubjectPlaceholder": "Mathématiques"
+  },
+  "NOTIFICATIONS": {
+    "Title": "⚠Rappel: ",
+    "Body": "Échéance le ",
+    "AlertTitle": "Tâche",
+    "AlertBody": "⚠N'oubliez pas de finir ",
+    "AlertText": "Elle est finie!"
   }
 }

@@ -10,7 +10,7 @@
   <ion-list lines="none">
     <ion-item>
       <ion-input [label]="('TASKS.NoteTitle' | translate)" [(ngModel)]="this.card.name" labelPlacement="fixed"
-                 [clearInput]="true" [placeholder]="('TASKS.NoteTitlePlaceholder' | translate)"></ion-input>
+                 [clearInput]="true" [counter]="true" [maxlength]="30" [placeholder]="('TASKS.NoteTitlePlaceholder' | translate)"></ion-input>
     </ion-item>
     <ion-item>
       <ion-textarea label="Description" [(ngModel)]="this.card.description" labelPlacement="fixed" [autoGrow]="true"
