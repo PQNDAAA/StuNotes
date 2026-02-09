@@ -54,7 +54,8 @@
     "EditSubject": "Edit subject",
     "EmptyData": "No subjects have been added yet.",
     "SubjectName": "Name",
-    "SubjectPlaceholder": "Mathematics"
+    "SubjectPlaceholder": "Mathematics",
+    "SubjectNameErrorText": "Enter a name."
   },
   "NOTIFICATIONS": {
     "Title": "⚠Reminder: ",

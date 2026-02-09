@@ -8,6 +8,7 @@ import {TagsService} from "../../tags/tags-service/tags-service";
 import {Cardstatus} from "../cardstatus";
 import {CardStatusService} from "../../card-status-service";
 import {TranslateService} from "@ngx-translate/core";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-addnote',
@@ -15,7 +16,7 @@ import {TranslateService} from "@ngx-translate/core";
   styleUrls: ['./addnote.component.scss'],
   standalone: false,
 })
-export class AddnoteComponent implements OnInit{
+export class AddnoteComponent implements OnInit {
 
   @Input() card: Card = {
     taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
@@ -25,8 +26,8 @@ export class AddnoteComponent implements OnInit{
   @Input() isEditable: boolean = false;
   tags!: Tags[];
   statusValues = Object.values(Cardstatus);
-  currentStatus : Cardstatus = Cardstatus.Open;
-  minDeadline : string;
+  currentStatus: Cardstatus = Cardstatus.Open;
+  minDeadline: string;
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService,
               private cardStatusService: CardStatusService, private translate: TranslateService) {
@@ -36,17 +37,17 @@ export class AddnoteComponent implements OnInit{
     this.minDeadline = this.cs.toLocalISOString(new Date());
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.currentStatus = this.card.status;
-
     this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late);
   }
 
-  getStatus(key: Cardstatus){
-    return this.cardStatusService.getStatus(key);
-  }
-  get getCurrentLang() : string{
+  get getCurrentLang(): string {
     return this.translate.getCurrentLang();
+  }
+
+  getStatus(key: Cardstatus): string {
+    return this.cardStatusService.getStatus(key);
   }
 
   async getTags() {
@@ -55,20 +56,18 @@ export class AddnoteComponent implements OnInit{
 
   async closePopUp() {
     await this.mc.dismiss(null, 'cancel');
-    console.log(this.card);
   }
 
-  async valid() {
-    if (!this.isEditable) {
-      console.log(this.card.status);
-      await this.cs.addCard(this.card);
-      console.log(this.card);
-    } else {
-      await this.cs.updateCard(this.card);
-      this.isEditable = false;
+  async valid(form: NgForm) {
+    if (form.valid) {
+      if (!this.isEditable) {
+        await this.cs.addCard(this.card);
+      } else {
+        await this.cs.updateCard(this.card);
+        this.isEditable = false;
+      }
+      await this.mc.dismiss();
     }
-    console.log(this.card.deadline);
-    await this.mc.dismiss();
   }
 
   protected readonly Cardstatus = Cardstatus;

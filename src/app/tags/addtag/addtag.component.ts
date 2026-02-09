@@ -2,8 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {TagsService} from "../tags-service/tags-service";
 import {Tags} from "../tags";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, NgForm} from "@angular/forms";
 import {TranslatePipe} from "@ngx-translate/core";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-addtag',
@@ -12,7 +13,7 @@ import {TranslatePipe} from "@ngx-translate/core";
   imports: [
     IonicModule,
     FormsModule,
-    TranslatePipe
+    TranslatePipe,
   ]
 })
 export class AddtagComponent  implements OnInit {
@@ -29,13 +30,15 @@ export class AddtagComponent  implements OnInit {
     await this.mc.dismiss();
   }
 
-  async valid() {
-    if(!this.editMode){
-      await this.ts.addTag(this.tag);
-    } else {
-      await this.ts.updateTag(this.tag)
-      this.editMode = false;
+  async valid(form : NgForm) {
+    if (form.valid) {
+      if (!this.editMode) {
+        await this.ts.addTag(this.tag);
+      } else {
+        await this.ts.updateTag(this.tag)
+        this.editMode = false;
+      }
+      await this.mc.dismiss();
     }
-    await this.mc.dismiss();
   }
 }

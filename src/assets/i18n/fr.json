@@ -54,7 +54,8 @@
     "EditSubject": "Modifier une matière",
     "EmptyData": "Aucune matière ajoutée encore.",
     "SubjectName": "Nom",
-    "SubjectPlaceholder": "Mathématiques"
+    "SubjectPlaceholder": "Mathématiques",
+    "SubjectNameErrorText": "Veuillez entrer un nom."
   },
   "NOTIFICATIONS": {
     "Title": "⚠Rappel: ",

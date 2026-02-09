@@ -7,56 +7,62 @@
 </ion-header>
 
 <ion-content class="background-theme">
-  <ion-list lines="none">
-    <ion-item>
-      <ion-input [label]="('TASKS.NoteTitle' | translate)" [(ngModel)]="this.card.name" labelPlacement="fixed"
-                 [clearInput]="true" [counter]="true" [maxlength]="30" [placeholder]="('TASKS.NoteTitlePlaceholder' | translate)"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-textarea label="Description" [(ngModel)]="this.card.description" labelPlacement="fixed" [autoGrow]="true"
-                    [placeholder]="('TASKS.DescriptionPlaceholder' | translate)" [counter]="true" [maxlength]="300"></ion-textarea>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{ 'TASKS.Subject' | translate }}</ion-label>
-      <ion-select [placeholder]="('TASKS.SubjectPlaceholder' | translate)" interface="popover" [(ngModel)]="card.tag">
-        <ion-select-option *ngFor="let tag of tags">
-          {{ tag.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
-      <ion-label>{{ 'TASKS.Status' | translate }}</ion-label>
-      <ion-select interface="popover" [(ngModel)]="card.status">
-        <ion-select-option *ngFor="let status of statusValues" [value]="status">
-          {{ getStatus(status) }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
+  <form #taskForm="ngForm">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-input [label]="('TASKS.NoteTitle' | translate)+'*'" [(ngModel)]="this.card.name" labelPlacement="fixed"
+                   [clearInput]="true" [counter]="true" [maxlength]="30"
+                   [placeholder]="('TASKS.NoteTitlePlaceholder' | translate)" name="taskName"
+                   [required]="true"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-textarea label="Description*" [(ngModel)]="this.card.description" labelPlacement="fixed" [autoGrow]="true"
+                      [placeholder]="('TASKS.DescriptionPlaceholder' | translate)" [counter]="true"
+                      [maxlength]="300" name="taskDescription" [required]="true"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'TASKS.Subject' | translate }}*</ion-label>
+        <ion-select [placeholder]="('TASKS.SubjectPlaceholder' | translate)" interface="popover"
+                    [(ngModel)]="card.tag" name="taskSubject" [required]="true">
+          <ion-select-option *ngFor="let tag of tags">
+            {{ tag.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
+        <ion-label>{{ 'TASKS.Status' | translate }}*</ion-label>
+        <ion-select interface="popover" [(ngModel)]="card.status" name="taskStatus" [required]="true">
+          <ion-select-option *ngFor="let status of statusValues" [value]="status">
+            {{ getStatus(status) }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
 
-    <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
-      <ion-label>{{ 'TASKS.Deadline' | translate }}</ion-label>
-      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
+        <ion-label>{{ 'TASKS.Deadline' | translate }}*</ion-label>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
 
-      <ion-modal [keepContentsMounted]="true">
-        <ng-template>
-          <ion-datetime id="datetime" [locale]="getCurrentLang" [(ngModel)]="this.card.deadline"
-                        [min]="minDeadline"></ion-datetime>
-        </ng-template>
-      </ion-modal>
-    </ion-item>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" [locale]="getCurrentLang" [(ngModel)]="this.card.deadline"
+                          [min]="minDeadline" name="taskDeadline" [required]="true"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
 
-    <ion-item>
-      <ion-checkbox [(ngModel)]="this.card.important">Important</ion-checkbox>
-    </ion-item>
-  </ion-list>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="this.card.important" name="taskImportant">Important</ion-checkbox>
+      </ion-item>
+    </ion-list>
 
-  <div id="formbtn">
-    <ion-button id="validbtn" slot="end" (click)="valid()" [strong]="true">
-      {{ 'GENERAL.SaveButton' | translate }}
-    </ion-button>
-    <ion-button id="cancelbtn" slot="end" (click)="closePopUp()">
-      {{ 'GENERAL.CancelButton' | translate }}
-    </ion-button>
-  </div>
+    <div id="formbtn">
+      <ion-button id="validbtn" slot="end" (click)="valid(taskForm)" [disabled]="!taskForm.valid" [strong]="true">
+        {{ 'GENERAL.SaveButton' | translate }}
+      </ion-button>
+      <ion-button id="cancelbtn" slot="end" (click)="closePopUp()">
+        {{ 'GENERAL.CancelButton' | translate }}
+      </ion-button>
+    </div>
+  </form>
 
 </ion-content>
