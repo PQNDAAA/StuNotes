@@ -99,14 +99,22 @@ body.dark {
   --ion-color-light: #222222;
 
   /* Composants spécifiques */
+  .settings-theme-header ion-toolbar {
+    --background: var(--ion-background-color);
+    --color: var(--ion-text-color);
+  }
+
+  ion-tabs ion-tab-bar{
+    --background: var(--ion-background-color);
+  }
+
   ion-item {
-    --background: #121212;
-    --color: #ffffff;
+    --background: var(--ion-background-color);
+    --color: var(--ion-text-color);
   }
 
   ion-card {
-    --background: #pink;
-    --color: #ffffff;
+    --color: var(--ion-text-color);
   }
 
   ion-label {
@@ -114,19 +122,24 @@ body.dark {
   }
 
   ion-searchbar {
-    color: #ffffff;
+    color: var(--ion-text-color);
   }
 
   ion-datetime {
-    --background: #121212;
+    --background: var(--ion-background-color);
+    --wheel-highlight-background: #222;
+    --wheel-fade-background-rgb: 0, 0, 0;
+
+    --title-color: #ffffff;
+    --placeholder-color: #aaa;
   }
 
   ion-datetime-button::part(native) {
-    background-color: #121212;
+    background-color: var(--ion-background-color);
     color: #ffffff;
   }
   ion-card-title{
-    color: #ffffff;
+    color: var(--ion-text-color);
   }
   ion-list {
     --background: pink;
