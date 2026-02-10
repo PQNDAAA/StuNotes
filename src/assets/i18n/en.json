@@ -46,7 +46,8 @@
     "Deadline": "Deadline",
     "NoteTitlePlaceholder": "Enter the title",
     "DescriptionPlaceholder": "Enter the description",
-    "SubjectPlaceholder": "Choose the subject"
+    "SubjectPlaceholder": "Choose the subject",
+    "DeleteTask": "Are you sure to delete this task ?"
   },
   "SUBJECTS": {
     "Title": "My Subjects",
@@ -55,7 +56,8 @@
     "EmptyData": "No subjects have been added yet.",
     "SubjectName": "Name",
     "SubjectPlaceholder": "Mathematics",
-    "SubjectNameErrorText": "Enter a name."
+    "SubjectNameErrorText": "Enter a name.",
+    "DeleteSubject": "Are you sure to delete this subject ?"
   },
   "NOTIFICATIONS": {
     "Title": "⚠Reminder: ",

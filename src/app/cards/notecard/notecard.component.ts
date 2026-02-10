@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
 import {AlertController} from "@ionic/angular";
-import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {Cardstatus} from "../cardstatus";
 import {CardStatusService} from "../../card-status-service";
 import {TranslateService} from "@ngx-translate/core";
@@ -39,7 +38,8 @@ export class NotecardComponent implements OnInit {
     }
   ]
 
-  constructor(private cs: CardsService, private ac: AlertController, private cardStatusService: CardStatusService, private translate : TranslateService) {
+  constructor(private cs: CardsService, private ac: AlertController, private cardStatusService: CardStatusService,
+              private translate : TranslateService) {
   }
 
   async onSwipe(){
@@ -48,9 +48,9 @@ export class NotecardComponent implements OnInit {
 
   async presentAlert(){
     const alert = await this.ac.create({
-      header: 'Are you sure to delete this note ?',
+      header: this.translate.instant('TASKS.DeleteTask'),
       buttons: [
-        {text:"Cancel",
+        {text:this.translate.instant('GENERAL.CancelButton'),
           role:"cancel"},
         {
           text:"OK",

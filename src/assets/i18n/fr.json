@@ -46,7 +46,8 @@
     "Deadline": "Date limite",
     "NoteTitlePlaceholder": "Entrez le titre",
     "DescriptionPlaceholder": "Entrez la description",
-    "SubjectPlaceholder": "Choisissez la matière"
+    "SubjectPlaceholder": "Choisissez la matière",
+    "DeleteTask": "Êtes-vous sure de vouloir supprimer cette tâche ?"
   },
   "SUBJECTS": {
     "Title": "Mes matières",
@@ -55,7 +56,8 @@
     "EmptyData": "Aucune matière ajoutée encore.",
     "SubjectName": "Nom",
     "SubjectPlaceholder": "Mathématiques",
-    "SubjectNameErrorText": "Veuillez entrer un nom."
+    "SubjectNameErrorText": "Veuillez entrer un nom.",
+    "DeleteSubject": "Êtes-vous sur de vouloir supprimer cette matière ?"
   },
   "NOTIFICATIONS": {
     "Title": "⚠Rappel: ",

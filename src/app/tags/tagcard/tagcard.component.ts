@@ -5,7 +5,7 @@ import {TagsService} from "../tags-service/tags-service";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {async} from "rxjs";
 import {AddtagComponent} from "../addtag/addtag.component";
-import {TranslatePipe} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-tagcard',
@@ -20,7 +20,8 @@ export class TagcardComponent  implements OnInit {
 
   @Input() tag!: Tags;
 
-  constructor(private ts: TagsService,private mc : ModalController, private ac : AlertController) { }
+  constructor(private ts: TagsService,private mc : ModalController, private ac : AlertController,
+  private translate: TranslateService) { }
 
   ngOnInit() {}
 
@@ -44,10 +45,10 @@ export class TagcardComponent  implements OnInit {
 
   async presentAlert(){
     const alert = await this.ac.create({
-      header:'Are you sure to delete this tag ?',
+      header:this.translate.instant('SUBJECTS.DeleteSubject'),
       buttons: [
         {
-          text: "Cancel",
+          text: this.translate.instant('GENERAL.CancelButton'),
           role:"cancel"
         },
         {
