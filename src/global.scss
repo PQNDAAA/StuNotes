@@ -99,7 +99,7 @@ body.dark {
   --ion-color-light: #222222;
 
   /* Composants spécifiques */
-  .settings-theme-header ion-toolbar {
+  ion-toolbar {
     --background: var(--ion-background-color);
     --color: var(--ion-text-color);
   }
