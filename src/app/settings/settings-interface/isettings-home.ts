@@ -10,7 +10,7 @@ export interface ISettingsHome {
 export const default_settings : ISettingsHome = {
   id: 1,
   darkMode: false,
-  reminders: false,
+  reminders: true,
   urgentDeadlineAlerts: false,
   currentLanguage: '',
   firstLaunch: true,

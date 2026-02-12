@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {LocalNotifications} from "@capacitor/local-notifications";
 import {Card} from "../../cards/cards-interface/card";
-import {CardsService} from "../../cards/cards-service/cards-service";
 import {Subject} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
+import {ISettingsHome} from "../../settings/settings-interface/isettings-home";
+import {Settings} from "../../settings/settings-service/settings";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,12 @@ export class LocalNotificationService {
   public notificationReceived$ = new Subject<number>();
   public notificationActionPerformed$ = new Subject<number>();
 
-  constructor(private translate: TranslateService) {
+  settings!: ISettingsHome;
+
+  constructor(private translate: TranslateService, private settingsService: Settings) {
+    this.settingsService.settingsHome$.subscribe(data => {
+      this.settings = data;
+    })
   }
 
   async initLocalNotifications() {
@@ -28,7 +34,7 @@ export class LocalNotificationService {
     const now = Date.now();
     const diff = deadLineMs - now;
 
-    if (card.id === undefined || deadLineMs < now) {
+    if (card.id === undefined || deadLineMs < now || !this.settings.reminders) {
       return [];
     }
 
@@ -59,7 +65,7 @@ export class LocalNotificationService {
       return [];
     }
     for (let alert of alerts) {
-      const taskId = (card.id * 10) + alerts.indexOf(alert) ;
+      const taskId = (card.id * 10) + alerts.indexOf(alert);
       const title = this.translate.instant('NOTIFICATIONS.Title');
       const body = this.translate.instant('NOTIFICATIONS.Body');
       await LocalNotifications.schedule({
@@ -68,10 +74,10 @@ export class LocalNotificationService {
             title: title + card.name,
             body: body + new Date(card.deadline).toLocaleString(this.translate.getCurrentLang(), {
               year: "numeric",
-              month:"long",
-              day:"numeric",
+              month: "long",
+              day: "numeric",
               hour: "numeric",
-              minute:"2-digit"
+              minute: "2-digit"
             }) + " •" + card.tag,
             id: taskId,
             schedule: {at: new Date(alert.time)}, // Date précise
@@ -112,7 +118,7 @@ export class LocalNotificationService {
   async clearAll() {
     const list = await LocalNotifications.getPending();
 
-    if(list.notifications.length !== 0){
+    if (list.notifications.length !== 0) {
       await LocalNotifications.cancel(await LocalNotifications.getPending());
       console.log("Toutes les notifications ont été supprimées");
     } else {
@@ -123,7 +129,15 @@ export class LocalNotificationService {
   private async registerLocalNotifications() {
     LocalNotifications.checkPermissions().then(async (permission) => {
       if (permission.display !== 'granted') {
-        await LocalNotifications.requestPermissions();
+        const request = await LocalNotifications.requestPermissions();
+
+        if (request.display !== 'granted') {
+          await this.settingsService.updateReminders(this.settings, false);
+        } else {
+          if (!this.settings.reminders) {
+            await this.settingsService.updateReminders(this.settings, true);
+          }
+        }
       } else {
         console.log(this.getAllScheduled());
       }

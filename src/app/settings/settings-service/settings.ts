@@ -26,6 +26,10 @@ export class Settings extends Dexie {
     await this.addDefaultSettings();
   }
 
+  public getSettings() : ISettingsHome{
+    return this.settingsHomeSubject.getValue();
+  }
+
 
   async addDefaultSettings(){
     let row = await this.settingsHomeTable.get(1);
@@ -43,9 +47,6 @@ export class Settings extends Dexie {
     if(!row) return;
     this.settingsHomeTable.put(settings, 1);
     await this.refreshValues();
-
-    console.log(settings);
-    console.log(this.settingsHome$);
   }
 
   async refreshValues(){
@@ -54,5 +55,8 @@ export class Settings extends Dexie {
     this.settingsHomeSubject.next(allValues);
   }
 
-
+  async updateReminders(settings: ISettingsHome, value: boolean) {
+    settings.reminders = value;
+    await this.changeSettingsValue(settings)
+  }
 }
