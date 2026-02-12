@@ -11,18 +11,18 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () =>
-          import('../settings-home/settings-home.module').then(m => m.SettingsHomePageModule)
+          import('./settings-home/settings-home.module').then(m => m.SettingsHomePageModule)
       },
       {
         path:'data-tags',
         loadChildren: () =>
-          import("../settings-data-tags/settings-data-tags.module").then(m => m.SettingsDataTagsPageModule)
+          import("./settings-data-tags/settings-data-tags.module").then(m => m.SettingsDataTagsPageModule)
       }
       ,
       {
         path:'data-notes',
         loadChildren: () =>
-          import("../settings-data-notes/settings-data-notes.module").then(m => m.SettingsDataNotesPageModule)
+          import("./settings-data-notes/settings-data-notes.module").then(m => m.SettingsDataNotesPageModule)
       }
     ]
   }

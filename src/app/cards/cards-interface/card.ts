@@ -1,4 +1,4 @@
-import {Cardstatus} from "../cardstatus";
+import {Cardstatus} from "../cards-enum/cardstatus";
 
 export interface Card {
   id?:number;

@@ -2,8 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
 import {AlertController} from "@ionic/angular";
-import {Cardstatus} from "../cardstatus";
-import {CardStatusService} from "../../card-status-service";
+import {Cardstatus} from "../cards-enum/cardstatus";
+import {CardStatusService} from "../cards-service/card-status-service";
 import {TranslateService} from "@ngx-translate/core";
 
 @Component({

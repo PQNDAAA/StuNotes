@@ -4,10 +4,10 @@ import {Card} from "../cards-interface/card";
 import Dexie, {Table} from 'dexie';
 import {AlertController, ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../addnote/addnote.component";
-import {Cardstatus} from "../cardstatus";
-import {CardstatusColors} from "../cardstatus-colors";
+import {Cardstatus} from "../cards-enum/cardstatus";
+import {CardstatusColors} from "../cards-const/cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
-import {LocalNotificationService} from "../../local-notification-service";
+import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
 import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({

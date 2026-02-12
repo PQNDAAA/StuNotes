@@ -12,7 +12,7 @@ import {provideHttpClient} from "@angular/common/http";
 import {provideTranslateService, TranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
-import {Settings} from "./settings";
+import {Settings} from "./settings/settings-service/settings";
 
 
 @NgModule({

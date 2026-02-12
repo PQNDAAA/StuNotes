@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {SplashScreen} from "@capacitor/splash-screen";
-import {Settings} from "./settings";
+import {Settings} from "./settings/settings-service/settings";
 import {Platform} from "@ionic/angular";
-import {Fcm} from "./fcm";
-import {LocalNotificationService} from "./local-notification-service";
+import {Fcm} from "./notifications/fcm/fcm";
+import {LocalNotificationService} from "./notifications/local-notification/local-notification-service";
 import {CardsService} from "./cards/cards-service/cards-service";
-import {LanguageService} from "./language-service";
+import {LanguageService} from "./language/language-service/language-service";
 import {TranslateService} from "@ngx-translate/core";
-import {ISettingsHome} from "./isettings-home";
+import {ISettingsHome} from "./settings/settings-interface/isettings-home";
 import {Router} from "@angular/router";
 
 @Component({

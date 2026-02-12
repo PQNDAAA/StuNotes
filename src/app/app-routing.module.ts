@@ -4,11 +4,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./navigation-bar/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
     path: 'notes',
-    loadChildren: () => import('./notes/notes.module').then( m => m.NotesPageModule)
+    loadChildren: () => import('./home/notes/notes.module').then(m => m.NotesPageModule)
   },
   {
     path: 'tags',
@@ -24,23 +24,23 @@ const routes: Routes = [
   },
   {
     path: 'notes-tab',
-    loadChildren: () => import('./notes-tab/notes-tab.module').then( m => m.NotesTabPageModule)
+    loadChildren: () => import('./home/notes-tab/notes-tab.module').then(m => m.NotesTabPageModule)
   },
   {
     path: 'settings-home',
-    loadChildren: () => import('./settings-home/settings-home.module').then( m => m.SettingsHomePageModule)
+    loadChildren: () => import('./settings/settings-home/settings-home.module').then(m => m.SettingsHomePageModule)
   },
   {
     path: 'settings-data-tags',
-    loadChildren: () => import('./settings-data-tags/settings-data-tags.module').then( m => m.SettingsDataTagsPageModule)
+    loadChildren: () => import('./settings/settings-data-tags/settings-data-tags.module').then(m => m.SettingsDataTagsPageModule)
   },
   {
     path: 'settings-data-notes',
-    loadChildren: () => import('./settings-data-notes/settings-data-notes.module').then( m => m.SettingsDataNotesPageModule)
+    loadChildren: () => import('./settings/settings-data-notes/settings-data-notes.module').then(m => m.SettingsDataNotesPageModule)
   },
   {
     path: 'account',
-    loadChildren: () => import('./account/account.module').then( m => m.AccountPageModule)
+    loadChildren: () => import('./profile/account/account.module').then(m => m.AccountPageModule)
   },
   {
     path: 'first-launch',
