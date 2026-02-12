@@ -15,12 +15,12 @@ import {Cardstatus} from "../../cards/cards-enum/cardstatus";
 export class NotesPage implements OnInit {
 
   cards$: Observable<Card[]>;
-
   results: Observable<Card[]>;
 
   currentStatus!: Cardstatus;
 
   hasResultData = true;
+  isSearching = false;
 
   query!: string;
 
@@ -40,13 +40,7 @@ export class NotesPage implements OnInit {
     const target = event.target as HTMLIonSearchbarElement;
     this.query = target.value?.toLowerCase() || '';
 
-    if(this.query.length > 0) {
-      this.results = this.cards$.pipe(
-        map(cards => cards.filter(c => c.name.toLowerCase().includes(this.query)
-          && c.status === this.currentStatus)));
-    } else {
-      this.onFilterChanged(this.currentStatus);
-    }
+    this.filterTasks();
   }
 
   doRefresh(event : any){
@@ -59,15 +53,27 @@ export class NotesPage implements OnInit {
 
   onFilterChanged(status: Cardstatus){
     this.currentStatus = status;
-    this.results = this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)));
+    if(this.isSearching){
+      this.filterTasks();
+    } else {
+      this.results = this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)));
 
-    this.results.subscribe(data => {
-      this.hasResultData = !(!data || data.length === 0);
-    })
+      this.results.subscribe(data => {
+        this.hasResultData = !(!data || data.length === 0);
+      })
+    }
+  }
 
-
-
-
+  filterTasks(){
+    if(this.query.length > 0) {
+      this.isSearching = true;
+      this.results = this.cards$.pipe(
+        map(cards => cards.filter(c => c.name.toLowerCase().includes(this.query)
+          && c.status === this.currentStatus)));
+    } else {
+      this.isSearching = false;
+      this.onFilterChanged(this.currentStatus);
+    }
   }
 
   ngOnInit() {
