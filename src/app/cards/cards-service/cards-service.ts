@@ -50,7 +50,7 @@ export class CardsService extends Dexie {
 
     const id = await this.cards.add(newCard);
 
-    if (newCard.status.trim() !== Cardstatus.Done) {
+    if (newCard.status.trim() !== Cardstatus.Done || newCard.status.trim() !== Cardstatus.Late) {
       newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
       this.cards.put(newCard);
     }

@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IonicModule, ModalController} from "@ionic/angular";
-import {RouterLink} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {ModalController} from "@ionic/angular";
 import {Settings} from "../settings-service/settings";
 import {ISettingsHome} from "../settings-interface/isettings-home";
-import {async, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
+import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
+import {CardsService} from "../../cards/cards-service/cards-service";
 
 @Component({
   selector: 'app-settings-home',
@@ -20,7 +21,8 @@ export class SettingsHomePage implements OnInit {
 
   isCondensate = false;
 
-  constructor(private mc : ModalController, private settingsservice: Settings, private translate: TranslateService) {
+  constructor(private mc: ModalController, private settingsservice: Settings, private translate: TranslateService,
+              private localNotification: LocalNotificationService, private cards: CardsService) {
     this.settings$ = this.settingsservice.settingsHome$;
     console.log(this.settings$);
   }
@@ -32,26 +34,26 @@ export class SettingsHomePage implements OnInit {
     });
   }
 
-  async onLanguageChange(event : any){
+  async onLanguageChange(event: any) {
     const detail = event.detail.value.trim();
     this.translate.use(detail);
     this.settings.currentLanguage = detail;
     await this.settingsservice.changeSettingsValue(this.settings);
   }
 
-  get getCurrentLanguage(): string{
+  get getCurrentLanguage(): string {
     return this.translate.getCurrentLang();
   }
 
-  get getAllLanguages(){
+  get getAllLanguages() {
     return this.translate.getLangs();
   }
 
-  onScroll(event: any){
+  onScroll(event: any) {
     const scrollTop = event.detail.scrollTop;
-    console.log("Scroll position ",scrollTop);
+    console.log("Scroll position ", scrollTop);
 
-    if(scrollTop > 60){
+    if (scrollTop > 60) {
       console.log("Atteint");
       this.isCondensate = true;
     } else {
@@ -60,15 +62,23 @@ export class SettingsHomePage implements OnInit {
     }
   }
 
-  async onToggle(settings: string,event: any){
+  async onToggle(settings: string, event: any) {
     const value = event.detail.checked;
 
     switch (settings) {
       case 'darkMode':
         this.settings.darkMode = value;
-        document.body.classList.toggle('dark',this.settings.darkMode);
+        document.body.classList.toggle('dark', this.settings.darkMode);
         break;
       case 'reminders':
+        const allCards = await this.cards.getCards();
+        if (!value) {
+          await this.localNotification.clearAll();
+        } else {
+          for (const card of allCards) {
+            await this.cards.updateCard(await this.localNotification.rebuildReminderForCard(card));
+          }
+        }
         this.settings.reminders = value;
         break;
       case 'urgentDeadlineAlerts':

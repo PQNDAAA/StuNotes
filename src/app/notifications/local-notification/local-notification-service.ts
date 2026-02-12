@@ -26,8 +26,10 @@ export class LocalNotificationService {
     await this.registerLocalNotifications();
   }
 
-  // A FAIRE : Quand on modifie une note statut en cours avec deja des rappels, si l'utilisateur veut modifier
-  // la date déjà saisi, il faut recalculer les rappels
+  async rebuildReminderForCard(card: Card) : Promise<Card> {
+    card.taskId = await this.CreateLocalNotification(this.CalculateSchedule(card),card);
+    return card;
+  }
 
   CalculateSchedule(card: Card) {
     const deadLineMs = new Date(card.deadline).getTime();
@@ -66,27 +68,27 @@ export class LocalNotificationService {
     }
     for (let alert of alerts) {
       const taskId = (card.id * 10) + alerts.indexOf(alert);
-      const title = this.translate.instant('NOTIFICATIONS.Title');
-      const body = this.translate.instant('NOTIFICATIONS.Body');
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            title: title + card.name,
-            body: body + new Date(card.deadline).toLocaleString(this.translate.getCurrentLang(), {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              hour: "numeric",
-              minute: "2-digit"
-            }) + " •" + card.tag,
-            id: taskId,
-            schedule: {at: new Date(alert.time)}, // Date précise
-            sound: 'default',
-            extra: {
-              cardId: card.id
-            }
-          }]
-      })
+        const title = this.translate.instant('NOTIFICATIONS.Title');
+        const body = this.translate.instant('NOTIFICATIONS.Body');
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: title + card.name,
+              body: body + new Date(card.deadline).toLocaleString(this.translate.getCurrentLang(), {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit"
+              }) + " •" + card.tag,
+              id: taskId,
+              schedule: {at: new Date(alert.time)}, // Date précise
+              sound: 'default',
+              extra: {
+                cardId: card.id
+              }
+            }]
+        });
       taskIds.push(taskId);
     }
     return taskIds;
