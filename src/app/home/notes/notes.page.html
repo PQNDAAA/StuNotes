@@ -6,7 +6,7 @@
 
 
   <div class="searchContainer">
-    <ion-searchbar (ionInput)="eventInput($event)" placeholder="{{'HOME.SearchBar' |translate}}"></ion-searchbar>
+    <ion-searchbar (ionInput)="eventInput($event)" [animated]="true" [debounce]="200" placeholder="{{'HOME.SearchBar' |translate}}"></ion-searchbar>
     <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
   </div>
 

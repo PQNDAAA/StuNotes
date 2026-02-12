@@ -40,9 +40,12 @@ export class NotesPage implements OnInit {
     const target = event.target as HTMLIonSearchbarElement;
     this.query = target.value?.toLowerCase() || '';
 
-    if(this.query) {
+    if(this.query.length > 0) {
       this.results = this.cards$.pipe(
-        map(cards => cards.filter(c => c.name.toLowerCase().includes(this.query))));
+        map(cards => cards.filter(c => c.name.toLowerCase().includes(this.query)
+          && c.status === this.currentStatus)));
+    } else {
+      this.onFilterChanged(this.currentStatus);
     }
   }
 
@@ -61,6 +64,10 @@ export class NotesPage implements OnInit {
     this.results.subscribe(data => {
       this.hasResultData = !(!data || data.length === 0);
     })
+
+
+
+
   }
 
   ngOnInit() {
