@@ -1,21 +1,3 @@
-#formbtn{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 4%
-}
-#validbtn, #cancelbtn{
-  width: 100%;
-  padding-bottom: 2%;
-}
-#validbtn{
-  --background: #ff8228;
-  --color: white;
-}
-#cancelbtn{
-  --background: white;
-  --color:black;
-}
 ion-title{
   text-align: center;
 }

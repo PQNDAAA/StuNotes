@@ -19,10 +19,6 @@ const routes: Routes = [
     loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
   },
   {
-    path: 'search',
-    loadChildren: () => import('./search/search.module').then( m => m.SearchPageModule)
-  },
-  {
     path: 'notes-tab',
     loadChildren: () => import('./home/notes-tab/notes-tab.module').then(m => m.NotesTabPageModule)
   },

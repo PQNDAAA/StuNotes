@@ -253,5 +253,32 @@ ion-item-option{
 }
 
 ion-fab-button{
+  --background: linear-gradient(135deg, #ff8228, #ffb347);
+  --background-activated: linear-gradient(135deg, #e6731f, #ff9a3d);
+}
+
+//FORMS
+
+#cancelbtn{
+  --background: white;
+  --color:black;
+  --background-activated: #e6e6e6;
+}
+
+#validbtn{
   --background: #ff8228;
+  --color: white;
+  --background-activated: #e6731f;
+}
+
+#validbtn, #cancelbtn{
+  width: 100%;
+  padding-bottom: 2%;
+}
+
+.formbtn{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 4%
 }

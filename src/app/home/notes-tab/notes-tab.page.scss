@@ -9,7 +9,7 @@ ion-segment-button{
   min-width: 115px;
   min-height: 45px;
   --color-checked: #000;
-  --indicator-color: #ff8228;
+  --indicator-color: linear-gradient(135deg, #ff8228, #ffb347);
   justify-content: center;
   margin: 2px;
   transition: transform 120ms ease, box-shadow 120ms ease;
