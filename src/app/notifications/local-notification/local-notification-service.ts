@@ -141,6 +141,9 @@ export class LocalNotificationService {
           }
         }
       } else {
+        if(!this.settings.reminders) {
+          await this.clearAll();
+        }
         console.log(this.getAllScheduled());
       }
     })
