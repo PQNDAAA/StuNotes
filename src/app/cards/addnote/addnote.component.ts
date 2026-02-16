@@ -61,6 +61,7 @@ export class AddnoteComponent implements OnInit {
     }
   }
 
+  // Fonction pour vérifier la visibilité de la date d'échéance, (si on l'affiche ou non)
   checkVisibilityDeadline(): boolean {
     return this.noDeadLineVisibility = !(this.isEditable
       && this.currentStatus !== Cardstatus.Done
