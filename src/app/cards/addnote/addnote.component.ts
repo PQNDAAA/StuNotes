@@ -27,7 +27,9 @@ export class AddnoteComponent implements OnInit {
   tags!: Tags[];
   statusValues = Object.values(Cardstatus);
   currentStatus: Cardstatus = Cardstatus.Open;
+
   minDeadline: string;
+  noDeadLineVisibility: boolean = false;
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService,
               private cardStatusService: CardStatusService, private translate: TranslateService) {
@@ -39,23 +41,8 @@ export class AddnoteComponent implements OnInit {
 
   ngOnInit() {
     this.currentStatus = this.card.status;
-    this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late);
-  }
-
-  get getCurrentLang(): string {
-    return this.translate.getCurrentLang();
-  }
-
-  getStatus(key: Cardstatus): string {
-    return this.cardStatusService.getStatus(key);
-  }
-
-  async getTags() {
-    this.tags = await this.ts.getTags();
-  }
-
-  async closePopUp() {
-    await this.mc.dismiss(null, 'cancel');
+    this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late); // On filtre les statuts
+    this.checkVisibilityDeadline(); // On vérifie la visibilité de la date d'échéance, (si on l'affiche ou non)
   }
 
   async valid(form: NgForm) {
@@ -70,5 +57,32 @@ export class AddnoteComponent implements OnInit {
     }
   }
 
-  protected readonly Cardstatus = Cardstatus;
+  checkVisibilityDeadline(): boolean {
+    return this.noDeadLineVisibility = !(this.isEditable
+      && this.currentStatus !== Cardstatus.Done
+      && this.currentStatus !== Cardstatus.Late || !this.isEditable);
+  }
+
+  onChangeStatus(event: any){
+    const value = event.target.value;
+    if(value !== Cardstatus.Late && this.currentStatus === Cardstatus.Late) {
+      this.noDeadLineVisibility = false
+    }
+  }
+
+  async closePopUp() {
+    await this.mc.dismiss(null, 'cancel');
+  }
+
+  get getCurrentLang(): string {
+    return this.translate.getCurrentLang();
+  }
+
+  getStatus(key: Cardstatus): string {
+    return this.cardStatusService.getStatus(key);
+  }
+
+  async getTags() {
+    this.tags = await this.ts.getTags();
+  }
 }

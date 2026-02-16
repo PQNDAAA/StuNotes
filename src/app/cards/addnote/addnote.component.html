@@ -29,22 +29,22 @@
           </ion-select-option>
         </ion-select>
       </ion-item>
-      <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
+      <ion-item>
         <ion-label>{{ 'TASKS.Status' | translate }}*</ion-label>
-        <ion-select interface="popover" [(ngModel)]="card.status" name="taskStatus" [required]="true">
+        <ion-select (ionChange)="onChangeStatus($event)" interface="popover" [(ngModel)]="card.status" name="taskStatus" [required]="true">
           <ion-select-option *ngFor="let status of statusValues" [value]="status">
             {{ getStatus(status) }}
           </ion-select-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="isEditable && currentStatus.trim() !== Cardstatus.Late || !isEditable">
+      <ion-item>
         <ion-label>{{ 'TASKS.Deadline' | translate }}*</ion-label>
-        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-datetime-button datetime="datetime" [disabled]="noDeadLineVisibility"></ion-datetime-button>
 
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime" [locale]="getCurrentLang" [(ngModel)]="this.card.deadline"
+            <ion-datetime id="datetime"  [disabled]="noDeadLineVisibility" [locale]="getCurrentLang" [(ngModel)]="this.card.deadline"
                           [min]="minDeadline" name="taskDeadline" [required]="true"></ion-datetime>
           </ng-template>
         </ion-modal>
