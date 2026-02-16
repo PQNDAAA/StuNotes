@@ -41,8 +41,12 @@ export class AddnoteComponent implements OnInit {
 
   ngOnInit() {
     this.currentStatus = this.card.status;
-    this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late); // On filtre les statuts
-    this.checkVisibilityDeadline(); // On vérifie la visibilité de la date d'échéance, (si on l'affiche ou non)
+
+    // On filtre les statuts
+    this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late);
+
+    // On vérifie la visibilité de la date d'échéance, (si on l'affiche ou non)
+    this.checkVisibilityDeadline();
   }
 
   async valid(form: NgForm) {
@@ -63,9 +67,9 @@ export class AddnoteComponent implements OnInit {
       && this.currentStatus !== Cardstatus.Late || !this.isEditable);
   }
 
-  onChangeStatus(event: any){
+  onChangeStatus(event: any) {
     const value = event.target.value;
-    if(value !== Cardstatus.Late && this.currentStatus === Cardstatus.Late) {
+    if (value !== Cardstatus.Late && this.currentStatus === Cardstatus.Late) {
       this.noDeadLineVisibility = false
     }
   }
