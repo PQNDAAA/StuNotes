@@ -22,11 +22,11 @@ export class AddnoteComponent implements OnInit {
     taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
     status: Cardstatus.Open, createdAt: new Date(), description: "", name: "", tag: ""
   }
+  cardEdited!: Card;
 
   @Input() isEditable: boolean = false;
   tags!: Tags[];
   statusValues = Object.values(Cardstatus);
-  currentStatus: Cardstatus = Cardstatus.Open;
 
   minDeadline: string;
   noDeadLineVisibility: boolean = false;
@@ -40,10 +40,8 @@ export class AddnoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentStatus = this.card.status;
-
-    // On filtre les statuts
-    this.statusValues = this.statusValues.filter(value => value !== Cardstatus.Late);
+    this.cardEdited = structuredClone(this.card);
+    console.log(this.cardEdited);
 
     // On vérifie la visibilité de la date d'échéance, (si on l'affiche ou non)
     this.checkVisibilityDeadline();
@@ -52,9 +50,9 @@ export class AddnoteComponent implements OnInit {
   async valid(form: NgForm) {
     if (form.valid) {
       if (!this.isEditable) {
-        await this.cs.addCard(this.card);
+        await this.cs.addCard(this.cardEdited);
       } else {
-        await this.cs.updateCard(this.card);
+        await this.cs.updateCard(this.cardEdited);
         this.isEditable = false;
       }
       await this.mc.dismiss();
@@ -64,13 +62,13 @@ export class AddnoteComponent implements OnInit {
   // Fonction pour vérifier la visibilité de la date d'échéance, (si on l'affiche ou non)
   checkVisibilityDeadline(): boolean {
     return this.noDeadLineVisibility = !(this.isEditable
-      && this.currentStatus !== Cardstatus.Done
-      && this.currentStatus !== Cardstatus.Late || !this.isEditable);
+      && this.cardEdited.status !== Cardstatus.Done
+      && this.cardEdited.status !== Cardstatus.Late || !this.isEditable);
   }
 
   onChangeStatus(event: any) {
     const value = event.target.value;
-    if (value !== Cardstatus.Late && this.currentStatus === Cardstatus.Late) {
+    if (value !== Cardstatus.Late && this.cardEdited.status === Cardstatus.Late) {
       this.noDeadLineVisibility = false
     }
   }

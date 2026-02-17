@@ -10,20 +10,20 @@
   <form #taskForm="ngForm">
     <ion-list lines="none">
       <ion-item>
-        <ion-input [label]="('TASKS.NoteTitle' | translate)+'*'" [(ngModel)]="this.card.name" labelPlacement="fixed"
+        <ion-input [label]="('TASKS.NoteTitle' | translate)+'*'" [(ngModel)]="cardEdited.name" labelPlacement="fixed"
                    [clearInput]="true" [counter]="true" [maxlength]="30"
                    [placeholder]="('TASKS.NoteTitlePlaceholder' | translate)" name="taskName"
                    [required]="true"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-textarea label="Description*" [(ngModel)]="this.card.description" labelPlacement="fixed" [autoGrow]="true"
+        <ion-textarea label="Description*" [(ngModel)]="cardEdited.description" labelPlacement="fixed" [autoGrow]="true"
                       [placeholder]="('TASKS.DescriptionPlaceholder' | translate)" [counter]="true"
                       [maxlength]="300" name="taskDescription" [required]="true"></ion-textarea>
       </ion-item>
       <ion-item>
         <ion-label>{{ 'TASKS.Subject' | translate }}*</ion-label>
         <ion-select [placeholder]="('TASKS.SubjectPlaceholder' | translate)" interface="popover"
-                    [(ngModel)]="card.tag" name="taskSubject" [required]="true">
+                    [(ngModel)]="cardEdited.tag" name="taskSubject" [required]="true">
           <ion-select-option *ngFor="let tag of tags">
             {{ tag.name }}
           </ion-select-option>
@@ -31,8 +31,10 @@
       </ion-item>
       <ion-item>
         <ion-label>{{ 'TASKS.Status' | translate }}*</ion-label>
-        <ion-select (ionChange)="onChangeStatus($event)" interface="popover" [(ngModel)]="card.status" name="taskStatus" [required]="true">
-          <ion-select-option *ngFor="let status of statusValues" [value]="status">
+        <ion-select (ionChange)="onChangeStatus($event)" interface="popover" [(ngModel)]="cardEdited.status" name="taskStatus"
+                    [required]="true">
+          <ion-select-option *ngFor="let status of statusValues" [value]="status"
+                             [disabled]="status === 'Late'">
             {{ getStatus(status) }}
           </ion-select-option>
         </ion-select>
@@ -44,14 +46,15 @@
 
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime"  [disabled]="noDeadLineVisibility" [locale]="getCurrentLang" [(ngModel)]="this.card.deadline"
+            <ion-datetime id="datetime" [disabled]="noDeadLineVisibility" [locale]="getCurrentLang"
+                          [(ngModel)]="cardEdited.deadline"
                           [min]="minDeadline" name="taskDeadline" [required]="true"></ion-datetime>
           </ng-template>
         </ion-modal>
       </ion-item>
 
       <ion-item>
-        <ion-checkbox [(ngModel)]="this.card.important" name="taskImportant">Important</ion-checkbox>
+        <ion-checkbox [(ngModel)]="cardEdited.important" name="taskImportant">Important</ion-checkbox>
       </ion-item>
     </ion-list>
 
