@@ -142,7 +142,8 @@ export class CardsService extends Dexie {
 
   toLocalISOString(date: Date) {
     const offset = date.getTimezoneOffset() * 60000; // retourne juste un nombre en ms
-    return new Date(date.getTime() - offset).toISOString().slice(0, -1);
+    const minBuffer = 30*60*1000; //On définit un min buffer pour bien calculer les rappels intelligents
+    return new Date(date.getTime() - offset + minBuffer).toISOString().slice(0, -1);
     // GetTime va nous servir a ajuster la date par rapport a notre offset (ex : date en UTC , offset = -60min donc
     // date = UTC + 60min ce qui donne la date au moment present
   }

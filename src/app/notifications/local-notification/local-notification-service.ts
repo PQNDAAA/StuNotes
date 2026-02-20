@@ -60,6 +60,13 @@ export class LocalNotificationService {
     }
   }
 
+  generateDynamicOffSets(card: Card, n : number = 5, minWindow: number = 0.2, maxWindow: number = 360) {
+
+    const f = 1; // 1 pour faire une longue ligne linéaire constante durant date échéance.
+    const fractions = [0.25,0.5,0.75,0.9,0.99].slice(0,n);
+
+  }
+
   async CreateLocalNotification(alerts: any[], card: Card) {
     const taskIds = [];
 
