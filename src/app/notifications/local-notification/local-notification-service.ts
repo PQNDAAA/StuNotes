@@ -40,6 +40,8 @@ export class LocalNotificationService {
       return [];
     }
 
+    this.generateDynamicOffSets(card,0.85, 0,2,1,360);
+
     if (diff > 48 * 60 * 60 * 1000) {
       return [{title: '24h', time: deadLineMs - 24 * 60 * 60 * 1000},
         {title: '12h', time: deadLineMs - 12 * 60 * 60 * 1000},
@@ -60,10 +62,23 @@ export class LocalNotificationService {
     }
   }
 
-  generateDynamicOffSets(card: Card, n : number = 5, minWindow: number = 0.2, maxWindow: number = 360) {
+  generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) {
+    const fractions = [0.25,0.5,0.9,0.99].slice(a,n);
+    const deadlineFractions = 1;
+// Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
+    fractions.push(deadlineFractions);
 
-    const f = 1; // 1 pour faire une longue ligne linéaire constante durant date échéance.
-    const fractions = [0.25,0.5,0.75,0.9,0.99].slice(0,n);
+    const deadLineMs = new Date(card.deadline).getTime();
+    const diffMs = deadLineMs - Date.now();
+
+    const minWindowMs = minWindowHours*60*60*1000;
+    const maxWindowMs = maxWindowHours*60*60*1000;
+
+    const windowMs = Math.min(Math.max(f * diffMs, minWindowMs),maxWindowMs);
+
+    const reminders = fractions.map(f => new Date(deadLineMs - windowMs + windowMs * f));
+
+    console.log(reminders);
 
   }
 
