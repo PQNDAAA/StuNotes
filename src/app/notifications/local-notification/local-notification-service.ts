@@ -46,24 +46,6 @@ export class LocalNotificationService {
     return this.generateDynamicOffSets(card, f, numberReminders[0], numberReminders[1]);
   }
 
-  computeDynamicNumberReminders(diffMs: number) {
-    if (diffMs > 360 * 60 * 60 * 1000) return [0,4];
-    if (diffMs > 72 * 60 * 60 * 1000) return [0,4];
-    if (diffMs > 24 * 60 * 60 * 1000) return [0,3];
-    if (diffMs > 6 * 60 * 60 * 1000) return [1,3];
-    if (diffMs > 2 * 60 * 60 * 1000) return [1,2];
-    return [1,2];
-  }
-
-  computeDynamicF(diffMs: number) {
-    if (diffMs > 360 * 60 * 60 * 1000) return 0.4;
-    if (diffMs > 72 * 60 * 60 * 1000) return 0.46;
-    if (diffMs > 24 * 60 * 60 * 1000) return 0.55;
-    if (diffMs > 6 * 60 * 60 * 1000) return 0.7;
-    if (diffMs > 2 * 60 * 60 * 1000) return 0.85;
-    return 0.95;
-  }
-
 // Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
   generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) : Date[] {
     const fractions = [0.25,0.5,0.85,0.975].slice(a,n);
@@ -119,11 +101,6 @@ export class LocalNotificationService {
     return taskIds;
   }
 
-  async getAllScheduled() {
-    const list = await LocalNotifications.getPending();
-    return list.notifications;
-  }
-
   async clearScheduled(ids: number[]) {
     const allScheduled = await this.getAllScheduled();
     console.log(ids);
@@ -140,17 +117,6 @@ export class LocalNotificationService {
     }
     const stillScheduled = await this.getAllScheduled();
     console.log("Voici les notifications actuelles : ", stillScheduled);
-  }
-
-  async clearAll() {
-    const list = await LocalNotifications.getPending();
-
-    if (list.notifications.length !== 0) {
-      await LocalNotifications.cancel(await LocalNotifications.getPending());
-      console.log("Toutes les notifications ont été supprimées");
-    } else {
-      console.log("Pas de notifications à supprimer");
-    }
   }
 
   private async registerLocalNotifications() {
@@ -184,5 +150,39 @@ export class LocalNotificationService {
       const id = notification.notification.extra.cardId;
       this.notificationActionPerformed$.next(id);
     })
+  }
+
+  async clearAll() {
+    const list = await LocalNotifications.getPending();
+
+    if (list.notifications.length !== 0) {
+      await LocalNotifications.cancel(await LocalNotifications.getPending());
+      console.log("Toutes les notifications ont été supprimées");
+    } else {
+      console.log("Pas de notifications à supprimer");
+    }
+  }
+
+  computeDynamicNumberReminders(diffMs: number) {
+    if (diffMs > 360 * 60 * 60 * 1000) return [0,4];
+    if (diffMs > 72 * 60 * 60 * 1000) return [0,4];
+    if (diffMs > 24 * 60 * 60 * 1000) return [0,3];
+    if (diffMs > 6 * 60 * 60 * 1000) return [1,3];
+    if (diffMs > 2 * 60 * 60 * 1000) return [1,2];
+    return [1,2];
+  }
+
+  computeDynamicF(diffMs: number) {
+    if (diffMs > 360 * 60 * 60 * 1000) return 0.4;
+    if (diffMs > 72 * 60 * 60 * 1000) return 0.46;
+    if (diffMs > 24 * 60 * 60 * 1000) return 0.55;
+    if (diffMs > 6 * 60 * 60 * 1000) return 0.7;
+    if (diffMs > 2 * 60 * 60 * 1000) return 0.85;
+    return 0.95;
+  }
+
+  async getAllScheduled() {
+    const list = await LocalNotifications.getPending();
+    return list.notifications;
   }
 }
