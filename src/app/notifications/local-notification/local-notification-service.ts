@@ -31,7 +31,7 @@ export class LocalNotificationService {
     return card;
   }
 
-  CalculateSchedule(card: Card) {
+  CalculateSchedule(card: Card): Date[] {
     const deadLineMs = new Date(card.deadline).getTime();
     const now = Date.now();
     const diff = deadLineMs - now;
@@ -40,32 +40,34 @@ export class LocalNotificationService {
       return [];
     }
 
-    this.generateDynamicOffSets(card,0.85, 0,2,1,360);
+    const f = this.computeDynamicF(diff);
+    const numberReminders = this.computeDynamicNumberReminders(diff);
 
-    if (diff > 48 * 60 * 60 * 1000) {
-      return [{title: '24h', time: deadLineMs - 24 * 60 * 60 * 1000},
-        {title: '12h', time: deadLineMs - 12 * 60 * 60 * 1000},
-        {title: '2h', time: deadLineMs - 2 * 60 * 60 * 1000},
-        {title: '15min', time: deadLineMs - 15 * 60 * 1000}]; // 24h, 12h, 2h et 15min avant
-    } else if (diff > 24 * 60 * 60 * 1000) {
-      return [{title: '12h', time: deadLineMs - 12 * 60 * 60 * 1000},
-        {title: '2h', time: deadLineMs - 2 * 60 * 60 * 1000},
-        {title: '15min', time: deadLineMs - 15 * 60 * 1000}]; // 12h, 2h et 15min avant
-    } else if (diff > 6 * 60 * 60 * 1000) {
-      return [{title: '4h', time: deadLineMs - 4 * 60 * 60 * 1000},
-        {title: '30min', time: deadLineMs - 30 * 60 * 1000}]; // 4h et 30min avant
-    } else if (diff > 2 * 60 * 60 * 1000) {
-      return [{title: '1h', time: deadLineMs - 60 * 60 * 1000},
-        {title: '15min', time: deadLineMs - 15 * 60 * 1000}];  //1h et 15min avant
-    } else {
-      return [{title: 'Half Time', time: deadLineMs - Math.floor(diff / 2)}]; //A la moitié du temps
-    }
+    return this.generateDynamicOffSets(card, f, numberReminders[0], numberReminders[1]);
   }
 
-  generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) {
-    const fractions = [0.25,0.5,0.9,0.99].slice(a,n);
-    const deadlineFractions = 1;
+  computeDynamicNumberReminders(diffMs: number) {
+    if (diffMs > 360 * 60 * 60 * 1000) return [0,4];
+    if (diffMs > 72 * 60 * 60 * 1000) return [0,4];
+    if (diffMs > 24 * 60 * 60 * 1000) return [0,3];
+    if (diffMs > 6 * 60 * 60 * 1000) return [1,3];
+    if (diffMs > 2 * 60 * 60 * 1000) return [1,2];
+    return [1,2];
+  }
+
+  computeDynamicF(diffMs: number) {
+    if (diffMs > 360 * 60 * 60 * 1000) return 0.4;
+    if (diffMs > 72 * 60 * 60 * 1000) return 0.46;
+    if (diffMs > 24 * 60 * 60 * 1000) return 0.55;
+    if (diffMs > 6 * 60 * 60 * 1000) return 0.7;
+    if (diffMs > 2 * 60 * 60 * 1000) return 0.85;
+    return 0.95;
+  }
+
 // Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
+  generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) : Date[] {
+    const fractions = [0.25,0.5,0.85,0.975].slice(a,n);
+    const deadlineFractions = 1;
     fractions.push(deadlineFractions);
 
     const deadLineMs = new Date(card.deadline).getTime();
@@ -73,16 +75,17 @@ export class LocalNotificationService {
 
     const minWindowMs = minWindowHours*60*60*1000;
     const maxWindowMs = maxWindowHours*60*60*1000;
-
     const windowMs = Math.min(Math.max(f * diffMs, minWindowMs),maxWindowMs);
 
     const reminders = fractions.map(f => new Date(deadLineMs - windowMs + windowMs * f));
 
+    console.log(fractions);
     console.log(reminders);
+    return reminders;
 
   }
 
-  async CreateLocalNotification(alerts: any[], card: Card) {
+  async CreateLocalNotification(alerts: Date[], card: Card) {
     const taskIds = [];
 
     if (alerts.length === 0 || card.id === undefined) {
@@ -104,7 +107,7 @@ export class LocalNotificationService {
                 minute: "2-digit"
               }) + " •" + card.tag,
               id: taskId,
-              schedule: {at: new Date(alert.time)}, // Date précise
+              schedule: {at: alert}, // Date précise
               sound: 'default',
               extra: {
                 cardId: card.id
