@@ -6,7 +6,15 @@
 
 
   <div class="searchContainer">
-    <ion-searchbar (ionInput)="eventInput($event)" [animated]="true" [debounce]="200" placeholder="{{'HOME.SearchBar' |translate}}"></ion-searchbar>
+
+    <div class="filterBar">
+      <ion-searchbar (ionInput)="eventInput($event)" [animated]="true" [debounce]="200"
+                     placeholder="{{'HOME.SearchBar' |translate}}"></ion-searchbar>
+      <ion-button fill="clear" class="filterBtn">
+        <ion-icon name="filter-outline"></ion-icon>
+      </ion-button>
+    </div>
+
     <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
   </div>
 
@@ -16,7 +24,7 @@
   </div>
 
   <div class="emptyData" *ngIf="!hasResultData && !query">
-  <ion-label>{{'HOME.EmptyData' | translate}}</ion-label>
+    <ion-label>{{ 'HOME.EmptyData' | translate }}</ion-label>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
