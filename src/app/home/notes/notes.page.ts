@@ -40,6 +40,7 @@ export class NotesPage implements OnInit {
 
   constructor(private mc : ModalController, private cs : CardsService) {
     this.cards$ = this.cs.cards$;
+
     this.cardsByFilters$ = combineLatest([
       this.cards$,
       this.searchFilter$,
