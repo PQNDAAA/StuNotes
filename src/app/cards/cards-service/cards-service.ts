@@ -21,6 +21,7 @@ export class CardsService extends Dexie {
 
   statusColors = CardstatusColors;
 
+
   constructor(private mc: ModalController, private lns: LocalNotificationService, private ac: AlertController,
   private translate: TranslateService ) {
     super('CardsDB');
@@ -119,7 +120,8 @@ export class CardsService extends Dexie {
   }
 
   filterCardsCount(status: Cardstatus): Observable<number> {
-    return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status).length));
+    return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)
+      .length));
   }
 
   async removeTaskId(id: number) {

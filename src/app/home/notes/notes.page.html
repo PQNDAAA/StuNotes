@@ -10,15 +10,27 @@
     <div class="filterBar">
       <ion-searchbar (ionInput)="eventInput($event)" [animated]="true" [debounce]="200"
                      placeholder="{{'HOME.SearchBar' |translate}}"></ion-searchbar>
-      <ion-button fill="clear" class="filterBtn">
+      <ion-button fill="clear" class="filterBtn" id="click-trigger">
         <ion-icon name="filter-outline"></ion-icon>
       </ion-button>
+      <ion-popover trigger="click-trigger" triggerAction="click">
+        <ng-template>
+          <ion-content class="ion-padding">
+            <ion-list>
+              <ion-label>Filtrer :</ion-label>
+              <ion-item>
+                <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important" name="taskImportant">Important</ion-checkbox>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
     </div>
 
     <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
   </div>
 
-  <div *ngFor="let card of results | async">
+  <div *ngFor="let card of results$ | async">
     <app-notecard [card]="card">
     </app-notecard>
   </div>

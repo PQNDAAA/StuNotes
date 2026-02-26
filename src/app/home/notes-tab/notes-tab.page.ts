@@ -40,7 +40,6 @@ export class NotesTabPage implements OnInit {
     const value = event.detail.value as Cardstatus | undefined;
 
     if (!value) return;
-
     this.filterChanged.emit(value);
   }
 

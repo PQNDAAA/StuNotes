@@ -2,9 +2,11 @@
 <ion-segment [value]="cardStatus.InProgress" (ionChange)="onSegmentChange($event)" [scrollable]="true">
 
   <ion-segment-button *ngFor="let status of allStatus" [value]="status">
-    <div class="segment-item">
+    <div class="segment-item" >
       <ion-label>{{getStatus(status)}}</ion-label>
-      <ion-badge [ngStyle]="{'background-color': getStatusColor(status)}">{{filterCardsCount(status)| async}}</ion-badge>
+      <ion-badge [ngStyle]="{'background-color': getStatusColor(status)}">
+        {{filterCardsCount(status)| async}}
+      </ion-badge>
     </div>
   </ion-segment-button>
 

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../../cards/addnote/addnote.component";
-import { CardsService } from "../../cards/cards-service/cards-service";
-import {map, Observable} from "rxjs";
+import {CardsService} from "../../cards/cards-service/cards-service";
+import {BehaviorSubject, combineLatest, map, Observable, tap} from "rxjs";
 import {Card} from "../../cards/cards-interface/card";
 import {Cardstatus} from "../../cards/cards-enum/cardstatus";
+import {FilterInterface} from "../filter/interface/filter-interface";
 
 @Component({
   selector: 'app-notes',
@@ -14,19 +15,77 @@ import {Cardstatus} from "../../cards/cards-enum/cardstatus";
 })
 export class NotesPage implements OnInit {
 
+  //Data source
   cards$: Observable<Card[]>;
-  results: Observable<Card[]>;
 
-  currentStatus!: Cardstatus;
+  //Filters streams
+  private statusFilter$ = new BehaviorSubject<Cardstatus>(Cardstatus.InProgress);
+  private searchFilter$ = new BehaviorSubject<string>('');
+  private importantFilter$ = new BehaviorSubject<boolean>(false);
 
+  countCards = new Map<Cardstatus, number>();
+
+  //Output view
+  results$: Observable<Card[]>;
+  cardsByFilters$: Observable<Card[]>;
   hasResultData = true;
-  isSearching = false;
 
-  query!: string;
+  defaultStatus = Cardstatus.InProgress;
+
+  query = '';
+
+  filter: FilterInterface = {
+    important: false,
+  };
 
   constructor(private mc : ModalController, private cs : CardsService) {
     this.cards$ = this.cs.cards$;
-    this.results = this.cards$;
+    this.cardsByFilters$ = combineLatest([
+      this.cards$,
+      this.searchFilter$,
+      this.importantFilter$
+    ]).pipe(
+      map(([cards, query, important]) => {
+
+        return cards.filter(card => {
+
+          const matchSearch = query
+            ? card.name.toLowerCase().includes(query)
+            : true;
+
+          const matchImportant = important
+            ? card.important === true
+            : true;
+
+          return matchSearch && matchImportant;
+        });
+      })
+    );
+
+    this.results$ = combineLatest([
+      this.statusFilter$,
+      this.cardsByFilters$
+    ]).pipe(
+      map(([status,cardsFilter]) => {
+
+        return cardsFilter.filter(card => {
+
+          Object.values(Cardstatus).forEach((status) => {
+            this.countCards.set(status,cardsFilter.filter(card => card.status === status).length);
+          })
+          console.log(this.countCards);
+
+          return card.status.trim() === status;
+        });
+      }),
+      tap(cards => this.hasResultData = cards.length > 0)
+    );
+
+  }
+
+  ngOnInit() {
+    this.statusFilter$.next(this.defaultStatus);
+
   }
 
   async openPopup(){
@@ -40,7 +99,7 @@ export class NotesPage implements OnInit {
     const target = event.target as HTMLIonSearchbarElement;
     this.query = target.value?.toLowerCase() || '';
 
-    this.filterTasks();
+    this.searchFilter$.next(this.query);
   }
 
   doRefresh(event : any){
@@ -51,35 +110,11 @@ export class NotesPage implements OnInit {
     })
   }
 
+  onFilterImportantChanged(){
+    this.importantFilter$.next(this.filter.important);
+  }
+
   onFilterChanged(status: Cardstatus){
-    this.currentStatus = status;
-    if(this.isSearching){
-      this.filterTasks();
-    } else {
-      this.results = this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)));
-
-      this.results.subscribe(data => {
-        this.hasResultData = !(!data || data.length === 0);
-      })
-    }
+    this.statusFilter$.next(status);
   }
-
-  filterTasks(){
-    if(this.query.length > 0) {
-      this.isSearching = true;
-      this.results = this.cards$.pipe(
-        map(cards => cards.filter(c => c.name.toLowerCase().includes(this.query)
-          && c.status === this.currentStatus)));
-    } else {
-      this.isSearching = false;
-      this.onFilterChanged(this.currentStatus);
-    }
-  }
-
-  ngOnInit() {
-  }
-  ionViewWillEnter(){
-   // this.cards = this.cs.getCards();
-  }
-
 }
