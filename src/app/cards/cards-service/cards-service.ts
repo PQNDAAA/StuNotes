@@ -17,6 +17,9 @@ export class CardsService extends Dexie {
   private cardsSubject = new BehaviorSubject<Card[]>([]);
   cards$ = this.cardsSubject.asObservable();
 
+  private countCards = new BehaviorSubject<Map<Cardstatus,number>>(new Map());
+  countCards$ = this.countCards.asObservable();
+
   cards!: Table<Card, number>;
 
   statusColors = CardstatusColors;
@@ -46,6 +49,15 @@ export class CardsService extends Dexie {
     this.cardsSubject.next(allCards);
   }
 
+  refreshCountCards(cardsFilter: Card[]) {
+    const countCards = new Map<Cardstatus,number>();
+
+    Object.values(Cardstatus).forEach((status) => {
+      countCards.set(status,cardsFilter.filter(card => card.status === status).length);
+    })
+    this.countCards.next(countCards);
+  }
+
   async addCard(card: Card) {
     const newCard: Card = card;
 
@@ -71,7 +83,6 @@ export class CardsService extends Dexie {
 
       await this.refreshCards();
       await Haptics.impact({style: ImpactStyle.Medium});
-      console.log(this.getCards());
     } else {
       console.log("ID Error");
     }

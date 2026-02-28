@@ -23,7 +23,9 @@ export class NotesPage implements OnInit {
   private searchFilter$ = new BehaviorSubject<string>('');
   private importantFilter$ = new BehaviorSubject<boolean>(false);
 
-  countCards = new Map<Cardstatus, number>();
+
+
+  countCards = new Map<Cardstatus, number>(); // OK
 
   //Output view
   results$: Observable<Card[]>;
@@ -60,7 +62,9 @@ export class NotesPage implements OnInit {
 
           return matchSearch && matchImportant;
         });
-      })
+      }),
+      tap(cardsFilter => this.cs.refreshCountCards(cardsFilter)),
+      tap(cardsFilter => console.log("Cartes Filtrées: ",cardsFilter))
     );
 
     this.results$ = combineLatest([
@@ -68,24 +72,23 @@ export class NotesPage implements OnInit {
       this.cardsByFilters$
     ]).pipe(
       map(([status,cardsFilter]) => {
-
         return cardsFilter.filter(card => {
-
-          Object.values(Cardstatus).forEach((status) => {
-            this.countCards.set(status,cardsFilter.filter(card => card.status === status).length);
-          })
-          console.log(this.countCards);
-
-          return card.status.trim() === status;
-        });
+          return card.status.trim() === status;});
       }),
       tap(cards => this.hasResultData = cards.length > 0)
     );
+
+
 
   }
 
   ngOnInit() {
     this.statusFilter$.next(this.defaultStatus);
+
+
+    this.cs.countCards$.subscribe(cards => {
+      console.log(cards);
+    })
 
   }
 

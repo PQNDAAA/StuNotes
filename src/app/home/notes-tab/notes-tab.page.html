@@ -5,7 +5,7 @@
     <div class="segment-item" >
       <ion-label>{{getStatus(status)}}</ion-label>
       <ion-badge [ngStyle]="{'background-color': getStatusColor(status)}">
-        {{filterCardsCount(status)| async}}
+        {{filterCardsCount(status)}}
       </ion-badge>
     </div>
   </ion-segment-button>
