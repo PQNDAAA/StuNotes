@@ -70,6 +70,11 @@
     "Title": "Filter",
     "Priority": "By Priority : ",
     "Subjects": "By Subject : ",
-    "Date": "By Date : "
+    "Date": "By Date : ",
+    "None": "None",
+    "Today": "Today",
+    "Soon": "Expires soon",
+    "Week": "This week",
+    "Month": "This month"
   }
 }

@@ -38,6 +38,17 @@
                 <ion-item-divider>
                   <ion-label>{{ 'FILTER.Date' | translate }}</ion-label>
                 </ion-item-divider>
+                <ion-radio-group name="dateFilter" [(ngModel)]="filter.date" (ionChange)="onFilterDateChanged()">
+                  <ion-item>
+                    <ion-label>{{ 'FILTER.None' | translate }}</ion-label>
+                    <ion-radio [value]="null"></ion-radio>
+                  </ion-item>
+
+                <ion-item *ngFor="let date of allFilterDate">
+                  <ion-label>{{getDateValueString(date)}}</ion-label>
+                  <ion-radio slot="end" [value]="date"></ion-radio>
+                </ion-item>
+                </ion-radio-group>
               </ion-item-group>
             </ion-list>
           </ion-content>
