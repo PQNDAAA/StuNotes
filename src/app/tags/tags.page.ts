@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ModalController } from "@ionic/angular";
 import {AddtagComponent} from "./addtag/addtag.component";
-import {Tags} from "./tags";
+import {Tags} from "./tags-interface/tags";
 import {TagsService} from "./tags-service/tags-service";
 import {Observable} from "rxjs";
 

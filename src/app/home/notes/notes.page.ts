@@ -6,6 +6,8 @@ import {BehaviorSubject, combineLatest, map, Observable, tap} from "rxjs";
 import {Card} from "../../cards/cards-interface/card";
 import {Cardstatus} from "../../cards/cards-enum/cardstatus";
 import {FilterInterface} from "../filter/interface/filter-interface";
+import {TagsService} from "../../tags/tags-service/tags-service";
+import {Tags} from "../../tags/tags-interface/tags";
 
 @Component({
   selector: 'app-notes',
@@ -17,11 +19,13 @@ export class NotesPage implements OnInit {
 
   //Data source
   cards$: Observable<Card[]>;
+  subjects$: Observable<Tags[]>;
 
   //Filters streams
   private statusFilter$ = new BehaviorSubject<Cardstatus>(Cardstatus.InProgress);
   private searchFilter$ = new BehaviorSubject<string>('');
   private importantFilter$ = new BehaviorSubject<boolean>(false);
+  private subjectsFilter$ = new BehaviorSubject<Map<string,boolean>>(new Map());
 
 
 
@@ -38,19 +42,27 @@ export class NotesPage implements OnInit {
 
   filter: FilterInterface = {
     important: false,
+    tags: new Map<string, boolean>(),
   };
 
-  constructor(private mc : ModalController, private cs : CardsService) {
+  constructor(private mc : ModalController, private cs : CardsService,
+              private subjectsService: TagsService) {
     this.cards$ = this.cs.cards$;
+    this.subjects$ = this.subjectsService.tags$;
 
     this.cardsByFilters$ = combineLatest([
       this.cards$,
+      this.subjectsFilter$,
       this.searchFilter$,
       this.importantFilter$
     ]).pipe(
-      map(([cards, query, important]) => {
+      map(([cards, subjects, query, important]) => {
 
         return cards.filter(card => {
+
+          const matchSubjects = subjects.size > 0
+            ? subjects.has(card.tag.trim())
+            : true;
 
           const matchSearch = query
             ? card.name.toLowerCase().includes(query)
@@ -60,7 +72,7 @@ export class NotesPage implements OnInit {
             ? card.important === true
             : true;
 
-          return matchSearch && matchImportant;
+          return matchSearch && matchSubjects && matchImportant;
         });
       }),
       tap(cardsFilter => this.cs.refreshCountCards(cardsFilter)),
@@ -77,19 +89,14 @@ export class NotesPage implements OnInit {
       }),
       tap(cards => this.hasResultData = cards.length > 0)
     );
-
-
-
   }
 
   ngOnInit() {
+
     this.statusFilter$.next(this.defaultStatus);
-
-
     this.cs.countCards$.subscribe(cards => {
       console.log(cards);
     })
-
   }
 
   async openPopup(){
@@ -116,6 +123,20 @@ export class NotesPage implements OnInit {
 
   onFilterImportantChanged(){
     this.importantFilter$.next(this.filter.important);
+  }
+
+  onFilterSubjectsChanged(tagSelected: string, event: any){
+    if(!event.detail.checked && this.filter.tags.has(tagSelected)){
+      this.filter.tags.delete(tagSelected);
+    } else {
+      this.filter.tags.set(tagSelected, true);
+    }
+    console.log(this.filter.tags);
+    this.subjectsFilter$.next(this.filter.tags);
+  }
+
+  getTagValue(tag: string) : boolean{
+    return this.filter.tags.get(tag) ?? false;
   }
 
   onFilterChanged(status: Cardstatus){

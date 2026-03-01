@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Tags} from "../tags";
+import {Tags} from "../tags-interface/tags";
 import Dexie, { Table } from 'dexie';
 import { BehaviorSubject } from 'rxjs';
 import {Haptics, ImpactStyle} from "@capacitor/haptics";

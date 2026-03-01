@@ -60,10 +60,16 @@
     "DeleteSubject": "Are you sure to delete this subject ?"
   },
   "NOTIFICATIONS": {
-    "Title": "⚠Reminder: ",
+    "Title": "Reminder: ",
     "Body": "Due on ",
     "AlertTitle": "Task",
-    "AlertBody": "⚠Don't forget to finish ",
+    "AlertBody": "Don't forget to finish ",
     "AlertText": "It's done!"
+  },
+  "FILTER": {
+    "Title": "Filter",
+    "Priority": "By Priority : ",
+    "Subjects": "By Subject : ",
+    "Date": "By Date : "
   }
 }

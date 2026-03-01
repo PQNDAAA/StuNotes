@@ -1,3 +1,4 @@
 export interface FilterInterface {
-  important: boolean;
+  important: boolean,
+  tags: Map<string, boolean>,
 }

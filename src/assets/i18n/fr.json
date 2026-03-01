@@ -60,10 +60,16 @@
     "DeleteSubject": "Êtes-vous sur de vouloir supprimer cette matière ?"
   },
   "NOTIFICATIONS": {
-    "Title": "⚠Rappel: ",
+    "Title": "Rappel: ",
     "Body": "Échéance le ",
     "AlertTitle": "Tâche",
-    "AlertBody": "⚠N'oubliez pas de finir ",
+    "AlertBody": "N'oubliez pas de finir ",
     "AlertText": "Elle est finie!"
+  },
+  "FILTER": {
+    "Title": "Filtrer",
+    "Priority": "Par Priorité : ",
+    "Subjects": "Par Matière : ",
+    "Date": "Par Date : "
   }
 }

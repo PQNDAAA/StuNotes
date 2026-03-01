@@ -9,7 +9,7 @@
   <form #subjectForm="ngForm">
     <ion-list>
       <ion-item lines="none">
-        <ion-input [label]="('SUBJECTS.SubjectName' | translate)+'*'" [(ngModel)]="tag.name" labelPlacement="fixed"
+        <ion-input [label]="('SUBJECTS.SubjectName' | translate)+'*'" [(ngModel)]="tagEdited.name" labelPlacement="fixed"
                    [placeholder]="('SUBJECTS.SubjectPlaceholder' | translate)" [clearInput]="true"
                    [counter]="true" [maxlength]="25" name="subjectName"
                    [errorText]="('SUBJECTS.SubjectNameErrorText' | translate)" [required]="true">

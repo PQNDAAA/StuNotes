@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
-import {Tags} from "../../tags/tags";
+import {Tags} from "../../tags/tags-interface/tags";
 import {TagsService} from "../../tags/tags-service/tags-service";
 import {Cardstatus} from "../cards-enum/cardstatus";
 import {CardStatusService} from "../cards-service/card-status-service";
@@ -18,30 +18,37 @@ import {NgForm} from "@angular/forms";
 })
 export class AddnoteComponent implements OnInit {
 
+  //INPUT SOURCE
   @Input() card: Card = {
     taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
     status: Cardstatus.Open, createdAt: new Date(), description: "", name: "", tag: ""
   }
-  cardEdited!: Card;
-
   @Input() isEditable: boolean = false;
+
+  //DATA SOURCE
+  cardEdited!: Card;
   tags!: Tags[];
   statusValues = Object.values(Cardstatus);
 
+  //UI
   minDeadline: string;
+
+  //BOOLEAN
   noDeadLineVisibility: boolean = false;
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService,
               private cardStatusService: CardStatusService, private translate: TranslateService) {
-    this.getTags();
 
     //DEFINIT UNE DATE MINIMUM DANS LE FORMULAIRE
     this.minDeadline = this.cs.toLocalISOString(new Date());
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    //OBTENIR UNE NOUVELLE INSTANCE CORRECTE
     this.cardEdited = structuredClone(this.card);
-    console.log(this.cardEdited);
+
+    // GET TAGS
+    this.tags = await this.ts.getTags();
 
     // On vérifie la visibilité de la date d'échéance, (si on l'affiche ou non)
     this.checkVisibilityDeadline();
@@ -83,9 +90,5 @@ export class AddnoteComponent implements OnInit {
 
   getStatus(key: Cardstatus): string {
     return this.cardStatusService.getStatus(key);
-  }
-
-  async getTags() {
-    this.tags = await this.ts.getTags();
   }
 }

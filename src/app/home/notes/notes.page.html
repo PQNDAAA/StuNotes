@@ -17,10 +17,28 @@
         <ng-template>
           <ion-content class="ion-padding">
             <ion-list>
-              <ion-label>Filtrer :</ion-label>
-              <ion-item>
+              <ion-label>{{ 'FILTER.Title' | translate }}</ion-label>
+              <ion-item-group>
+                <ion-item-divider>
+                <ion-label>{{ 'FILTER.Priority' | translate }}</ion-label>
+                </ion-item-divider>
+              <ion-item lines="none">
                 <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important" name="taskImportant">Important</ion-checkbox>
               </ion-item>
+              </ion-item-group>
+              <ion-item-group>
+                <ion-item-divider>
+                <ion-label>{{ 'FILTER.Subjects' | translate }}</ion-label>
+                </ion-item-divider>
+              <ion-item *ngFor="let subject of subjects$ | async" lines="none">
+                <ion-checkbox (ionChange)="onFilterSubjectsChanged(subject.name,$event)" [checked]="getTagValue(subject.name)">{{subject.name}}</ion-checkbox>
+              </ion-item>
+              </ion-item-group>
+              <ion-item-group>
+                <ion-item-divider>
+                  <ion-label>{{ 'FILTER.Date' | translate }}</ion-label>
+                </ion-item-divider>
+              </ion-item-group>
             </ion-list>
           </ion-content>
         </ng-template>
