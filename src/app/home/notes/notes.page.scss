@@ -13,4 +13,33 @@
 }
 .filterBar .filterBtn{
   --color: var(--ion-text-color);
+
+}
+.filterBtn:active ion-icon{
+  transform: rotate(12deg) scale(.9);
+}
+
+.filterBtn ion-icon{
+  transition: transform .25s ease;
+}
+
+//POPOVER
+ion-popover::part(content) {
+  border-radius: 18px;
+  animation: popoverShow .25s cubic-bezier(.34,1.56,.64,1);
+}
+ion-popover::part(backdrop) {
+  backdrop-filter: blur(4px);
+}
+
+
+@keyframes popoverShow {
+  from {
+    opacity: 0;
+    transform: scale(.85) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
