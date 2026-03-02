@@ -24,6 +24,9 @@
 }
 
 //POPOVER
+ion-popover{
+  --width: 260px;
+}
 ion-popover::part(content) {
   border-radius: 18px;
   animation: popoverShow .25s cubic-bezier(.34,1.56,.64,1);

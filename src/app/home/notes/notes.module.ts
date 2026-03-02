@@ -11,18 +11,20 @@ import {AddnoteModule} from "../../cards/addnote/addnote.module";
 import {NotecardModule} from "../../cards/notecard/notecard.module";
 import {NotesTabPageModule} from "../notes-tab/notes-tab.module";
 import {TranslatePipe} from "@ngx-translate/core";
+import {NgxsmkDatepickerComponent} from "ngxsmk-datepicker";
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        NotesPageRoutingModule,
-        AddnoteModule,
-        NotecardModule,
-        NotesTabPageModule,
-        TranslatePipe
-    ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    NotesPageRoutingModule,
+    AddnoteModule,
+    NotecardModule,
+    NotesTabPageModule,
+    TranslatePipe,
+    NgxsmkDatepickerComponent
+  ],
   declarations: [NotesPage]
 })
 export class NotesPageModule {}

@@ -10,6 +10,7 @@ import {TagsService} from "../../tags/tags-service/tags-service";
 import {Tags} from "../../tags/tags-interface/tags";
 import {FilterDateEnum} from "../filter/enum/filter-date-enum";
 import {TranslateService} from "@ngx-translate/core";
+import {DatepickerValue} from "ngxsmk-datepicker";
 
 @Component({
   selector: 'app-notes',
@@ -37,15 +38,19 @@ export class NotesPage implements OnInit {
 
   defaultStatus = Cardstatus.InProgress;
 
-  allFilterDate = Object.values(FilterDateEnum);
-
+  allFilterDate = Object.values(FilterDateEnum).filter(date =>
+    date !== FilterDateEnum.CustomDate);
 
   query = '';
 
   filter: FilterInterface = {
     important: false,
     tags: new Map<string, boolean>(),
-    date: null
+    date: null,
+    customDate: {
+      start: null,
+      end: null
+    }
   };
 
   constructor(private mc: ModalController, private cs: CardsService,
@@ -102,7 +107,6 @@ export class NotesPage implements OnInit {
   }
 
   ngOnInit() {
-
     this.statusFilter$.next(this.defaultStatus);
     this.cs.countCards$.subscribe(cards => {
       console.log(cards);
@@ -149,6 +153,18 @@ export class NotesPage implements OnInit {
     this.dateFilter$.next(this.filter.date);
   }
 
+  onCustomDateChanged(event: DatepickerValue) {
+    if (!event) {
+      this.filter.date = null;
+      return;
+    }
+
+    if ('start' in event && 'end' in event) {
+      this.filter.customDate = event;
+      console.log(this.filter.customDate);
+    }
+  }
+
   calculateFilterDate(deadline: string): boolean {
     const deadlineMs = new Date(deadline).getTime(); // Deadline en ms
     const now = new Date(); //Date maintenant
@@ -156,29 +172,29 @@ export class NotesPage implements OnInit {
     switch (this.filter.date) {
       case FilterDateEnum.Today:
         // de 00h à 23h59
-        const minTodayMs = new Date(now.setHours(0,0,0,0)).getTime();
-        const maxTodayMs = new Date(now.setHours(23,59,59,59)).getTime();
+        const minTodayMs = new Date(now.setHours(0, 0, 0, 0)).getTime();
+        const maxTodayMs = new Date(now.setHours(23, 59, 59, 59)).getTime();
 
         return deadlineMs >= minTodayMs && deadlineMs <= maxTodayMs;
       case FilterDateEnum.Soon:
-        const threeDaysMs = 72*60*60*1000;
+        const threeDaysMs = 72 * 60 * 60 * 1000;
 
-        return deadlineMs >= Date.now() && deadlineMs <=  Date.now()+threeDaysMs;
+        return deadlineMs >= Date.now() && deadlineMs <= Date.now() + threeDaysMs;
       case FilterDateEnum.Week:
 
         const firstDay = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-        firstDay.setHours(0,0,0,0);
+        firstDay.setHours(0, 0, 0, 0);
         const lastDay = new Date(now.setDate(firstDay.getDate() + 6));
-        lastDay.setHours(23,59,59,59);
+        lastDay.setHours(23, 59, 59, 59);
 
         return deadlineMs >= firstDay.getTime() && deadlineMs <= lastDay.getTime();
       case FilterDateEnum.Month:
 
         const firstDayMonth = new Date(now.setDate(1));
-        firstDayMonth.setHours(0,0,0,0);
+        firstDayMonth.setHours(0, 0, 0, 0);
 
-        const lastDayMonth = new Date(now.getFullYear(),now.getMonth()+1,0);
-        lastDayMonth.setHours(23,59,59,59);
+        const lastDayMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        lastDayMonth.setHours(23, 59, 59, 59);
 
 
         console.log(firstDayMonth, lastDayMonth);
@@ -194,6 +210,10 @@ export class NotesPage implements OnInit {
     return this.filter.tags.get(tag) ?? false;
   }
 
+  get getCurrentLang(): string {
+    return this.translate.getCurrentLang();
+  }
+
   getDateValueString(value: string) {
     return this.translate.instant(`FILTER.${value}`);
   }
@@ -201,4 +221,6 @@ export class NotesPage implements OnInit {
   onFilterChanged(status: Cardstatus) {
     this.statusFilter$.next(status);
   }
+
+  protected readonly FilterDateEnum = FilterDateEnum;
 }

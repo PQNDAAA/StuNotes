@@ -20,19 +20,23 @@
               <ion-label>{{ 'FILTER.Title' | translate }}</ion-label>
               <ion-item-group>
                 <ion-item-divider>
-                <ion-label>{{ 'FILTER.Priority' | translate }}</ion-label>
+                  <ion-label>{{ 'FILTER.Priority' | translate }}</ion-label>
                 </ion-item-divider>
-              <ion-item lines="none">
-                <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important" name="taskImportant">Important</ion-checkbox>
-              </ion-item>
+                <ion-item lines="none">
+                  <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important"
+                                name="taskImportant">Important
+                  </ion-checkbox>
+                </ion-item>
               </ion-item-group>
               <ion-item-group>
                 <ion-item-divider>
-                <ion-label>{{ 'FILTER.Subjects' | translate }}</ion-label>
+                  <ion-label>{{ 'FILTER.Subjects' | translate }}</ion-label>
                 </ion-item-divider>
-              <ion-item *ngFor="let subject of subjects$ | async" lines="none">
-                <ion-checkbox (ionChange)="onFilterSubjectsChanged(subject.name,$event)" [checked]="getTagValue(subject.name)">{{subject.name}}</ion-checkbox>
-              </ion-item>
+                <ion-item *ngFor="let subject of subjects$ | async" lines="none">
+                  <ion-checkbox (ionChange)="onFilterSubjectsChanged(subject.name,$event)"
+                                [checked]="getTagValue(subject.name)">{{ subject.name }}
+                  </ion-checkbox>
+                </ion-item>
               </ion-item-group>
               <ion-item-group>
                 <ion-item-divider>
@@ -44,10 +48,21 @@
                     <ion-radio [value]="null"></ion-radio>
                   </ion-item>
 
-                <ion-item *ngFor="let date of allFilterDate">
-                  <ion-label>{{getDateValueString(date)}}</ion-label>
-                  <ion-radio slot="end" [value]="date"></ion-radio>
-                </ion-item>
+                  <ion-item *ngFor="let date of allFilterDate">
+                    <ion-label>{{ getDateValueString(date) }}</ion-label>
+                    <ion-radio slot="end" [value]="date"></ion-radio>
+                  </ion-item>
+
+                  <ion-item lines="none">
+                    <ion-label>{{ 'FILTER.CustomDate' | translate }}</ion-label>
+                    <ion-radio slot="end" [value]="FilterDateEnum.CustomDate"></ion-radio>
+                  </ion-item>
+
+                  <ion-item [disabled]="filter.date !== FilterDateEnum.CustomDate">
+                    <ngxsmk-datepicker [(ngModel)]="filter.customDate" (valueChange)="onCustomDateChanged($event)" mode="range" [use24Hour]="getCurrentLang === 'fr'" [locale]="getCurrentLang"
+                                       [showTime]="true" [value]="filter.customDate" placeholder="{{'FILTER.SelectDate' | translate}}">
+                    </ngxsmk-datepicker>
+                  </ion-item>
                 </ion-radio-group>
               </ion-item-group>
             </ion-list>

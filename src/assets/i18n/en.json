@@ -75,6 +75,8 @@
     "Today": "Today",
     "Soon": "Expires soon",
     "Week": "This week",
-    "Month": "This month"
+    "Month": "This month",
+    "CustomDate": "Custom Date",
+    "SelectDate": "Select a date"
   }
 }

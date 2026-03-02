@@ -13,12 +13,12 @@ import {provideTranslateService, TranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
 import {Settings} from "./settings/settings-service/settings";
-
+import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, TranslatePipe,
-    TranslateDirective],
+    TranslateDirective,NgxsmkDatepickerModule],
   providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     {
       provide: APP_INITIALIZER,

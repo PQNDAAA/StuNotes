@@ -3,4 +3,5 @@ export enum FilterDateEnum {
   Soon = "Soon",
   Week = "Week",
   Month = "Month",
+  CustomDate = "CustomDate",
 }

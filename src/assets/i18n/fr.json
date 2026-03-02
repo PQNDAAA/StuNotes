@@ -75,6 +75,8 @@
     "Today": "Aujourd'hui",
     "Soon": "Expire bientôt",
     "Week": "Cette semaine",
-    "Month": "Ce mois-ci"
+    "Month": "Ce mois-ci",
+    "CustomDate": "Date personnalisée",
+    "SelectDate": "Sélectionner une date"
   }
 }
