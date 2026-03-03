@@ -21,7 +21,7 @@ export class Settings extends Dexie {
     this.settingsHomeTable = this.table('settings');
   }
 
-  async init(): Promise<void> {
+  async init() {
     //this.settingsHomeTable.clear();
     await this.addDefaultSettings();
   }

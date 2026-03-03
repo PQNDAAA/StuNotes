@@ -26,7 +26,7 @@
                 </ion-item-divider>
                 <ion-item *ngFor="let subject of subjects$ | async" lines="none">
                   <ion-checkbox (ionChange)="onFilterSubjectsChanged(subject.name,$event)"
-                                [checked]="getTagValue(subject.name)">{{ subject.name }}
+                                [checked]="(isTagChecked(subject.name))">{{ subject.name }}
                   </ion-checkbox>
                 </ion-item>
               </ion-item-group>
@@ -41,7 +41,7 @@
                   </ion-item>
 
                   <ion-item *ngFor="let date of allFilterDate">
-                    <ion-label>{{ getDateValueString(date) }}</ion-label>
+                    <ion-label>{{ getDateStringValue(date) }}</ion-label>
                     <ion-radio slot="end" [value]="date"></ion-radio>
                   </ion-item>
 

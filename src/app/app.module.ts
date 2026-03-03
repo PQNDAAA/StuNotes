@@ -14,6 +14,15 @@ import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
 import {Settings} from "./settings/settings-service/settings";
 import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
+import {FilterService} from "./home/filter/service/filter-service";
+
+export function initializeSettings(settings : Settings){
+  return() => settings.init();
+}
+
+export function initializeFilters(filters : FilterService){
+  return () => filters.initFilters()
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,11 +31,17 @@ import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
   providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     {
       provide: APP_INITIALIZER,
-      useFactory: (init: Settings) => () => init.init(),
+      useFactory: initializeSettings,
       deps: [Settings],
       multi: true
-    }
-    , provideHttpClient(),
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeFilters,
+      deps: [FilterService],
+      multi: true
+    },
+    provideHttpClient(),
     provideTranslateService({
       lang: 'en',
       fallbackLang: 'en',

@@ -6,3 +6,10 @@ export interface FilterInterface {
   date: FilterDateEnum | null,
   customDate: {start: Date | null, end: Date | null} | null,
 }
+
+export const defaultFilterInterface: FilterInterface = {
+  important: false,
+  tags: new Map<string, boolean>(),
+  date: null,
+  customDate: null,
+}

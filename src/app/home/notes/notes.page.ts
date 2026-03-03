@@ -11,6 +11,8 @@ import {Tags} from "../../tags/tags-interface/tags";
 import {FilterDateEnum} from "../filter/enum/filter-date-enum";
 import {TranslateService} from "@ngx-translate/core";
 import {DatepickerValue} from "ngxsmk-datepicker";
+import {FilterService} from "../filter/service/filter-service";
+import {FilterDB} from "../filter/service/filter-db";
 
 @Component({
   selector: 'app-notes',
@@ -23,13 +25,11 @@ export class NotesPage implements OnInit {
   //Data source
   cards$: Observable<Card[]>;
   subjects$: Observable<Tags[]>;
+  filter$: Observable<FilterInterface>;
 
   //Filters streams
   private statusFilter$ = new BehaviorSubject<Cardstatus>(Cardstatus.InProgress);
   private searchFilter$ = new BehaviorSubject<string>('');
-  private importantFilter$ = new BehaviorSubject<boolean>(false);
-  private subjectsFilter$ = new BehaviorSubject<Map<string, boolean>>(new Map());
-  private dateFilter$ = new BehaviorSubject<FilterDateEnum | null>(null);
 
   //Output view
   results$: Observable<Card[]>;
@@ -43,46 +43,36 @@ export class NotesPage implements OnInit {
 
   query = '';
 
-  filter: FilterInterface = {
-    important: false,
-    tags: new Map<string, boolean>(),
-    date: null,
-    customDate: {
-      start: null,
-      end: null
-    }
-  };
+  filter!: FilterInterface;
 
   constructor(private mc: ModalController, private cs: CardsService,
-              private subjectsService: TagsService, private translate: TranslateService) {
+              private subjectsService: TagsService, private filterService: FilterService) {
     this.cards$ = this.cs.cards$;
     this.subjects$ = this.subjectsService.tags$;
+    this.filter$ = this.filterService.filters$;
 
     this.cardsByFilters$ = combineLatest([
       this.cards$,
-      this.dateFilter$,
-      this.subjectsFilter$,
+      this.filter$,
       this.searchFilter$,
-      this.importantFilter$
     ]).pipe(
-      map(([cards, date, subjects, query, important]) => {
+      map(([cards, filters, query]) => {
 
         return cards.filter(card => {
 
-          const matchDate = date !== null
+          const matchDate = filters.date !== null
             ? this.calculateFilterDate(card.deadline)
             : true;
 
-
-          const matchSubjects = subjects.size > 0
-            ? subjects.has(card.tag.trim())
+          const matchSubjects = filters.tags.size > 0
+            ? filters.tags.has(card.tag.trim())
             : true;
 
           const matchSearch = query
             ? card.name.toLowerCase().includes(query)
             : true;
 
-          const matchImportant = important
+          const matchImportant = filters.important
             ? card.important === true
             : true;
 
@@ -108,9 +98,9 @@ export class NotesPage implements OnInit {
 
   ngOnInit() {
     this.statusFilter$.next(this.defaultStatus);
-    this.cs.countCards$.subscribe(cards => {
-      console.log(cards);
-    })
+    this.filter$.subscribe(filters => {
+      this.filter = filters;
+    });
   }
 
   async openPopup() {
@@ -135,33 +125,33 @@ export class NotesPage implements OnInit {
     })
   }
 
-  onFilterImportantChanged() {
-    this.importantFilter$.next(this.filter.important);
+  async onFilterImportantChanged() {
+    await this.filterService.changeFiltersValue(this.filter);
   }
 
-  onFilterSubjectsChanged(tagSelected: string, event: any) {
+  async onFilterSubjectsChanged(tagSelected: string, event: any) {
     if (!event.detail.checked && this.filter.tags.has(tagSelected)) {
       this.filter.tags.delete(tagSelected);
+      await this.filterService.changeFiltersValue(this.filter);
     } else {
       this.filter.tags.set(tagSelected, true);
+      await this.filterService.changeFiltersValue(this.filter);
     }
-    console.log(this.filter.tags);
-    this.subjectsFilter$.next(this.filter.tags);
   }
 
-  onFilterDateChanged() {
-    this.dateFilter$.next(this.filter.date);
+  async onFilterDateChanged() {
+    await this.filterService.changeFiltersValue(this.filter);
   }
 
-  onCustomDateChanged(event: DatepickerValue) {
+  async onCustomDateChanged(event: DatepickerValue) {
     if (!event) {
       this.filter.date = null;
-      this.dateFilter$.next(this.filter.date);
+      await this.filterService.changeFiltersValue(this.filter);
       return;
     }
     if ('start' in event && 'end' in event) {
       this.filter.customDate = event;
-      this.dateFilter$.next(this.filter.date);
+      await this.filterService.changeFiltersValue(this.filter);
       console.log(this.filter.customDate);
     }
   }
@@ -218,22 +208,17 @@ export class NotesPage implements OnInit {
     }
   }
 
-  //METTRE DANS FILTER SERVICE PROCHAINEMENT
-  getTagValue(tag: string): boolean {
-    return this.filter.tags.get(tag) ?? false;
-  }
-
-  get getCurrentLang(): string {
-    return this.translate.getCurrentLang();
-  }
-
-  getDateValueString(value: string) {
-    return this.translate.instant(`FILTER.${value}`);
-  }
-
   onFilterChanged(status: Cardstatus) {
     this.statusFilter$.next(status);
   }
+
+   isTagChecked(tag: string) {
+    return this.filter.tags.get(tag) ?? false;
+  }
+
+  get getCurrentLang(): string {return this.filterService.getCurrentLang;}
+
+  getDateStringValue(value: string) {return this.filterService.getDateStringValue(value);}
 
   protected readonly FilterDateEnum = FilterDateEnum;
 }
