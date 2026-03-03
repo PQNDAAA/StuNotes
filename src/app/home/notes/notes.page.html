@@ -17,17 +17,9 @@
         <ng-template>
           <ion-content class="ion-padding">
             <ion-list>
+              <div class="filterTitle">
               <ion-label>{{ 'FILTER.Title' | translate }}</ion-label>
-              <ion-item-group>
-                <ion-item-divider>
-                  <ion-label>{{ 'FILTER.Priority' | translate }}</ion-label>
-                </ion-item-divider>
-                <ion-item lines="none">
-                  <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important"
-                                name="taskImportant">Important
-                  </ion-checkbox>
-                </ion-item>
-              </ion-item-group>
+              </div>
               <ion-item-group>
                 <ion-item-divider>
                   <ion-label>{{ 'FILTER.Subjects' | translate }}</ion-label>
@@ -66,6 +58,16 @@
                     </ngxsmk-datepicker>
                   </ion-item>
                 </ion-radio-group>
+              </ion-item-group>
+              <ion-item-group>
+                <ion-item-divider>
+                  <ion-label>{{ 'FILTER.Priority' | translate }}</ion-label>
+                </ion-item-divider>
+                <ion-item lines="none">
+                  <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important"
+                                name="taskImportant">Important
+                  </ion-checkbox>
+                </ion-item>
               </ion-item-group>
             </ion-list>
           </ion-content>
