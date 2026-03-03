@@ -18,7 +18,7 @@
           <ion-content class="ion-padding">
             <ion-list>
               <div class="filterTitle">
-              <ion-label>{{ 'FILTER.Title' | translate }}</ion-label>
+                <ion-label>{{ 'FILTER.Title' | translate }}</ion-label>
               </div>
               <ion-item-group>
                 <ion-item-divider>
@@ -34,7 +34,7 @@
                 <ion-item-divider>
                   <ion-label>{{ 'FILTER.Date' | translate }}</ion-label>
                 </ion-item-divider>
-                <ion-radio-group name="dateFilter" [(ngModel)]="filter.date" (ionChange)="onFilterDateChanged()">
+                <ion-radio-group name="dateFilter" [value]="filter.date" (ionChange)="onFilterDateChanged($event)">
                   <ion-item>
                     <ion-label>{{ 'FILTER.None' | translate }}</ion-label>
                     <ion-radio [value]="null"></ion-radio>
@@ -51,9 +51,9 @@
                   </ion-item>
 
                   <ion-item [disabled]="filter.date !== FilterDateEnum.CustomDate">
-                    <ngxsmk-datepicker [(ngModel)]="filter.customDate" (valueChange)="onCustomDateChanged($event)"
+                    <ngxsmk-datepicker (valueChange)="onCustomDateChanged($event)"
                                        mode="range" [use24Hour]="getCurrentLang === 'fr'" [locale]="getCurrentLang"
-                                       [showTime]="true" [value]="filter.customDate" [showCalendarButton]="true"
+                                       [showTime]="true" [value]="filter.customDate"
                                        placeholder="{{'FILTER.SelectDate' | translate}}">
                     </ngxsmk-datepicker>
                   </ion-item>
@@ -64,9 +64,8 @@
                   <ion-label>{{ 'FILTER.Priority' | translate }}</ion-label>
                 </ion-item-divider>
                 <ion-item lines="none">
-                  <ion-checkbox (ionChange)="onFilterImportantChanged()" [(ngModel)]="filter.important"
-                                name="taskImportant">Important
-                  </ion-checkbox>
+                  <ion-checkbox (ionChange)="onFilterImportantChanged($event)" [checked]="filter.important"
+                                name="taskImportant">Important</ion-checkbox>
                 </ion-item>
               </ion-item-group>
             </ion-list>

@@ -9,7 +9,6 @@ import {FilterInterface} from "../filter/interface/filter-interface";
 import {TagsService} from "../../tags/tags-service/tags-service";
 import {Tags} from "../../tags/tags-interface/tags";
 import {FilterDateEnum} from "../filter/enum/filter-date-enum";
-import {TranslateService} from "@ngx-translate/core";
 import {DatepickerValue} from "ngxsmk-datepicker";
 import {FilterService} from "../filter/service/filter-service";
 import {FilterDB} from "../filter/service/filter-db";
@@ -125,34 +124,51 @@ export class NotesPage implements OnInit {
     })
   }
 
-  async onFilterImportantChanged() {
-    await this.filterService.changeFiltersValue(this.filter);
+  //OK
+  async onFilterImportantChanged(event : any) {
+    //On get la valeur boolean de la checkbox
+    const value = event.detail.checked;
+    //On crée une instance mis a jour avec l'interface et une valeur qui change
+    const updatedImportantFilter = {...this.filter, important: value}
+
+    await this.filterService.changeFiltersValue(updatedImportantFilter);
   }
 
+  //OK
   async onFilterSubjectsChanged(tagSelected: string, event: any) {
+    //new Map va créer une nouvelle instance
+    const filterSubjectsCache = new Map(this.filter.tags);
+
     if (!event.detail.checked && this.filter.tags.has(tagSelected)) {
-      this.filter.tags.delete(tagSelected);
-      await this.filterService.changeFiltersValue(this.filter);
+     filterSubjectsCache.delete(tagSelected);
     } else {
-      this.filter.tags.set(tagSelected, true);
-      await this.filterService.changeFiltersValue(this.filter);
+      filterSubjectsCache.set(tagSelected, true);
     }
+
+    const updatedSubjectsFilter = {...this.filter, tags: filterSubjectsCache}
+    await this.filterService.changeFiltersValue(updatedSubjectsFilter);
   }
 
-  async onFilterDateChanged() {
-    await this.filterService.changeFiltersValue(this.filter);
+  //OK
+  async onFilterDateChanged(event: any) {
+    const value = event.detail.value;
+    const updatedDateFilter = {...this.filter, date: value}
+
+    await this.filterService.changeFiltersValue(updatedDateFilter);
   }
 
+  //OK
   async onCustomDateChanged(event: DatepickerValue) {
     if (!event) {
-      this.filter.date = null;
-      await this.filterService.changeFiltersValue(this.filter);
+      const updatedDateFilter = {...this.filter, date: null, customDate: null}
+      await this.filterService.changeFiltersValue(updatedDateFilter);
       return;
     }
+
     if ('start' in event && 'end' in event) {
-      this.filter.customDate = event;
-      await this.filterService.changeFiltersValue(this.filter);
-      console.log(this.filter.customDate);
+      const updatedCustomDateFilter = {...this.filter, customDate: event}
+      await this.filterService.changeFiltersValue(updatedCustomDateFilter);
+      console.log(updatedCustomDateFilter.customDate);
     }
   }
 
@@ -208,13 +224,9 @@ export class NotesPage implements OnInit {
     }
   }
 
-  onFilterChanged(status: Cardstatus) {
-    this.statusFilter$.next(status);
-  }
+  onFilterChanged(status: Cardstatus) {this.statusFilter$.next(status);}
 
-   isTagChecked(tag: string) {
-    return this.filter.tags.get(tag) ?? false;
-  }
+  isTagChecked(tag: string) {return this.filter.tags.get(tag) ?? false;}
 
   get getCurrentLang(): string {return this.filterService.getCurrentLang;}
 
