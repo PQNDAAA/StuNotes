@@ -156,11 +156,12 @@ export class NotesPage implements OnInit {
   onCustomDateChanged(event: DatepickerValue) {
     if (!event) {
       this.filter.date = null;
+      this.dateFilter$.next(this.filter.date);
       return;
     }
-
     if ('start' in event && 'end' in event) {
       this.filter.customDate = event;
+      this.dateFilter$.next(this.filter.date);
       console.log(this.filter.customDate);
     }
   }
@@ -200,8 +201,20 @@ export class NotesPage implements OnInit {
         console.log(firstDayMonth, lastDayMonth);
 
         return deadlineMs >= firstDayMonth.getTime() && deadlineMs <= lastDayMonth.getTime();
+      case FilterDateEnum.CustomDate:
+
+          const startDate = this.filter.customDate?.start
+            ? new Date(this.filter.customDate.start).getTime()
+          : null;
+          const endDate = this.filter.customDate?.end
+            ? new Date(this.filter.customDate.end).getTime()
+            : null;
+
+        return startDate !== null && endDate !== null
+          ? deadlineMs >= startDate && deadlineMs <= endDate
+          : false;
       default:
-        return false;
+        return true;
     }
   }
 

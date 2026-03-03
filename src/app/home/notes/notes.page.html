@@ -59,8 +59,10 @@
                   </ion-item>
 
                   <ion-item [disabled]="filter.date !== FilterDateEnum.CustomDate">
-                    <ngxsmk-datepicker [(ngModel)]="filter.customDate" (valueChange)="onCustomDateChanged($event)" mode="range" [use24Hour]="getCurrentLang === 'fr'" [locale]="getCurrentLang"
-                                       [showTime]="true" [value]="filter.customDate" placeholder="{{'FILTER.SelectDate' | translate}}">
+                    <ngxsmk-datepicker [(ngModel)]="filter.customDate" (valueChange)="onCustomDateChanged($event)"
+                                       mode="range" [use24Hour]="getCurrentLang === 'fr'" [locale]="getCurrentLang"
+                                       [showTime]="true" [value]="filter.customDate" [showCalendarButton]="true"
+                                       placeholder="{{'FILTER.SelectDate' | translate}}">
                     </ngxsmk-datepicker>
                   </ion-item>
                 </ion-radio-group>
