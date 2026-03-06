@@ -60,7 +60,7 @@ export class NotesPage implements OnInit {
         return cards.filter(card => {
 
           const matchDate = filters.date !== null
-            ? this.calculateFilterDate(card.deadline)
+            ? this.handleDateFilter(card.deadline)
             : true;
 
           const matchSubjects = filters.tags.size > 0
@@ -172,59 +172,10 @@ export class NotesPage implements OnInit {
     }
   }
 
-  calculateFilterDate(deadline: string): boolean {
-    const deadlineMs = new Date(deadline).getTime(); // Deadline en ms
-    const now = new Date(); //Date maintenant
-
-    switch (this.filter.date) {
-      case FilterDateEnum.Today:
-        // de 00h à 23h59
-        const minTodayMs = new Date(now.setHours(0, 0, 0, 0)).getTime();
-        const maxTodayMs = new Date(now.setHours(23, 59, 59, 59)).getTime();
-
-        return deadlineMs >= minTodayMs && deadlineMs <= maxTodayMs;
-      case FilterDateEnum.Soon:
-        const threeDaysMs = 72 * 60 * 60 * 1000;
-
-        return deadlineMs >= Date.now() && deadlineMs <= Date.now() + threeDaysMs;
-      case FilterDateEnum.Week:
-
-        const firstDay = new Date(now.setDate(now.getDate() - (now.getDay() + 6) % 7));
-        firstDay.setHours(0, 0, 0, 0);
-        const lastDay = new Date(now.setDate(firstDay.getDate() + 6));
-        lastDay.setHours(23, 59, 59, 59);
-
-        return deadlineMs >= firstDay.getTime() && deadlineMs <= lastDay.getTime();
-      case FilterDateEnum.Month:
-
-        const firstDayMonth = new Date(now.setDate(1));
-        firstDayMonth.setHours(0, 0, 0, 0);
-
-        const lastDayMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-        lastDayMonth.setHours(23, 59, 59, 59);
-
-
-        console.log(firstDayMonth, lastDayMonth);
-
-        return deadlineMs >= firstDayMonth.getTime() && deadlineMs <= lastDayMonth.getTime();
-      case FilterDateEnum.CustomDate:
-
-          const startDate = this.filter.customDate?.start
-            ? new Date(this.filter.customDate.start).getTime()
-          : null;
-          const endDate = this.filter.customDate?.end
-            ? new Date(this.filter.customDate.end).getTime()
-            : null;
-
-        return startDate !== null && endDate !== null
-          ? deadlineMs >= startDate && deadlineMs <= endDate
-          : false;
-      default:
-        return true;
-    }
-  }
-
+  //OK
   onFilterChanged(status: Cardstatus) {this.statusFilter$.next(status);}
+
+  handleDateFilter(deadline: string) {return this.filterService.calculateDateFilter(deadline);}
 
   isTagChecked(tag: string) {return this.filter.tags.get(tag) ?? false;}
 
