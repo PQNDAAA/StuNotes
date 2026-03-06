@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {defaultFilterInterface, FilterInterface} from "../interface/filter-interface";
 import {BehaviorSubject, map, Observable} from "rxjs";
-import {FilterDB} from "./filter-db";
+import {FilterDB} from "../db/filter-db";
 import {TranslateService} from "@ngx-translate/core";
 import {FilterDateEnum} from "../enum/filter-date-enum";
 

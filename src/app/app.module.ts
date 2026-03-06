@@ -17,7 +17,7 @@ import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
 import {FilterService} from "./home/filter/service/filter-service";
 
 export function initializeSettings(settings : Settings){
-  return() => settings.init();
+  return() => settings.initSettings()
 }
 
 export function initializeFilters(filters : FilterService){

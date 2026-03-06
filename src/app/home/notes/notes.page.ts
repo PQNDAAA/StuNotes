@@ -11,7 +11,6 @@ import {Tags} from "../../tags/tags-interface/tags";
 import {FilterDateEnum} from "../filter/enum/filter-date-enum";
 import {DatepickerValue} from "ngxsmk-datepicker";
 import {FilterService} from "../filter/service/filter-service";
-import {FilterDB} from "../filter/service/filter-db";
 
 @Component({
   selector: 'app-notes',
