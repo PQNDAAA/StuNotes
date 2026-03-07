@@ -9,39 +9,40 @@ import {CardstatusColors} from "../cards-const/cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
 import {TranslateService} from "@ngx-translate/core";
+import {CardsDB} from "../db/cards-db";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CardsService extends Dexie {
+export class CardsService {
   private cardsSubject = new BehaviorSubject<Card[]>([]);
   cards$ = this.cardsSubject.asObservable();
 
   private countCards = new BehaviorSubject<Map<Cardstatus,number>>(new Map());
   countCards$ = this.countCards.asObservable();
 
-  cards!: Table<Card, number>;
-
   statusColors = CardstatusColors;
+
+  private db = new CardsDB();
 
 
   constructor(private mc: ModalController, private lns: LocalNotificationService, private ac: AlertController,
   private translate: TranslateService ) {
-    super('CardsDB');
-    this.version(2).stores({
-      cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId'
-    });
-    this.cards = this.table('cards');
-
-    this.refreshCards();
-
     //Subscribe to this event
     this.lns.notificationReceived$.subscribe(id => this.removeTaskId(id));
     this.lns.notificationActionPerformed$.subscribe(id => this.openTaskLocalNotificationPopup(id));
   }
 
+  async initCards(){
+    await this.refreshCards();
+  }
+
+  get getCardsDB(){
+    return this.db.cards;
+  }
+
   async getCards(): Promise<Card[]> {
-    return this.cards.toArray();
+    return this.getCardsDB.toArray();
   }
 
   async refreshCards() {
@@ -61,25 +62,25 @@ export class CardsService extends Dexie {
   async addCard(card: Card) {
     const newCard: Card = card;
 
-    const id = await this.cards.add(newCard);
+    const id = await this.getCardsDB.add(newCard);
 
     if (newCard.status.trim() !== Cardstatus.Done || newCard.status.trim() !== Cardstatus.Late) {
-      newCard.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(newCard), newCard);
-      this.cards.put(newCard);
+      newCard.taskId = await this.createLocalNotifications(newCard);
+      this.getCardsDB.put(newCard);
     }
     await this.refreshCards();
     return id;
   }
 
   async resetCards() {
-    this.cards.clear();
+    this.clearCards();
     await this.refreshCards();
   }
 
   async deleteCard(card: Card) {
     if (card.id !== undefined) {
-      await this.lns.clearScheduled(card.taskId);
-      this.cards.delete(card.id);
+      await this.clearScheduledTasks(card.taskId); // A REFAIRE
+      await this.getCardsDB.delete(card.id);
 
       await this.refreshCards();
       await Haptics.impact({style: ImpactStyle.Medium});
@@ -94,8 +95,8 @@ export class CardsService extends Dexie {
     if (!cards || cards.length === 0) {
       return false;
     } else {
-      await this.lns.clearAll(); // clear all scheduled
-      this.cards.clear(); // clear all cards
+      await this.clearAllScheduledTasks(); // clear all scheduled
+      this.clearCards(); // clear all cards
 
       await this.refreshCards();
       await Haptics.impact({style: ImpactStyle.Medium});
@@ -123,7 +124,7 @@ export class CardsService extends Dexie {
     if (id !== -1) {
       cardEdited = await this.processUpdateCard(oldCard, cardEdited);
       cards[id] = cardEdited;
-      await this.cards.put(cards[id]);
+      await this.getCardsDB.put(cards[id]);
     } else {
       console.log("ID Error.");
     }
@@ -141,7 +142,7 @@ export class CardsService extends Dexie {
     for (const card of allCards) {
       if (card.taskId.includes(id)) {
         card.taskId = card.taskId.filter(ids => ids !== id);
-        await this.cards.put(card);
+        await this.getCardsDB.put(card);
       }
     }
     await this.refreshCards();
@@ -149,7 +150,6 @@ export class CardsService extends Dexie {
 
   getStatusColor(status: string): string {
     const normalized = status.trim() as Cardstatus;
-
     return this.statusColors[normalized];
   }
 
@@ -172,7 +172,7 @@ export class CardsService extends Dexie {
         && deadLineMs < now) {
         card.status = Cardstatus.Late;
         console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
-        await this.cards.put(card);
+        await this.getCardsDB.put(card);
       }
     }
     await this.refreshCards();
@@ -186,18 +186,17 @@ export class CardsService extends Dexie {
     const deadLineHasChanged = oldCard.deadline !== card.deadline;
 
     if (hasFinished && taskId) {
-      await this.lns.clearScheduled(card.taskId);
+      await this.clearScheduledTasks(card.taskId);
       card.taskId = [];
     } else if (!hasFinished && deadLineHasChanged && taskId) {
-      await this.lns.clearScheduled(card.taskId);
-      card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
+      await this.clearScheduledTasks(card.taskId);
+      card.taskId = await this.createLocalNotifications(card);
     } else if (!hasFinished && !taskId) {
-      card.taskId = await this.lns.CreateLocalNotification(this.lns.CalculateSchedule(card), card);
+      card.taskId = await this.createLocalNotifications(card);
     }
     return card;
   }
   async openTaskLocalNotificationPopup(id : number) {
-
     const cards = await this.getCards();
     const card = cards.find(card => card.id === id);
 
@@ -221,4 +220,9 @@ export class CardsService extends Dexie {
     });
     return modal.present();
   }
+
+  clearCards(){this.db.clearCards();}
+  async clearScheduledTasks(ids: number[]) {await this.lns.clearScheduledTasks(ids);}
+  async clearAllScheduledTasks(){await this.lns.clearAllScheduledTasks();}
+  async createLocalNotifications(card: Card) : Promise<number[]> {return await this.lns.createLocalNotifications(this.lns.calculateSchedule(card),card);}
 }

@@ -15,6 +15,7 @@ import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
 import {Settings} from "./settings/settings-service/settings";
 import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
 import {FilterService} from "./home/filter/service/filter-service";
+import {CardsService} from "./cards/cards-service/cards-service";
 
 export function initializeSettings(settings : Settings){
   return() => settings.initSettings()
@@ -22,6 +23,10 @@ export function initializeSettings(settings : Settings){
 
 export function initializeFilters(filters : FilterService){
   return () => filters.initFilters()
+}
+
+export function initializeCards(cards : CardsService){
+  return () => cards.initCards()
 }
 
 @NgModule({
@@ -39,6 +44,12 @@ export function initializeFilters(filters : FilterService){
       provide: APP_INITIALIZER,
       useFactory: initializeFilters,
       deps: [FilterService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeCards,
+      deps: [CardsService],
       multi: true
     },
     provideHttpClient(),

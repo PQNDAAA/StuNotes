@@ -27,11 +27,11 @@ export class LocalNotificationService {
   }
 
   async rebuildReminderForCard(card: Card) : Promise<Card> {
-    card.taskId = await this.CreateLocalNotification(this.CalculateSchedule(card),card);
+    card.taskId = await this.createLocalNotifications(this.calculateSchedule(card),card);
     return card;
   }
 
-  CalculateSchedule(card: Card): Date[] {
+  calculateSchedule(card: Card): Date[] {
     const deadLineMs = new Date(card.deadline).getTime();
     const now = Date.now();
     const diff = deadLineMs - now;
@@ -47,7 +47,7 @@ export class LocalNotificationService {
   }
 
 // Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
-  generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) : Date[] {
+  private generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) : Date[] {
     const fractions = [0.25,0.5,0.85,0.975].slice(a,n);
     const deadlineFractions = 1;
     fractions.push(deadlineFractions);
@@ -67,7 +67,7 @@ export class LocalNotificationService {
 
   }
 
-  async CreateLocalNotification(alerts: Date[], card: Card) {
+  async createLocalNotifications(alerts: Date[], card: Card) {
     const taskIds = [];
 
     if (alerts.length === 0 || card.id === undefined) {
@@ -101,7 +101,7 @@ export class LocalNotificationService {
     return taskIds;
   }
 
-  async clearScheduled(ids: number[]) {
+  async clearScheduledTasks(ids: number[]) {
     const allScheduled = await this.getAllScheduled();
     console.log(ids);
 
@@ -133,7 +133,7 @@ export class LocalNotificationService {
         }
       } else {
         if(!this.settings.reminders) {
-          await this.clearAll();
+          await this.clearAllScheduledTasks();
         }
         console.log(this.getAllScheduled());
       }
@@ -152,7 +152,7 @@ export class LocalNotificationService {
     })
   }
 
-  async clearAll() {
+  async clearAllScheduledTasks() {
     const list = await LocalNotifications.getPending();
 
     if (list.notifications.length !== 0) {
@@ -163,7 +163,7 @@ export class LocalNotificationService {
     }
   }
 
-  computeDynamicNumberReminders(diffMs: number) {
+  private computeDynamicNumberReminders(diffMs: number) {
     if (diffMs > 360 * 60 * 60 * 1000) return [0,4];
     if (diffMs > 72 * 60 * 60 * 1000) return [0,4];
     if (diffMs > 24 * 60 * 60 * 1000) return [0,3];
@@ -172,7 +172,7 @@ export class LocalNotificationService {
     return [1,2];
   }
 
-  computeDynamicF(diffMs: number) {
+  private computeDynamicF(diffMs: number) {
     if (diffMs > 360 * 60 * 60 * 1000) return 0.4;
     if (diffMs > 72 * 60 * 60 * 1000) return 0.46;
     if (diffMs > 24 * 60 * 60 * 1000) return 0.55;
@@ -181,7 +181,7 @@ export class LocalNotificationService {
     return 0.95;
   }
 
-  async getAllScheduled() {
+  private async getAllScheduled() {
     const list = await LocalNotifications.getPending();
     return list.notifications;
   }
