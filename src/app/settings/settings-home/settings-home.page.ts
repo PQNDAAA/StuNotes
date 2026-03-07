@@ -16,12 +16,11 @@ import {CardsService} from "../../cards/cards-service/cards-service";
 export class SettingsHomePage implements OnInit {
 
   settings!: ISettingsHome;
-
   settings$: Observable<ISettingsHome>;
 
   isCondensate = false;
 
-  constructor(private mc: ModalController, private settingsservice: Settings, private translate: TranslateService,
+  constructor(private settingsservice: Settings, private translate: TranslateService,
               private localNotification: LocalNotificationService, private cards: CardsService) {
     this.settings$ = this.settingsservice.settingsHome$;
     console.log(this.settings$);
@@ -39,14 +38,6 @@ export class SettingsHomePage implements OnInit {
     this.translate.use(detail);
     this.settings.currentLanguage = detail;
     await this.settingsservice.changeSettingsValue(this.settings);
-  }
-
-  get getCurrentLanguage(): string {
-    return this.translate.getCurrentLang();
-  }
-
-  get getAllLanguages() {
-    return this.translate.getLangs();
   }
 
   onScroll(event: any) {
@@ -73,7 +64,7 @@ export class SettingsHomePage implements OnInit {
       case 'reminders':
         const allCards = await this.cards.getCards();
         if (!value) {
-          await this.localNotification.clearAll();
+          await this.clearAllScheduledTasks();
         } else {
           for (const card of allCards) {
             await this.cards.updateCard(await this.localNotification.rebuildReminderForCard(card));
@@ -87,4 +78,8 @@ export class SettingsHomePage implements OnInit {
     }
     await this.settingsservice.changeSettingsValue(this.settings);
   }
+
+  async clearAllScheduledTasks(){await this.localNotification.clearAllScheduledTasks();}
+  get getCurrentLanguage(): string {return this.translate.getCurrentLang();}
+  get getAllLanguages() {return this.translate.getLangs();}
 }

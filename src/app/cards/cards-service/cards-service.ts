@@ -48,6 +48,7 @@ export class CardsService {
   async refreshCards() {
     const allCards = await this.getCards();
     this.cardsSubject.next(allCards);
+    console.log(allCards);
   }
 
   refreshCountCards(cardsFilter: Card[]) {
