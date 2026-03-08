@@ -44,12 +44,10 @@ export class FilterService {
 
   async clearFilters() {
     const stored = await this.db.filters.get(1);
-    if (!stored || this.isDefaultFilter(stored)) {
-      console.log("Nothing to clear");
-      return;
-    }
+    if (!stored || this.isDefaultFilter(stored)) return;
+
     await this.db.clearFilters();
-    this.filtersSubject.next(defaultFilterInterface);
+    await this.refreshValues();
   }
 
   isDefaultFilter(filtersValue: FilterInterface): boolean {
