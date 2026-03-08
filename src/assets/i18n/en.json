@@ -77,6 +77,7 @@
     "Week": "This week",
     "Month": "This month",
     "CustomDate": "Custom Date",
-    "SelectDate": "Select a date"
+    "SelectDate": "Select a date",
+    "ClearAll": "Clear All"
   }
 }

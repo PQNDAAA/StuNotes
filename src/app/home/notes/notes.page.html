@@ -19,8 +19,9 @@
             <ion-list>
               <div class="filterTitle">
                 <ion-label id="titleFilters">{{ 'FILTER.Title' | translate }}</ion-label>
-                <ion-button slot="end" fill="clear" id="clearFilters" (click)="clearFilters()"><ion-icon name="close-circle-outline" slot="start"></ion-icon>
-                  Clear All</ion-button>
+                <ion-button slot="end" fill="clear" id="clearFilters" (click)="clearFilters()">
+                  <ion-icon name="close-circle-outline" slot="start"></ion-icon>
+                  {{ 'FILTER.ClearAll' | translate }}</ion-button>
               </div>
               <ion-item-group>
                 <ion-item-divider>
@@ -80,7 +81,7 @@
   </div>
 
   <div *ngFor="let card of results$ | async">
-    <app-notecard [card]="card">
+    <app-notecard  [card]="card">
     </app-notecard>
   </div>
 

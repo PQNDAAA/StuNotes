@@ -6,11 +6,13 @@
         <ion-card-header class="card-header">
 
           <ion-card-title class="badge-title">
-            <ion-badge [ngStyle]="{'background-color': getStatusColor(card.status)}">{{ card.tag }}</ion-badge>
+            <div class="important-icon">
+              <ion-badge [ngStyle]="{'background-color': getStatusColor(card.status)}">{{ card.tag }}</ion-badge>
+              <ion-icon name="alert-circle-outline" id="important" *ngIf="card.important"></ion-icon>
+            </div>
             <ion-label class="cardName">{{ card.name }}</ion-label>
           </ion-card-title>
 
-          <ion-icon name="alert-circle-outline" id="important" *ngIf="card.important"></ion-icon>
         </ion-card-header>
 
         <ion-card-content>

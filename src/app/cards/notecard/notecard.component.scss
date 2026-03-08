@@ -19,13 +19,17 @@ ion-label{
   align-items: end;
   font-size: 24px;
 }
-// Header
-.card-header{
+//Important Icon
+.important-icon{
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
- // border: 1px solid black;
+  //border: 1px solid black;
+}
+// Header
+.card-header{
+  //border: 1px solid black;
 }
 //Badge deadline
 .deadLine {
@@ -65,9 +69,11 @@ ion-badge{
 
 ion-card{
   width: 100%;
-  border-radius: 4%;
+  border-radius: 10%;
   box-shadow: 0 -2 8px rgba(0,0,0,0.1);
-  margin: 10px;
+  margin: 15px;
+  will-change: transform;
+  transition: transform 0.1s linear;
 }
 
 ion-list {

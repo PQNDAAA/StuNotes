@@ -77,6 +77,7 @@
     "Week": "Cette semaine",
     "Month": "Ce mois-ci",
     "CustomDate": "Date personnalisée",
-    "SelectDate": "Sélectionner une date"
+    "SelectDate": "Sélectionner une date",
+    "ClearAll": "Supprimer les filtres"
   }
 }

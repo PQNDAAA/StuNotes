@@ -16,7 +16,7 @@
                    [required]="true"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-textarea label="Description*" [(ngModel)]="cardEdited.description" labelPlacement="fixed" [autoGrow]="true"
+        <ion-textarea class="textarea-description" label="Description*" [(ngModel)]="cardEdited.description" labelPlacement="fixed" [autoGrow]="true"
                       [placeholder]="('TASKS.DescriptionPlaceholder' | translate)" [counter]="true"
                       [maxlength]="300" name="taskDescription" [required]="true"></ion-textarea>
       </ion-item>
@@ -54,7 +54,9 @@
       </ion-item>
 
       <ion-item>
-        <ion-checkbox [(ngModel)]="cardEdited.important" name="taskImportant">Important</ion-checkbox>
+        <ion-checkbox [(ngModel)]="cardEdited.important" name="taskImportant">
+          <ion-label>Important</ion-label>
+        </ion-checkbox>
       </ion-item>
     </ion-list>
 

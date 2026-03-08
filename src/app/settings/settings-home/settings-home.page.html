@@ -54,7 +54,7 @@
     </ion-item>
     <ion-item [detail]="false">
       <ion-label>{{'SETTINGS.LANGUAGES' | translate}}</ion-label>
-      <ion-select (ionChange)="onLanguageChange($event)" interface="popover" [placeholder]="getCurrentLanguage" [(ngModel)]="this.settings.currentLanguage">
+      <ion-select (ionChange)="onLanguageChange($event)" interface="popover" [placeholder]="getCurrentLanguage">
         <ion-select-option *ngFor="let language of getAllLanguages" [value]="language">
           {{language}}
         </ion-select-option>

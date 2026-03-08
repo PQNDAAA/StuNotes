@@ -20,24 +20,21 @@ export class SettingsHomePage implements OnInit {
 
   isCondensate = false;
 
-  constructor(private settingsservice: Settings, private translate: TranslateService,
+  constructor(private settingsService: Settings, private translate: TranslateService,
               private localNotification: LocalNotificationService, private cards: CardsService) {
-    this.settings$ = this.settingsservice.settingsHome$;
-    console.log(this.settings$);
+    this.settings$ = this.settingsService.settingsHome$;
   }
 
   ngOnInit() {
     this.settings$.subscribe(data => {
       this.settings = data
-      console.log(this.settings)
     });
   }
 
   async onLanguageChange(event: any) {
     const detail = event.detail.value.trim();
     this.translate.use(detail);
-    this.settings.currentLanguage = detail;
-    await this.settingsservice.changeSettingsValue(this.settings);
+    await this.settingsService.changeSettingsValue(this.settings);
   }
 
   onScroll(event: any) {
@@ -58,7 +55,6 @@ export class SettingsHomePage implements OnInit {
 
     switch (settings) {
       case 'darkMode':
-        this.settings.darkMode = value;
         document.body.classList.toggle('dark', this.settings.darkMode);
         break;
       case 'reminders':
@@ -70,13 +66,11 @@ export class SettingsHomePage implements OnInit {
             await this.cards.updateCard(await this.localNotification.rebuildReminderForCard(card));
           }
         }
-        this.settings.reminders = value;
         break;
       case 'urgentDeadlineAlerts':
-        this.settings.urgentDeadlineAlerts = value;
         break;
     }
-    await this.settingsservice.changeSettingsValue(this.settings);
+    await this.settingsService.changeSettingsValue(this.settings);
   }
 
   async clearAllScheduledTasks(){await this.localNotification.clearAllScheduledTasks();}

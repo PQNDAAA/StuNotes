@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {AlertController, ModalController} from "@ionic/angular";
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AlertController, IonContent, ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../../cards/addnote/addnote.component";
 import {CardsService} from "../../cards/cards-service/cards-service";
 import {BehaviorSubject, combineLatest, map, Observable, tap} from "rxjs";
@@ -44,6 +44,10 @@ export class NotesPage implements OnInit {
   query = '';
 
   filter!: FilterInterface;
+
+  @ViewChild(IonContent) content!: IonContent;
+  @ViewChildren('parallaxCard') cards! : QueryList<ElementRef>;
+
 
   constructor(private mc: ModalController, private cs: CardsService,
               private subjectsService: TagsService, private filterService: FilterService
