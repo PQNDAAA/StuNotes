@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, {Table} from "dexie";
-import {FilterInterface} from "../interface/filter-interface";
+import {defaultFilterInterface, FilterInterface} from "../interface/filter-interface";
 
 @Injectable({
   providedIn: 'root',
@@ -14,5 +14,11 @@ export class FilterDB extends Dexie {
     this.version(2).stores({
       filters: '++id, important, tags, date, customDate'
     });
+  }
+
+  async clearFilters(){
+    const allValues = await this.filters.get(1);
+    await this.filters.put({...allValues, ...defaultFilterInterface}, 1);
+    console.log(await this.filters.get(1));
   }
 }

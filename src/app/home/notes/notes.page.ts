@@ -159,6 +159,7 @@ export class NotesPage implements OnInit {
   async onFilterImportantChanged(event : any) {
     //On get la valeur boolean de la checkbox
     const value = event.detail.checked;
+    console.log(value);
     //On crée une instance mis a jour avec l'interface et une valeur qui change
     const updatedImportantFilter = {...this.filter, important: value}
 
@@ -213,6 +214,11 @@ export class NotesPage implements OnInit {
   get getCurrentLang(): string {return this.filterService.getCurrentLang;}
 
   getDateStringValue(value: string) {return this.filterService.getDateStringValue(value);}
+
+  async clearFilters(){
+    await this.filterService.clearFilters();
+    console.log("Clear fait.");
+  }
 
   protected readonly FilterDateEnum = FilterDateEnum;
 }

@@ -43,13 +43,24 @@
 ========================= */
 
 .filterTitle{
-  text-align: center;
   margin-bottom: 1.2rem;
 
-  ion-label{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  #titleFilters{
     font-size: 1.1rem;
     font-weight: 600;
     letter-spacing: 0.4px;
+  }
+
+  #clearFilters{
+    --color: #ff8228;
+  }
+  #clearFilters.active{
+
   }
 
 }

@@ -20,7 +20,9 @@ export class FilterService {
   async initFilters() {
     const stored = await this.db.filters.get(1);
 
-    if (!stored) await this.db.filters.put(defaultFilterInterface, 1);
+    if (!stored) await this.db.filters.put({...defaultFilterInterface}, 1);
+
+    console.log(await this.db.filters.get(1));
 
     await this.refreshValues();
   }
@@ -34,8 +36,24 @@ export class FilterService {
   }
 
   async changeFiltersValue(filtersValue: FilterInterface) {
-    this.db.filters.put(filtersValue,1);
+    const allValues = await this.db.filters.get(1);
+    const values = {...allValues, ...filtersValue};
+    this.db.filters.put(values,1);
     await this.refreshValues();
+  }
+
+  async clearFilters() {
+    const stored = await this.db.filters.get(1);
+    if (!stored || this.isDefaultFilter(stored)) {
+      console.log("Nothing to clear");
+      return;
+    }
+    await this.db.clearFilters();
+    this.filtersSubject.next(defaultFilterInterface);
+  }
+
+  isDefaultFilter(filtersValue: FilterInterface): boolean {
+    return JSON.stringify(filtersValue) === JSON.stringify({...defaultFilterInterface, id: 1}) && filtersValue.tags.size === 0;
   }
 
   calculateDateFilter(deadline: string): boolean {
