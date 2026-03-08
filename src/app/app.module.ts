@@ -16,17 +16,19 @@ import {Settings} from "./settings/settings-service/settings";
 import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
 import {FilterService} from "./home/filter/service/filter-service";
 import {CardsService} from "./cards/cards-service/cards-service";
+import {TagsService} from "./tags/tags-service/tags-service";
 
 export function initializeSettings(settings : Settings){
   return() => settings.initSettings()
 }
-
 export function initializeFilters(filters : FilterService){
   return () => filters.initFilters()
 }
-
 export function initializeCards(cards : CardsService){
   return () => cards.initCards()
+}
+export function initializeTags(tags : TagsService){
+  return () => tags.initTags()
 }
 
 @NgModule({
@@ -50,6 +52,12 @@ export function initializeCards(cards : CardsService){
       provide: APP_INITIALIZER,
       useFactory: initializeCards,
       deps: [CardsService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeTags,
+      deps: [TagsService],
       multi: true
     },
     provideHttpClient(),

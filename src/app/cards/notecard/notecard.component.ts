@@ -1,10 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CardsService} from "../cards-service/cards-service";
 import {Card} from "../cards-interface/card";
-import {AlertController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 import {Cardstatus} from "../cards-enum/cardstatus";
 import {CardStatusService} from "../cards-service/card-status-service";
 import {TranslateService} from "@ngx-translate/core";
+import {AddnoteComponent} from "../addnote/addnote.component";
 
 @Component({
   selector: 'app-notecard',
@@ -39,8 +40,7 @@ export class NotecardComponent implements OnInit {
   ]
 
   constructor(private cs: CardsService, private ac: AlertController, private cardStatusService: CardStatusService,
-              private translate : TranslateService) {
-  }
+              private translate : TranslateService,private mc: ModalController) {}
 
   async onSwipe(){
     await this.presentAlert();
@@ -70,17 +70,20 @@ export class NotecardComponent implements OnInit {
     await this.cs.deleteCard(this.card);
   }
 
-  async openPopup(){
-    return await this.cs.openPopupEditCard(this.card);
+  async openPopupEditCard(card: Card) {
+    const modal = await this.mc.create({
+      component: AddnoteComponent,
+      componentProps: {
+        card: card,
+        isEditable: true
+      }
+    });
+    await modal.present();
   }
 
-  getStatusColor(status: string): string{
-    return this.cs.getStatusColor(status);
-  }
+  getStatusColor(status: string): string{return this.cs.getStatusColor(status);}
 
-  getStatus(key: Cardstatus){
-    return this.cardStatusService.getStatus(key);
-  }
+  getStatus(key: Cardstatus){return this.cardStatusService.getStatus(key);}
 
   ngOnInit() {
     // CREATEAT DATE FORMAT

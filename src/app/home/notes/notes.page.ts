@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalController} from "@ionic/angular";
+import {AlertController, ModalController} from "@ionic/angular";
 import {AddnoteComponent} from "../../cards/addnote/addnote.component";
 import {CardsService} from "../../cards/cards-service/cards-service";
 import {BehaviorSubject, combineLatest, map, Observable, tap} from "rxjs";
@@ -11,6 +11,8 @@ import {Tags} from "../../tags/tags-interface/tags";
 import {FilterDateEnum} from "../filter/enum/filter-date-enum";
 import {DatepickerValue} from "ngxsmk-datepicker";
 import {FilterService} from "../filter/service/filter-service";
+import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-notes',
@@ -44,10 +46,14 @@ export class NotesPage implements OnInit {
   filter!: FilterInterface;
 
   constructor(private mc: ModalController, private cs: CardsService,
-              private subjectsService: TagsService, private filterService: FilterService) {
+              private subjectsService: TagsService, private filterService: FilterService
+              , private notificationService: LocalNotificationService, private translate: TranslateService,
+              private ac: AlertController) {
     this.cards$ = this.cs.cards$;
     this.subjects$ = this.subjectsService.tags$;
     this.filter$ = this.filterService.filters$;
+
+    this.notificationService.notificationActionPerformed$.subscribe(id => {this.openTaskLocalNotificationPopup(id);});
 
     this.cardsByFilters$ = combineLatest([
       this.cards$,
@@ -99,6 +105,32 @@ export class NotesPage implements OnInit {
     this.filter$.subscribe(filters => {
       this.filter = filters;
     });
+  }
+
+  async openTaskLocalNotificationPopup(id: number) {
+    const card = await this.cs.getCardById(id);
+
+    if(!card) return;
+
+    const modal = await this.ac.create({
+      header: this.translate.instant('NOTIFICATIONS.AlertTitle'),
+      message: this.translate.instant('NOTIFICATIONS.AlertBody') + card.name,
+      buttons: [
+        {
+          text: "OK",
+          role: "cancel"
+        },
+        {
+          text: this.translate.instant('NOTIFICATIONS.AlertText'),
+          role: "confirm",
+          handler: async () => {
+            card.status = Cardstatus.Done;
+            await this.cs.updateCard(card);
+          }
+        }
+      ]
+    });
+    await modal.present();
   }
 
   async openPopup() {

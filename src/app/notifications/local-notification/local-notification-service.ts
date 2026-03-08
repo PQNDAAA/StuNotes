@@ -26,8 +26,8 @@ export class LocalNotificationService {
     await this.registerLocalNotifications();
   }
 
-  async rebuildReminderForCard(card: Card) : Promise<Card> {
-    card.taskId = await this.createLocalNotifications(this.calculateSchedule(card),card);
+  async rebuildReminderForCard(card: Card): Promise<Card> {
+    card.taskId = await this.createLocalNotifications(this.calculateSchedule(card), card);
     return card;
   }
 
@@ -47,17 +47,17 @@ export class LocalNotificationService {
   }
 
 // Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
-  private generateDynamicOffSets(card: Card,f : number = 1, a : number = 0, n : number = 4, minWindowHours: number = 1, maxWindowHours: number = 360) : Date[] {
-    const fractions = [0.25,0.5,0.85,0.975].slice(a,n);
+  private generateDynamicOffSets(card: Card, f: number = 1, a: number = 0, n: number = 4, minWindowHours: number = 1, maxWindowHours: number = 360): Date[] {
+    const fractions = [0.25, 0.5, 0.85, 0.975].slice(a, n);
     const deadlineFractions = 1;
     fractions.push(deadlineFractions);
 
     const deadLineMs = new Date(card.deadline).getTime();
     const diffMs = deadLineMs - Date.now();
 
-    const minWindowMs = minWindowHours*60*60*1000;
-    const maxWindowMs = maxWindowHours*60*60*1000;
-    const windowMs = Math.min(Math.max(f * diffMs, minWindowMs),maxWindowMs);
+    const minWindowMs = minWindowHours * 60 * 60 * 1000;
+    const maxWindowMs = maxWindowHours * 60 * 60 * 1000;
+    const windowMs = Math.min(Math.max(f * diffMs, minWindowMs), maxWindowMs);
 
     const reminders = fractions.map(f => new Date(deadLineMs - windowMs + windowMs * f));
 
@@ -75,27 +75,27 @@ export class LocalNotificationService {
     }
     for (let alert of alerts) {
       const taskId = (card.id * 10) + alerts.indexOf(alert);
-        const title = this.translate.instant('NOTIFICATIONS.Title');
-        const body = this.translate.instant('NOTIFICATIONS.Body');
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              title: title + card.name,
-              body: body + new Date(card.deadline).toLocaleString(this.translate.getCurrentLang(), {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "numeric",
-                minute: "2-digit"
-              }) + " •" + card.tag,
-              id: taskId,
-              schedule: {at: alert}, // Date précise
-              sound: 'default',
-              extra: {
-                cardId: card.id
-              }
-            }]
-        });
+      const title = this.translate.instant('NOTIFICATIONS.Title');
+      const body = this.translate.instant('NOTIFICATIONS.Body');
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: title + card.name,
+            body: body + new Date(card.deadline).toLocaleString(this.translate.getCurrentLang(), {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "2-digit"
+            }) + " •" + card.tag,
+            id: taskId,
+            schedule: {at: alert}, // Date précise
+            sound: 'default',
+            extra: {
+              cardId: card.id
+            }
+          }]
+      });
       taskIds.push(taskId);
     }
     return taskIds;
@@ -132,7 +132,7 @@ export class LocalNotificationService {
           }
         }
       } else {
-        if(!this.settings.reminders) {
+        if (!this.settings.reminders) {
           await this.clearAllScheduledTasks();
         }
         console.log(this.getAllScheduled());
@@ -164,12 +164,12 @@ export class LocalNotificationService {
   }
 
   private computeDynamicNumberReminders(diffMs: number) {
-    if (diffMs > 360 * 60 * 60 * 1000) return [0,4];
-    if (diffMs > 72 * 60 * 60 * 1000) return [0,4];
-    if (diffMs > 24 * 60 * 60 * 1000) return [0,3];
-    if (diffMs > 6 * 60 * 60 * 1000) return [1,3];
-    if (diffMs > 2 * 60 * 60 * 1000) return [1,2];
-    return [1,2];
+    if (diffMs > 360 * 60 * 60 * 1000) return [0, 4];
+    if (diffMs > 72 * 60 * 60 * 1000) return [0, 4];
+    if (diffMs > 24 * 60 * 60 * 1000) return [0, 3];
+    if (diffMs > 6 * 60 * 60 * 1000) return [1, 3];
+    if (diffMs > 2 * 60 * 60 * 1000) return [1, 2];
+    return [1, 2];
   }
 
   private computeDynamicF(diffMs: number) {

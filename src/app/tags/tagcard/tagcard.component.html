@@ -8,7 +8,7 @@
 </ion-card>
     </ion-item>
     <ion-item-options side="end" (ionSwipe)="onSwipe()">
-      <ion-item-option class="option-edit" color="primary" (click)="openEditMode()">
+      <ion-item-option class="option-edit" color="primary" (click)="openEditMode(tag)">
         {{'GENERAL.EditButton' | translate}}
       </ion-item-option>
       <ion-item-option class="option-delete" color="danger" [expandable]="true" (click)="presentAlert()">

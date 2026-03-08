@@ -39,8 +39,15 @@ export class TagcardComponent  implements OnInit {
     }
   }
 
-  async openEditMode(){
-    return await this.ts.openEditMode(this.tag);
+  async openEditMode(tag: Tags){
+    const modal = await this.mc.create({
+      component: AddtagComponent,
+      componentProps: {
+        tag: tag,
+        editMode: true
+      }
+    });
+    await modal.present();
   }
 
   async presentAlert(){
@@ -62,7 +69,5 @@ export class TagcardComponent  implements OnInit {
       ]
     });
     await alert.present();
-
   }
-
 }
