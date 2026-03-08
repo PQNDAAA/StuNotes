@@ -23,7 +23,6 @@ export class FilterService {
     if (!stored) await this.db.filters.put({...defaultFilterInterface}, 1);
 
     console.log(await this.db.filters.get(1));
-
     await this.refreshValues();
   }
 

@@ -19,6 +19,5 @@ export class FilterDB extends Dexie {
   async clearFilters(){
     const allValues = await this.filters.get(1);
     await this.filters.put({...allValues, ...defaultFilterInterface}, 1);
-    console.log(await this.filters.get(1));
   }
 }
