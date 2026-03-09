@@ -25,14 +25,14 @@
         <ion-select [placeholder]="('TASKS.SubjectPlaceholder' | translate)" interface="popover"
                     [(ngModel)]="cardEdited.tag" name="taskSubject" [required]="true">
           <ion-select-option *ngFor="let tag of tags">
-            {{ tag.name }}
+            {{tag.name}}
           </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>{{ 'TASKS.Status' | translate }}*</ion-label>
-        <ion-select (ionChange)="onChangeStatus($event)" interface="popover" [(ngModel)]="cardEdited.status" name="taskStatus"
-                    [required]="true">
+        <ion-select (ionChange)="onChangeStatus($event)" interface="popover" name="taskStatus"
+                    [required]="true" [value]="cardEdited.status">
           <ion-select-option *ngFor="let status of statusValues" [value]="status"
                              [disabled]="status === 'Late'">
             {{ getStatus(status) }}
@@ -46,11 +46,21 @@
 
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime" [disabled]="noDeadLineVisibility" [locale]="getCurrentLang"
-                          [(ngModel)]="cardEdited.deadline"
-                          [min]="minDeadline" name="taskDeadline" [required]="true"></ion-datetime>
+            <ion-datetime id="datetime" (ionChange)="onDateTimeChanged($event)" [disabled]="noDeadLineVisibility" [locale]="getCurrentLang"
+                          [value]="cardEdited.deadline" [min]="minDeadline" name="taskDeadline"></ion-datetime>
           </ng-template>
         </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>{{ 'TASKS.ManualReminders' | translate }}</ion-label>
+        <ion-select  (ionChange)="onManualRemindersChanged($event)" interface="popover" name="taskManualReminders"
+                     [disabled]="!getManualRemindersBoolean" [value]="cardEdited.manualReminders">
+          <ion-select-option *ngFor="let manualReminder of manualReminders"
+                             [value]="manualReminder" [disabled]="!isMatchedManualRemindersAndDeadline(manualReminder)">
+            {{getManuelReminders(manualReminder)}}
+          </ion-select-option>
+        </ion-select>
       </ion-item>
 
       <ion-item>

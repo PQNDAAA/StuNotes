@@ -28,13 +28,25 @@
     "DeleteAllNotesMsg":"Toutes les tâches ont été supprimés",
     "DeleteAllSubjectsMsg":"Toutes les matières ont été supprimés",
     "NoNotesDeleted":"Pas de tâches à supprimer",
-    "NoSubjectsDeleted":"Pas de matières à supprimer"
+    "NoSubjectsDeleted":"Pas de matières à supprimer",
+    "ManualReminders": "Activer les rappels manuels"
   },
   "STATUS": {
     "Ongoing": "En Cours",
     "Late": "En Retard",
     "Done": "Fini",
     "Open": "À Faire"
+  },
+  "MANUALREMINDERS": {
+    "Never": "Jamais",
+    "EveryHour": "Toutes les heures",
+    "EveryThreeHours" : "Toutes les 3 heures",
+    "EveryDay": "Tous les jours",
+    "EveryTwoDays": "Tous les 2 jours",
+    "EveryWeek": "Toutes les semaines",
+    "EveryMonth": "Tous les mois",
+    "EveryYear": "Toutes les années",
+    "CustomReminder": "Rappels personnalisés"
   },
   "TASKS": {
     "Date": "Crée le",
@@ -44,6 +56,7 @@
     "Subject": "Matière",
     "Status": "Statut",
     "Deadline": "Date limite",
+    "ManualReminders": "Rappels manuels",
     "NoteTitlePlaceholder": "Entrez le titre",
     "DescriptionPlaceholder": "Entrez la description",
     "SubjectPlaceholder": "Choisissez la matière",

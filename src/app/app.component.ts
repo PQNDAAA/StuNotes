@@ -8,7 +8,6 @@ import {CardsService} from "./cards/cards-service/cards-service";
 import {LanguageService} from "./language/language-service/language-service";
 import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "./settings/settings-interface/isettings-home";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -22,7 +21,7 @@ export class AppComponent implements OnInit {
 
   constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm,
               private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService,
-              private languageService: LanguageService, private router: Router) {
+              private languageService: LanguageService) {
 
     this.translate.addLangs(['fr','en']);
     this.initializeApp();

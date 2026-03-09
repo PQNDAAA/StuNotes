@@ -5,6 +5,8 @@ import {Subject} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "../../settings/settings-interface/isettings-home";
 import {Settings} from "../../settings/settings-service/settings";
+import {Manualreminders} from "../../cards/cards-enum/manualreminders";
+import {CardManualreminders} from "../../cards/cards-service/card-manualreminders";
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +15,15 @@ export class LocalNotificationService {
 
   public notificationReceived$ = new Subject<number>();
   public notificationActionPerformed$ = new Subject<number>();
+  public notificationGranted$ = new Subject<ISettingsHome>();
 
   settings!: ISettingsHome;
 
-  constructor(private translate: TranslateService, private settingsService: Settings) {
+  constructor(private translate: TranslateService, private settingsService: Settings,
+              private manuelRemindersService: CardManualreminders) {
     this.settingsService.settingsHome$.subscribe(data => {
       this.settings = data;
+      console.log(data);
     })
   }
 
@@ -29,6 +34,17 @@ export class LocalNotificationService {
   async rebuildReminderForCard(card: Card): Promise<Card> {
     card.taskId = await this.createLocalNotifications(this.calculateSchedule(card), card);
     return card;
+  }
+
+  calculateManualReminders(card: Card): Date[] {
+    const deadLineMs = new Date(card.deadline).getTime();
+    const now = Date.now();
+    const diff = deadLineMs - now;
+
+    if (card.id === undefined || deadLineMs < now || !this.settings.manualReminders) {
+      return [];
+    }
+    return this.manuelRemindersService.calculateManualReminders(card);
   }
 
   calculateSchedule(card: Card): Date[] {
@@ -47,7 +63,7 @@ export class LocalNotificationService {
   }
 
 // Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
-  private generateDynamicOffSets(card: Card, f: number = 1, a: number = 0, n: number = 4, minWindowHours: number = 1, maxWindowHours: number = 360): Date[] {
+  private generateDynamicOffSets(card: Card, f: number = 1, a: number = 0, n: number = 4, minWindowHours: number = 0.5, maxWindowHours: number = 360): Date[] {
     const fractions = [0.25, 0.5, 0.85, 0.975].slice(a, n);
     const deadlineFractions = 1;
     fractions.push(deadlineFractions);
@@ -120,24 +136,28 @@ export class LocalNotificationService {
   }
 
   private async registerLocalNotifications() {
-    LocalNotifications.checkPermissions().then(async (permission) => {
-      if (permission.display !== 'granted') {
-        const request = await LocalNotifications.requestPermissions();
+    const permission = await LocalNotifications.checkPermissions();
 
-        if (request.display !== 'granted') {
-          await this.settingsService.updateReminders(this.settings, false);
-        } else {
-          if (!this.settings.reminders) {
-            await this.settingsService.updateReminders(this.settings, true);
-          }
-        }
-      } else {
-        if (!this.settings.reminders) {
-          await this.clearAllScheduledTasks();
-        }
-        console.log(this.getAllScheduled());
+    if (permission.display !== "granted") {
+
+      const request = await LocalNotifications.requestPermissions();
+
+      if (request.display !== "granted") {
+        console.log("notif disabled");
+        return;
       }
-    })
+
+      const remindersUpdated = {...this.settings, reminders: true};
+      await this.settingsService.changeSettingsValue(remindersUpdated);
+      this.notificationGranted$.next(remindersUpdated);
+      return;
+    }
+
+    if (!this.settings.reminders) {
+      await this.clearAllScheduledTasks();
+    }
+
+    console.log(await this.getAllScheduled());
 
     await LocalNotifications.addListener("localNotificationReceived", (notification) => {
       console.log("Notification reçue par l'utilisateur", notification);
@@ -168,8 +188,8 @@ export class LocalNotificationService {
     if (diffMs > 72 * 60 * 60 * 1000) return [0, 4];
     if (diffMs > 24 * 60 * 60 * 1000) return [0, 3];
     if (diffMs > 6 * 60 * 60 * 1000) return [1, 3];
-    if (diffMs > 2 * 60 * 60 * 1000) return [1, 2];
-    return [1, 2];
+    if(diffMs > 50 * 60 * 1000) return [1, 2];
+    return [0,0];
   }
 
   private computeDynamicF(diffMs: number) {

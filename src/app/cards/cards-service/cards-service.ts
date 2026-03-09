@@ -6,6 +6,7 @@ import {CardstatusColors} from "../cards-const/cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
 import {CardsDB} from "../db/cards-db";
+import {Settings} from "../../settings/settings-service/settings";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,10 @@ export class CardsService {
   private db = new CardsDB();
 
 
-  constructor(private lns: LocalNotificationService) {
+  constructor(private lns: LocalNotificationService, private settingsService: Settings) {
     //Subscribe to this event
     this.lns.notificationReceived$.subscribe(id => this.removeTaskId(id));
+    this.lns.notificationGranted$.subscribe(value => this.updateReminders());
   }
 
   async initCards() {
@@ -59,10 +61,13 @@ export class CardsService {
 
     const id = await this.getCardsDB.add(newCard);
 
-    if (newCard.status.trim() !== Cardstatus.Done || newCard.status.trim() !== Cardstatus.Late) {
+    if (newCard.status.trim() !== Cardstatus.Done && newCard.status.trim() !== Cardstatus.Late
+      && this.settingsService.getSettings().reminders) {
       newCard.taskId = await this.createLocalNotifications(newCard);
-      this.getCardsDB.put(newCard);
+    } else if(this.settingsService.getSettings().manualReminders) {
+      newCard.taskId = await this.lns.createLocalNotifications(this.lns.calculateManualReminders(newCard),newCard);
     }
+    this.getCardsDB.put(newCard);
     await this.refreshCards();
     return id;
   }
@@ -159,6 +164,18 @@ export class CardsService {
         await this.getCardsDB.put(card);
       }
     }
+    await this.refreshCards();
+  }
+
+  async updateReminders() {
+    const allCards = await this.getCards();
+    const activeCards = allCards.filter(card =>
+      ![Cardstatus.Late, Cardstatus.Done].includes(card.status));
+
+    await Promise.all(activeCards.map(async card => {
+      const updatedCard = await this.lns.rebuildReminderForCard(card);
+      this.db.cards.put(updatedCard);
+    }));
     await this.refreshCards();
   }
 

@@ -36,11 +36,6 @@ export class Settings {
     this.settingsHomeSubject.next(allValues);
   }
 
-  async updateReminders(settings: ISettingsHome, value: boolean) {
-    settings.reminders = value;
-    await this.changeSettingsValue(settings)
-  }
-
   public getSettings() : ISettingsHome{return this.settingsHomeSubject.getValue();}
 
   getSettingsTable(){return this.db.settingsHomeTable;}

@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ModalController} from "@ionic/angular";
 import {Settings} from "../settings-service/settings";
 import {ISettingsHome} from "../settings-interface/isettings-home";
 import {Observable} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
 import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
 import {CardsService} from "../../cards/cards-service/cards-service";
+import {Cardstatus} from "../../cards/cards-enum/cardstatus";
 
 @Component({
   selector: 'app-settings-home',
@@ -33,8 +33,10 @@ export class SettingsHomePage implements OnInit {
 
   async onLanguageChange(event: any) {
     const detail = event.detail.value.trim();
+    const languageUpdated = {...this.settings, currentLanguage: detail};
+
     this.translate.use(detail);
-    await this.settingsService.changeSettingsValue(this.settings);
+    await this.settingsService.changeSettingsValue(languageUpdated);
   }
 
   onScroll(event: any) {
@@ -50,27 +52,41 @@ export class SettingsHomePage implements OnInit {
     }
   }
 
-  async onToggle(settings: string, event: any) {
+  async onToggle(settingsKey: string, event: any) {
     const value = event.detail.checked;
+    const settingsUpdated = {...this.settings, [settingsKey]: value};
 
-    switch (settings) {
+    try {
+      await this.settingsService.changeSettingsValue(settingsUpdated);
+    } catch (err) {
+      console.error("Settings update failed", err);
+      return;
+    }
+
+    switch (settingsKey) {
       case 'darkMode':
-        document.body.classList.toggle('dark', this.settings.darkMode);
+        document.body.classList.toggle('dark', value);
         break;
       case 'reminders':
-        const allCards = await this.cards.getCards();
-        if (!value) {
+        if (!value) return await this.clearAllScheduledTasks();
+        if (value && this.settings.manualReminders) {
+          await this.settingsService.changeSettingsValue({...this.settings, manualReminders: false});
           await this.clearAllScheduledTasks();
-        } else {
-          for (const card of allCards) {
-            await this.cards.updateCard(await this.localNotification.rebuildReminderForCard(card));
-          }
         }
+        await this.cards.updateReminders();
+        break;
+      case 'manualReminders':
+        if(!value) return await this.clearAllScheduledTasks();
+        if (value && this.settings.reminders) {
+          await this.settingsService.changeSettingsValue({...this.settings, reminders: false});
+          return await this.clearAllScheduledTasks();
+        }
+        console.log("Manual Reminders");
         break;
       case 'urgentDeadlineAlerts':
+        console.log("test");
         break;
     }
-    await this.settingsService.changeSettingsValue(this.settings);
   }
 
   async clearAllScheduledTasks(){await this.localNotification.clearAllScheduledTasks();}

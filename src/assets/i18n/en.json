@@ -28,13 +28,25 @@
     "DeleteAllNotesMsg":"All tasks deleted",
     "DeleteAllSubjectsMsg":"All subjects deleted",
     "NoNotesDeleted":"No tasks deleted",
-    "NoSubjectsDeleted":"No Subjects deleted"
+    "NoSubjectsDeleted":"No Subjects deleted",
+    "ManualReminders": "Enable manual reminders"
   },
   "STATUS": {
     "Ongoing": "Ongoing",
     "Late": "Late",
     "Done": "Done",
     "Open": "Open"
+  },
+  "MANUALREMINDERS": {
+    "Never": "Never",
+    "EveryHour": "Every hour",
+    "EveryThreeHours" : "Every three hours",
+    "EveryDay": "Every day",
+    "EveryTwoDays": "Every two days",
+    "EveryWeek": "Every week",
+    "EveryMonth": "Every month",
+    "EveryYear": "Every year",
+    "CustomReminder": "Custom reminders"
   },
   "TASKS": {
     "Date": "Created on",
@@ -44,6 +56,7 @@
     "Subject": "Subject",
     "Status": "Status",
     "Deadline": "Deadline",
+    "ManualReminders": "Manual reminders",
     "NoteTitlePlaceholder": "Enter the title",
     "DescriptionPlaceholder": "Enter the description",
     "SubjectPlaceholder": "Choose the subject",

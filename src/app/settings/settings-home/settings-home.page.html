@@ -27,7 +27,7 @@
     <h3>{{'SETTINGS.Appearance' | translate}}</h3>
   </ion-item>
   <ion-item [button]="true" [detail]="false">
-    <ion-toggle (ionChange)="onToggle('darkMode',$event)" [(ngModel)]="this.settings.darkMode">
+    <ion-toggle (ionChange)="onToggle('darkMode',$event)" [checked]="this.settings.darkMode">
       <ion-label>{{ 'SETTINGS.DarkMode' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
@@ -38,13 +38,13 @@
     <h3>Notifications</h3>
   </ion-item>
   <ion-item [button]="true" [detail]="false">
-    <ion-toggle (ionChange)="onToggle('reminders',$event)" [(ngModel)]="this.settings.reminders">
+    <ion-toggle (ionChange)="onToggle('reminders',$event)" [checked]="this.settings.reminders">
       <ion-label>{{ 'SETTINGS.Reminders' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
   <ion-item [button]="true" [detail]="false">
-    <ion-toggle (ionChange)="onToggle('urgentDeadlineAlerts',$event)" [(ngModel)]="this.settings.urgentDeadlineAlerts">
-      <ion-label>{{ 'SETTINGS.UrgentAlerts' | translate }}</ion-label>
+    <ion-toggle (ionChange)="onToggle('manualReminders',$event)" [checked]="this.settings.manualReminders">
+      <ion-label>{{ 'SETTINGS.ManualReminders' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
 </ion-list>

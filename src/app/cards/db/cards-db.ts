@@ -12,7 +12,7 @@ export class CardsDB extends Dexie {
   constructor() {
     super('CardsDB');
     this.version(2).stores({
-      cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId'
+      cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId, manualReminders'
     });
     this.cards = this.table('cards');
   }
