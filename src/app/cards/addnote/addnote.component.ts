@@ -88,7 +88,19 @@ export class AddnoteComponent implements OnInit {
     }
   }
 
-  onReminderTypeChanged(event: any) {this.cardEdited.reminder.type = event.target.value;}
+  onReminderTypeChanged(event: any) {
+    const value = event.target.value;
+    this.cardEdited.reminder.type = value;
+
+    if(value === ReminderTypeEnum.SmartReminder){
+      this.cardEdited.reminder.smartReminders = true;
+      return;
+    }
+    if(this.cardEdited.reminder.smartReminders){
+      this.cardEdited.reminder.smartReminders = false;
+      return;
+    }
+  }
 
   onRecurringRemindersChanged(event:any){this.cardEdited.reminder.recurringReminders = event.target.value;}
 
