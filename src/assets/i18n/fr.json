@@ -21,7 +21,7 @@
     "Tasks": "Tâches",
     "Subjects": "Matières",
     "DarkMode": "Mode Sombre",
-    "Reminders": "Activer les rappels intelligents",
+    "Reminders": "Rappels intelligents",
     "UrgentAlerts": "Alertes échéances urgentes",
     "DeleteAllNotes": "Supprimer toutes les tâches",
     "DeleteAllSubjects": "Supprimer toutes les matières",
@@ -29,7 +29,8 @@
     "DeleteAllSubjectsMsg":"Toutes les matières ont été supprimés",
     "NoNotesDeleted":"Pas de tâches à supprimer",
     "NoSubjectsDeleted":"Pas de matières à supprimer",
-    "ManualReminders": "Activer les rappels manuels"
+    "ManualReminders": "Rappels manuels et récurrents",
+    "TaskReminders": "Autoriser les notifications des tâches"
   },
   "STATUS": {
     "Ongoing": "En Cours",
@@ -37,7 +38,7 @@
     "Done": "Fini",
     "Open": "À Faire"
   },
-  "MANUALREMINDERS": {
+  "RECURRINGREMINDERS": {
     "Never": "Jamais",
     "EveryHour": "Toutes les heures",
     "EveryThreeHours" : "Toutes les 3 heures",
@@ -45,8 +46,7 @@
     "EveryTwoDays": "Tous les 2 jours",
     "EveryWeek": "Toutes les semaines",
     "EveryMonth": "Tous les mois",
-    "EveryYear": "Toutes les années",
-    "CustomReminder": "Rappels personnalisés"
+    "EveryYear": "Toutes les années"
   },
   "TASKS": {
     "Date": "Crée le",
@@ -56,7 +56,8 @@
     "Subject": "Matière",
     "Status": "Statut",
     "Deadline": "Date limite",
-    "ManualReminders": "Rappels manuels",
+    "RecurringReminders": "Rappels récurrents",
+    "ReminderType": "Type de rappel",
     "NoteTitlePlaceholder": "Entrez le titre",
     "DescriptionPlaceholder": "Entrez la description",
     "SubjectPlaceholder": "Choisissez la matière",
@@ -92,5 +93,11 @@
     "CustomDate": "Date personnalisée",
     "SelectDate": "Sélectionner une date",
     "ClearAll": "Supprimer les filtres"
+  },
+  "REMINDERTYPE": {
+    "None": "Aucun",
+    "SmartReminder": "Rappel intelligent",
+    "RecurringReminder": "Rappel récurrent",
+    "CustomReminder": "Rappel personnalisé"
   }
 }

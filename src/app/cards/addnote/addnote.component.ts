@@ -10,8 +10,10 @@ import {CardStatusService} from "../cards-service/card-status-service";
 import {TranslateService} from "@ngx-translate/core";
 import {NgForm} from "@angular/forms";
 import {Settings} from "../../settings/settings-service/settings";
-import {Manualreminders} from "../cards-enum/manualreminders";
-import {CardManualreminders} from "../cards-service/card-manualreminders";
+import {RecurringRemindersEnum} from "../../notifications/recurring/enum/recurring-reminders-enum";
+import {RecurringReminders} from "../../notifications/recurring/service/recurring-reminders";
+import {ReminderTypeEnum} from "../../notifications/types/reminder-type-enum";
+import {ReminderType} from "../../notifications/types/service/reminder-type";
 
 @Component({
   selector: 'app-addnote',
@@ -23,7 +25,7 @@ export class AddnoteComponent implements OnInit {
 
   //INPUT SOURCE
   @Input() card: Card = {
-    manualReminders: Manualreminders.Never, taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
+    reminder: {type: ReminderTypeEnum.None}, taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
     status: Cardstatus.Open, createdAt: new Date(), description: "", name: "", tag: ""
   }
   @Input() isEditable: boolean = false;
@@ -32,7 +34,6 @@ export class AddnoteComponent implements OnInit {
   cardEdited!: Card;
   tags!: Tags[];
   statusValues = Object.values(Cardstatus);
-  manualReminders = Object.values(Manualreminders);
 
   //UI
   minDeadline: string;
@@ -42,7 +43,8 @@ export class AddnoteComponent implements OnInit {
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService,
               private cardStatusService: CardStatusService, private translate: TranslateService,
-              private settingsService: Settings, private manualRemindersService: CardManualreminders) {
+              private settingsService: Settings, private recurringRemindersService: RecurringReminders,
+              private reminderTypeService: ReminderType) {
 
     //DEFINIT UNE DATE MINIMUM DANS LE FORMULAIRE
     this.minDeadline = this.cs.toLocalISOString(new Date());
@@ -86,35 +88,31 @@ export class AddnoteComponent implements OnInit {
     }
   }
 
-  onManualRemindersChanged(event:any){
-    this.cardEdited.manualReminders = event.target.value;
+  onReminderTypeChanged(event: any) {this.cardEdited.reminder.type = event.target.value;}
+
+  onRecurringRemindersChanged(event:any){this.cardEdited.reminder.recurringReminders = event.target.value;}
+
+  onDateTimeChanged(event:any){this.cardEdited.deadline = event.detail.value;}
+
+  isMatchedManualRemindersAndDeadline(selectedRecurringReminders: RecurringRemindersEnum): boolean{
+    return this.recurringRemindersService.checkRecurringReminders(selectedRecurringReminders, this.cardEdited.deadline);
   }
 
-  onDateTimeChanged(event:any){
-    this.cardEdited.deadline = event.detail.value;
-  }
+  get getManualRemindersBoolean(): boolean{return this.settingsService.getSettings().manualReminders;}
 
-  isMatchedManualRemindersAndDeadline(selectedManualReminders: Manualreminders): boolean{
-  return this.manualRemindersService.checkManualReminders(selectedManualReminders, this.cardEdited.deadline);
-  }
+  getRecurringReminders(key: RecurringRemindersEnum): string{return this.recurringRemindersService.getRecurringReminders(key);}
 
-  get getManualRemindersBoolean(): boolean{
-    return this.settingsService.getSettings().manualReminders;
-  }
+  getRecurringRemindersValues(){return Object.values(RecurringRemindersEnum);}
 
-  getManuelReminders(key: Manualreminders): string{
-    return this.manualRemindersService.getManualReminders(key);
-  }
+  getReminderTypeValues(){return Object.values(ReminderTypeEnum);}
 
-  async closePopUp() {
-    await this.mc.dismiss(null, 'cancel');
-  }
+  getReminderType(type: ReminderTypeEnum): string {return this.reminderTypeService.getReminderTypeValue(type);}
 
-  get getCurrentLang(): string {
-    return this.translate.getCurrentLang();
-  }
+  async closePopUp() {await this.mc.dismiss(null, 'cancel');}
 
-  getStatus(key: Cardstatus): string {
-    return this.cardStatusService.getStatus(key);
-  }
+  get getCurrentLang(): string {return this.translate.getCurrentLang();}
+
+  getStatus(key: Cardstatus): string {return this.cardStatusService.getStatus(key);}
+
+  protected readonly ReminderTypeEnum = ReminderTypeEnum;
 }

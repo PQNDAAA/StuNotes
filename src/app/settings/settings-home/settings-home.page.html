@@ -38,13 +38,8 @@
     <h3>Notifications</h3>
   </ion-item>
   <ion-item [button]="true" [detail]="false">
-    <ion-toggle (ionChange)="onToggle('reminders',$event)" [checked]="this.settings.reminders">
-      <ion-label>{{ 'SETTINGS.Reminders' | translate }}</ion-label>
-    </ion-toggle>
-  </ion-item>
-  <ion-item [button]="true" [detail]="false">
-    <ion-toggle (ionChange)="onToggle('manualReminders',$event)" [checked]="this.settings.manualReminders">
-      <ion-label>{{ 'SETTINGS.ManualReminders' | translate }}</ion-label>
+    <ion-toggle (ionChange)="onToggle('taskReminders',$event)" [checked]="this.settings.taskReminders">
+      <ion-label class="ion-text-wrap">{{ 'SETTINGS.TaskReminders' | translate }}</ion-label>
     </ion-toggle>
   </ion-item>
 </ion-list>

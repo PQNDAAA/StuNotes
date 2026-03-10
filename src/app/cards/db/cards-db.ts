@@ -12,7 +12,7 @@ export class CardsDB extends Dexie {
   constructor() {
     super('CardsDB');
     this.version(2).stores({
-      cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId, manualReminders'
+      cards: '++id, name, description, tag, createdAt, status, important, deadline, taskId, reminder'
     });
     this.cards = this.table('cards');
   }
@@ -20,5 +20,4 @@ export class CardsDB extends Dexie {
   clearCards(){
     this.cards.clear();
   }
-
 }

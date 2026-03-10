@@ -75,13 +75,8 @@ export class SettingsHomePage implements OnInit {
         }
         await this.cards.updateReminders();
         break;
-      case 'manualReminders':
+      case 'taskReminders':
         if(!value) return await this.clearAllScheduledTasks();
-        if (value && this.settings.reminders) {
-          await this.settingsService.changeSettingsValue({...this.settings, reminders: false});
-          return await this.clearAllScheduledTasks();
-        }
-        console.log("Manual Reminders");
         break;
       case 'urgentDeadlineAlerts':
         console.log("test");

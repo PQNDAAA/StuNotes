@@ -5,8 +5,7 @@ import {Subject} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "../../settings/settings-interface/isettings-home";
 import {Settings} from "../../settings/settings-service/settings";
-import {Manualreminders} from "../../cards/cards-enum/manualreminders";
-import {CardManualreminders} from "../../cards/cards-service/card-manualreminders";
+import {RecurringReminders} from "../recurring/service/recurring-reminders";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class LocalNotificationService {
   settings!: ISettingsHome;
 
   constructor(private translate: TranslateService, private settingsService: Settings,
-              private manuelRemindersService: CardManualreminders) {
+              private recurringRemindersService: RecurringReminders) {
     this.settingsService.settingsHome$.subscribe(data => {
       this.settings = data;
       console.log(data);
@@ -44,7 +43,7 @@ export class LocalNotificationService {
     if (card.id === undefined || deadLineMs < now || !this.settings.manualReminders) {
       return [];
     }
-    return this.manuelRemindersService.calculateManualReminders(card);
+    return this.recurringRemindersService.calculateRecurringReminders(card);
   }
 
   calculateSchedule(card: Card): Date[] {

@@ -53,12 +53,21 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>{{ 'TASKS.ManualReminders' | translate }}</ion-label>
-        <ion-select  (ionChange)="onManualRemindersChanged($event)" interface="popover" name="taskManualReminders"
-                     [disabled]="!getManualRemindersBoolean" [value]="cardEdited.manualReminders">
-          <ion-select-option *ngFor="let manualReminder of manualReminders"
-                             [value]="manualReminder" [disabled]="!isMatchedManualRemindersAndDeadline(manualReminder)">
-            {{getManuelReminders(manualReminder)}}
+        <ion-label>{{ 'TASKS.ReminderType' | translate }}</ion-label>
+        <ion-select  (ionChange)="onReminderTypeChanged($event)" interface="popover" name="reminderType" [value]="cardEdited.reminder.type">
+          <ion-select-option *ngFor="let value of getReminderTypeValues()" [value]="value">
+            {{getReminderType(value)}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>{{ 'TASKS.RecurringReminders' | translate }}</ion-label>
+        <ion-select  (ionChange)="onRecurringRemindersChanged($event)" interface="popover" name="taskRecurringReminders"
+                     [disabled]="cardEdited.reminder.type !== ReminderTypeEnum.RecurringReminder" [value]="cardEdited.reminder.recurringReminders">
+          <ion-select-option *ngFor="let recurringReminder of getRecurringRemindersValues()"
+                             [value]="recurringReminder" [disabled]="!isMatchedManualRemindersAndDeadline(recurringReminder)">
+            {{getRecurringReminders(recurringReminder)}}
           </ion-select-option>
         </ion-select>
       </ion-item>

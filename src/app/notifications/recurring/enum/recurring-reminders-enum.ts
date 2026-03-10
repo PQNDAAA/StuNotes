@@ -1,4 +1,4 @@
-export enum Manualreminders {
+export enum RecurringRemindersEnum {
   Never = 'Never',
   EveryHour = 'EveryHour',
   EveryThreeHours = 'EveryThreeHours',
@@ -7,5 +7,4 @@ export enum Manualreminders {
   EveryWeek = 'EveryWeek',
   EveryMonth = 'EveryMonth',
   EveryYear = 'EveryYear',
-  CustomReminder = 'CustomReminder',
 }

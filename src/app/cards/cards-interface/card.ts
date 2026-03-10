@@ -1,5 +1,5 @@
 import {Cardstatus} from "../cards-enum/cardstatus";
-import {Manualreminders} from "../cards-enum/manualreminders";
+import {Reminder} from "../../notifications/interface/reminder";
 
 export interface Card {
   id?:number;
@@ -11,5 +11,5 @@ export interface Card {
   important: boolean;
   deadline: string;
   taskId: number[];
-  manualReminders: Manualreminders;
+  reminder: Reminder;
 }

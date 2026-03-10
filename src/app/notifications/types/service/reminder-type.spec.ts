@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CardManualreminders } from './card-manualreminders';
+import { ReminderType } from './reminder-type';
 
-describe('CardManualreminders', () => {
-  let service: CardManualreminders;
+describe('ReminderType', () => {
+  let service: ReminderType;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CardManualreminders);
+    service = TestBed.inject(ReminderType);
   });
 
   it('should be created', () => {

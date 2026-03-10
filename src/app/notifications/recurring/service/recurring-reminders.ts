@@ -1,32 +1,31 @@
-import {Injectable} from '@angular/core';
-import {Manualreminders} from "../cards-enum/manualreminders";
+import { Injectable } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
-import {Card} from "../cards-interface/card";
+import {Card} from "../../../cards/cards-interface/card";
+import {RecurringRemindersEnum} from "../enum/recurring-reminders-enum";
 
 @Injectable({
   providedIn: 'root',
 })
-export class CardManualreminders {
+export class RecurringReminders {
 
 
   constructor(private translate: TranslateService) {}
 
-  getManualReminders(manualReminder: Manualreminders): string{
+  getRecurringReminders(recurringReminders: RecurringRemindersEnum): string{
     let value = "";
-    this.translate.get(`MANUALREMINDERS.${manualReminder}`).subscribe(string => {
+    this.translate.get(`RECURRINGREMINDERS.${recurringReminders}`).subscribe(string => {
       value = string;
     });
     return value;
   }
 
-  calculateManualReminders(card: Card): Date[]{
+  calculateRecurringReminders(card: Card): Date[]{
     const deadlineMs = new Date(card.deadline).getTime();
     const now = Date.now();
     const diff = deadlineMs - now;
 
-    switch (card.manualReminders) {
-      case Manualreminders.EveryHour:
-
+    switch (card.reminder.recurringReminders) {
+      case RecurringRemindersEnum.EveryHour:
         const remindersEveryHour : Date[] = [];
 
         const hours = Math.round(diff / 1000 / 3600);
@@ -38,38 +37,35 @@ export class CardManualreminders {
           remindersEveryHour.push(newDate);
           console.log(newDate);
         }
-        //18h01 > 21h01 = 3h rappels : 19h, 20h, 21h
         return remindersEveryHour;
       default:
         return [];
     }
   }
 
-  checkManualReminders(selectedManualReminders: Manualreminders, deadline: string): boolean {
+  checkRecurringReminders(selectedRecurringReminders: RecurringRemindersEnum, deadline: string): boolean {
     const deadlineMs = new Date(deadline).getTime();
     const now = Date.now();
     const diff = deadlineMs - now;
 
-    switch(selectedManualReminders){
-      case Manualreminders.Never:
+    switch(selectedRecurringReminders){
+      case RecurringRemindersEnum.Never:
         return true;
-      case Manualreminders.CustomReminder:
-        return true;
-      case Manualreminders.EveryHour:
+      case RecurringRemindersEnum.EveryHour:
         return diff >= 60 * 60 * 1000;
-      case Manualreminders.EveryThreeHours:
+      case RecurringRemindersEnum.EveryThreeHours:
         return diff >= 3 * 60 * 60 * 1000;
-      case Manualreminders.EveryDay:
+      case RecurringRemindersEnum.EveryDay:
         return diff >= 24 * 60 * 60 * 1000;
-      case Manualreminders.EveryTwoDays:
+      case RecurringRemindersEnum.EveryTwoDays:
         return diff >= 2 * 24 * 60 * 60 * 1000;
-      case Manualreminders.EveryWeek:
+      case RecurringRemindersEnum.EveryWeek:
         return diff >= 7 * 24 * 60 * 60 * 1000;
-      case Manualreminders.EveryMonth:
+      case RecurringRemindersEnum.EveryMonth:
         const nextMonth = new Date();
         nextMonth.setMonth(nextMonth.getMonth() + 1);
         return diff >= nextMonth.getTime();
-      case Manualreminders.EveryYear:
+      case RecurringRemindersEnum.EveryYear:
         const nextYear = new Date();
         nextYear.setFullYear(nextYear.getFullYear() + 1);
         return diff >= nextYear.getTime();

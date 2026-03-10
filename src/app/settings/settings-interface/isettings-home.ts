@@ -6,6 +6,7 @@ export interface ISettingsHome {
   urgentDeadlineAlerts: boolean,
   currentLanguage: string,
   firstLaunch: boolean,
+  taskReminders: boolean,
 }
 
 export const default_settings : ISettingsHome = {
@@ -16,4 +17,5 @@ export const default_settings : ISettingsHome = {
   urgentDeadlineAlerts: false,
   currentLanguage: '',
   firstLaunch: true,
+  taskReminders: true,
 }
