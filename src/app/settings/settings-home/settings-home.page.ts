@@ -67,19 +67,14 @@ export class SettingsHomePage implements OnInit {
       case 'darkMode':
         document.body.classList.toggle('dark', value);
         break;
-      case 'reminders':
-        if (!value) return await this.clearAllScheduledTasks();
-        if (value && this.settings.manualReminders) {
-          await this.settingsService.changeSettingsValue({...this.settings, manualReminders: false});
-          await this.clearAllScheduledTasks();
-        }
-        await this.cards.updateReminders();
-        break;
       case 'taskReminders':
-        if(!value) return await this.clearAllScheduledTasks();
+        if (!value) {
+          return await this.clearAllScheduledTasks();
+        } else {
+          await this.cards.reBuildRemindersForCards();
+        }
         break;
       case 'urgentDeadlineAlerts':
-        console.log("test");
         break;
     }
   }

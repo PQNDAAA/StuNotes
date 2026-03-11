@@ -25,7 +25,7 @@ export class AddnoteComponent implements OnInit {
 
   //INPUT SOURCE
   @Input() card: Card = {
-    reminder: {type: ReminderTypeEnum.None}, taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
+    reminder: {type: ReminderTypeEnum.None, recurringReminders:RecurringRemindersEnum.Never}, taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
     status: Cardstatus.Open, createdAt: new Date(), description: "", name: "", tag: ""
   }
   @Input() isEditable: boolean = false;

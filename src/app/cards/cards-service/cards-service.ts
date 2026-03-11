@@ -7,6 +7,7 @@ import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
 import {CardsDB} from "../db/cards-db";
 import {Settings} from "../../settings/settings-service/settings";
+import {ReminderTypeEnum} from "../../notifications/types/reminder-type-enum";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class CardsService {
   constructor(private lns: LocalNotificationService, private settingsService: Settings) {
     //Subscribe to this event
     this.lns.notificationReceived$.subscribe(id => this.removeTaskId(id));
-    this.lns.notificationGranted$.subscribe(value => this.updateReminders());
+    this.lns.notificationGranted$.subscribe(value => this.reBuildRemindersForCards());
   }
 
   async initCards() {
@@ -56,18 +57,34 @@ export class CardsService {
     this.countCards.next(countCards);
   }
 
+
+  //UPDATE
   async addCard(card: Card) {
-    const newCard: Card = card;
+    const reminderType = card.reminder.type;
+    const cardStatus = card.status.trim();
+    const isActive = cardStatus !== Cardstatus.Done && cardStatus !== Cardstatus.Late;
+    const hasReminderType = reminderType !== ReminderTypeEnum.None;
 
-    const id = await this.getCardsDB.add(newCard);
+    const id = await this.getCardsDB.add(card);
 
-    if (newCard.status.trim() !== Cardstatus.Done && newCard.status.trim() !== Cardstatus.Late
-      && this.settingsService.getSettings().reminders) {
-      newCard.taskId = await this.createLocalNotifications(newCard);
-    } else if(this.settingsService.getSettings().manualReminders) {
-      newCard.taskId = await this.lns.createLocalNotifications(this.lns.calculateManualReminders(newCard),newCard);
+    card.id = id;
+
+    if (isActive && hasReminderType) {
+      switch (reminderType) {
+        case ReminderTypeEnum.SmartReminder:
+          card.taskId = await this.createLocalNotifications(card);
+          console.log("SmartReminder");
+          break;
+        case ReminderTypeEnum.RecurringReminder:
+          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateManualReminders(card), card);
+          console.log("RecurringReminder");
+          break;
+        default:
+          console.log("default");
+          break;
+      }
     }
-    this.getCardsDB.put(newCard);
+    await this.getCardsDB.put(card);
     await this.refreshCards();
     return id;
   }
@@ -167,14 +184,25 @@ export class CardsService {
     await this.refreshCards();
   }
 
-  async updateReminders() {
+  async reBuildRemindersForCards() {
     const allCards = await this.getCards();
     const activeCards = allCards.filter(card =>
       ![Cardstatus.Late, Cardstatus.Done].includes(card.status));
 
     await Promise.all(activeCards.map(async card => {
-      const updatedCard = await this.lns.rebuildReminderForCard(card);
-      this.db.cards.put(updatedCard);
+      switch (card.reminder?.type) {
+        case ReminderTypeEnum.SmartReminder:
+          card.taskId = await this.createLocalNotifications(card);
+          console.log("SmartReminder");
+          break;
+        case ReminderTypeEnum.RecurringReminder:
+          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateManualReminders(card), card);
+          console.log("RecurringReminder");
+          break;
+        default:
+          break;
+      }
+      await this.getCardsDB.put(card);
     }));
     await this.refreshCards();
   }

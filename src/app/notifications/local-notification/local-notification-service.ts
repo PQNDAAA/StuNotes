@@ -40,7 +40,8 @@ export class LocalNotificationService {
     const now = Date.now();
     const diff = deadLineMs - now;
 
-    if (card.id === undefined || deadLineMs < now || !this.settings.manualReminders) {
+    if (card.id === undefined || deadLineMs < now) {
+      console.log(card.id);
       return [];
     }
     return this.recurringRemindersService.calculateRecurringReminders(card);
@@ -51,7 +52,7 @@ export class LocalNotificationService {
     const now = Date.now();
     const diff = deadLineMs - now;
 
-    if (card.id === undefined || deadLineMs < now || !this.settings.reminders) {
+    if (card.id === undefined || deadLineMs < now) {
       return [];
     }
 
