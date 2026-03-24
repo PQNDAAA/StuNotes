@@ -147,7 +147,6 @@ export class LocalNotificationService {
         return;
       }
       if (!this.settings.taskReminders) {
-        await this.clearAllScheduledTasks();
         const remindersUpdated = {...this.settings, taskReminders: true};
         await this.settingsService.changeSettingsValue(remindersUpdated);
         this.notificationGranted$.next(remindersUpdated);
