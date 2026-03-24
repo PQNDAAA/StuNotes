@@ -35,7 +35,7 @@ export class LocalNotificationService {
     return card;
   }
 
-  calculateManualReminders(card: Card): Date[] {
+  calculateRecurringReminders(card: Card): Date[] {
     const deadLineMs = new Date(card.deadline).getTime();
     const now = Date.now();
     const diff = deadLineMs - now;
@@ -146,14 +146,16 @@ export class LocalNotificationService {
         console.log("notif disabled");
         return;
       }
-
-      const remindersUpdated = {...this.settings, reminders: true};
-      await this.settingsService.changeSettingsValue(remindersUpdated);
-      this.notificationGranted$.next(remindersUpdated);
+      if (!this.settings.taskReminders) {
+        await this.clearAllScheduledTasks();
+        const remindersUpdated = {...this.settings, taskReminders: true};
+        await this.settingsService.changeSettingsValue(remindersUpdated);
+        this.notificationGranted$.next(remindersUpdated);
+      }
       return;
     }
 
-    if (!this.settings.reminders) {
+    if (!this.settings.taskReminders) {
       await this.clearAllScheduledTasks();
     }
 

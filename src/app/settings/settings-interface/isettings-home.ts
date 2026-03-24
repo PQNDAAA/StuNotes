@@ -17,5 +17,5 @@ export const default_settings : ISettingsHome = {
   urgentDeadlineAlerts: false,
   currentLanguage: '',
   firstLaunch: true,
-  taskReminders: true,
+  taskReminders: false,
 }

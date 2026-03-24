@@ -76,7 +76,7 @@ export class CardsService {
           console.log("SmartReminder");
           break;
         case ReminderTypeEnum.RecurringReminder:
-          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateManualReminders(card), card);
+          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card), card);
           console.log("RecurringReminder");
           break;
         default:
@@ -196,7 +196,7 @@ export class CardsService {
           console.log("SmartReminder");
           break;
         case ReminderTypeEnum.RecurringReminder:
-          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateManualReminders(card), card);
+          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card), card);
           console.log("RecurringReminder");
           break;
         default:

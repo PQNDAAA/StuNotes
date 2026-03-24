@@ -21,15 +21,15 @@ export class RecurringReminders {
 
   calculateRecurringReminders(card: Card): Date[]{
     const deadlineMs = new Date(card.deadline).getTime();
-    const now = Date.now();
+    const now = new Date(card.createdAt).getTime();
     const diff = deadlineMs - now;
+
+    const hours = Math.round(diff / 1000 / 3600);
+    const days = Math.round(hours / 24);
 
     switch (card.reminder.recurringReminders) {
       case RecurringRemindersEnum.EveryHour:
         const remindersEveryHour : Date[] = [];
-
-        const hours = Math.round(diff / 1000 / 3600);
-        console.log(hours);
 
         for (let i = 0; i <= hours - 1; i++) {
           const newDate = new Date(deadlineMs);
@@ -38,7 +38,52 @@ export class RecurringReminders {
           console.log(newDate);
         }
         return remindersEveryHour;
-      default:
+
+      case RecurringRemindersEnum.EveryThreeHours:
+        const remindersEveryThreeHours : Date[] = [];
+        const remindersNumberTH = Math.floor(hours / 3);
+
+        for (let i = 1; i <= remindersNumberTH; i++) {
+          const newDate = new Date(now);
+          newDate.setHours(newDate.getHours() + 3 * i);
+          remindersEveryThreeHours.push(newDate);
+          console.log(newDate);
+        }
+        return remindersEveryThreeHours;
+
+        case RecurringRemindersEnum.EveryDay:
+          const remindersEveryDay : Date[] = [];
+
+          for (let i = 1; i <= days; i++) {
+            let newDate = new Date(now);
+            newDate.setDate(newDate.getDate() + i);
+
+            if(newDate.getTime() > deadlineMs){
+              newDate = new Date(deadlineMs);
+            }
+
+            remindersEveryDay.push(newDate);
+            console.log(newDate);
+          }
+          return remindersEveryDay;
+
+      case RecurringRemindersEnum.EveryTwoDays:
+            const remindersEveryTwoDays : Date[] = [];
+
+            const remindersNumberTD = days / 2;
+
+            for (let i = 1; i <= remindersNumberTD; i++) {
+              let newDate = new Date(now);
+              newDate.setDate(newDate.getDate() + 2 * i);
+
+              if(newDate.getTime() > deadlineMs){
+                newDate = new Date(deadlineMs);
+              }
+              remindersEveryTwoDays.push(newDate);
+              console.log(newDate);
+            }
+            return remindersEveryTwoDays;
+        default:
         return [];
     }
   }
