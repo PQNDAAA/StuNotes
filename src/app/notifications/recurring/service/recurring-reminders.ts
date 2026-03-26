@@ -57,10 +57,7 @@ export class RecurringReminders {
           for (let i = 1; i <= days; i++) {
             let newDate = new Date(now);
             newDate.setDate(newDate.getDate() + i);
-
-            if(newDate.getTime() > deadlineMs){
-              newDate = new Date(deadlineMs);
-            }
+            newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
 
             remindersEveryDay.push(newDate);
             console.log(newDate);
@@ -75,10 +72,8 @@ export class RecurringReminders {
             for (let i = 1; i <= remindersNumberTD; i++) {
               let newDate = new Date(now);
               newDate.setDate(newDate.getDate() + 2 * i);
+              newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
 
-              if(newDate.getTime() > deadlineMs){
-                newDate = new Date(deadlineMs);
-              }
               remindersEveryTwoDays.push(newDate);
               console.log(newDate);
             }
@@ -118,4 +113,6 @@ export class RecurringReminders {
         return false;
     }
   }
+
+  private ensureBeforeDeadline(date: Date, deadlineMs: number) : Date {return date.getTime() > deadlineMs ?  new Date(deadlineMs) : date;}
 }
