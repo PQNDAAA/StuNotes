@@ -59,9 +59,30 @@ export class RecurringReminders {
 
       case RecurringRemindersEnum.EveryTwoDays:
         let remindersEveryTwoDays: Date[] = [];
-        const remindersNumberTD = days / 2;
-        remindersEveryTwoDays = this.generateDatesDaysUntilDeadline(now, 2, deadlineMs, remindersNumberTD);
+        const numberRemindersTD = days / 2;
+        remindersEveryTwoDays = this.generateDatesDaysUntilDeadline(now, 2, deadlineMs, numberRemindersTD);
         return remindersEveryTwoDays;
+
+      case RecurringRemindersEnum.EveryWeek:
+        let remindersEveryWeek: Date[] = [];
+        const numberRemindersEW = Math.ceil(days / 7);
+        console.log(numberRemindersEW);
+        remindersEveryWeek = this.generateDatesDaysUntilDeadline(now, 7, deadlineMs, numberRemindersEW);
+        return remindersEveryWeek;
+
+        case RecurringRemindersEnum.EveryMonth:
+          let remindersEveryMonth: Date[] = [];
+          const deadline = new Date(card.deadline);
+          const numberRemindersEM = Math.ceil(((deadline.getMonth() + 1) - (new Date(now).getMonth() + 1)));
+
+          for (let i = 1; i <= numberRemindersEM; i++) {
+            let newDate = new Date(now);
+            newDate.setMonth(newDate.getMonth() + i);
+            newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
+            remindersEveryMonth.push(newDate);
+            console.log(newDate);
+          }
+          return remindersEveryMonth;
       default:
         return [];
     }
@@ -69,9 +90,9 @@ export class RecurringReminders {
 
   private generateDatesDaysUntilDeadline(now: number, days: number, deadlineMs: number, numberRemindersRemaining: number): Date[] {
     const reminders: Date[] = [];
-    let newDate = new Date(now);
 
     for (let i = 1; i <= numberRemindersRemaining; i++) {
+      let newDate = new Date(now);
       newDate.setDate(newDate.getDate() + days * i);
       newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
 
@@ -102,11 +123,11 @@ export class RecurringReminders {
       case RecurringRemindersEnum.EveryMonth:
         const nextMonth = new Date();
         nextMonth.setMonth(nextMonth.getMonth() + 1);
-        return diff >= nextMonth.getTime();
+        return deadlineMs >= nextMonth.getTime();
       case RecurringRemindersEnum.EveryYear:
         const nextYear = new Date();
         nextYear.setFullYear(nextYear.getFullYear() + 1);
-        return diff >= nextYear.getTime();
+        return deadlineMs >= nextYear.getTime();
       default:
         return false;
     }
