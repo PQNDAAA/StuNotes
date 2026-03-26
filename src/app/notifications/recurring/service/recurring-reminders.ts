@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
 import {Card} from "../../../cards/cards-interface/card";
 import {RecurringRemindersEnum} from "../enum/recurring-reminders-enum";
@@ -9,9 +9,10 @@ import {RecurringRemindersEnum} from "../enum/recurring-reminders-enum";
 export class RecurringReminders {
 
 
-  constructor(private translate: TranslateService) {}
+  constructor(private translate: TranslateService) {
+  }
 
-  getRecurringReminders(recurringReminders: RecurringRemindersEnum): string{
+  getRecurringReminders(recurringReminders: RecurringRemindersEnum): string {
     let value = "";
     this.translate.get(`RECURRINGREMINDERS.${recurringReminders}`).subscribe(string => {
       value = string;
@@ -19,7 +20,7 @@ export class RecurringReminders {
     return value;
   }
 
-  calculateRecurringReminders(card: Card): Date[]{
+  calculateRecurringReminders(card: Card): Date[] {
     const deadlineMs = new Date(card.deadline).getTime();
     const now = new Date(card.createdAt).getTime();
     const diff = deadlineMs - now;
@@ -29,18 +30,18 @@ export class RecurringReminders {
 
     switch (card.reminder.recurringReminders) {
       case RecurringRemindersEnum.EveryHour:
-        const remindersEveryHour : Date[] = [];
+        const remindersEveryHour: Date[] = [];
 
         for (let i = 0; i <= hours - 1; i++) {
           const newDate = new Date(deadlineMs);
-          newDate.setHours(newDate.getHours() - i,0,0,0);
+          newDate.setHours(newDate.getHours() - i, 0, 0, 0);
           remindersEveryHour.push(newDate);
           console.log(newDate);
         }
         return remindersEveryHour;
 
       case RecurringRemindersEnum.EveryThreeHours:
-        const remindersEveryThreeHours : Date[] = [];
+        const remindersEveryThreeHours: Date[] = [];
         const remindersNumberTH = Math.floor(hours / 3);
 
         for (let i = 1; i <= remindersNumberTH; i++) {
@@ -51,36 +52,33 @@ export class RecurringReminders {
         }
         return remindersEveryThreeHours;
 
-        case RecurringRemindersEnum.EveryDay:
-          const remindersEveryDay : Date[] = [];
-
-          for (let i = 1; i <= days; i++) {
-            let newDate = new Date(now);
-            newDate.setDate(newDate.getDate() + i);
-            newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
-
-            remindersEveryDay.push(newDate);
-            console.log(newDate);
-          }
-          return remindersEveryDay;
+      case RecurringRemindersEnum.EveryDay:
+        let remindersEveryDay: Date[] = [];
+        remindersEveryDay = this.generateDatesDaysUntilDeadline(now, 1, deadlineMs, days);
+        return remindersEveryDay;
 
       case RecurringRemindersEnum.EveryTwoDays:
-            const remindersEveryTwoDays : Date[] = [];
-
-            const remindersNumberTD = days / 2;
-
-            for (let i = 1; i <= remindersNumberTD; i++) {
-              let newDate = new Date(now);
-              newDate.setDate(newDate.getDate() + 2 * i);
-              newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
-
-              remindersEveryTwoDays.push(newDate);
-              console.log(newDate);
-            }
-            return remindersEveryTwoDays;
-        default:
+        let remindersEveryTwoDays: Date[] = [];
+        const remindersNumberTD = days / 2;
+        remindersEveryTwoDays = this.generateDatesDaysUntilDeadline(now, 2, deadlineMs, remindersNumberTD);
+        return remindersEveryTwoDays;
+      default:
         return [];
     }
+  }
+
+  private generateDatesDaysUntilDeadline(now: number, days: number, deadlineMs: number, numberRemindersRemaining: number): Date[] {
+    const reminders: Date[] = [];
+    let newDate = new Date(now);
+
+    for (let i = 1; i <= numberRemindersRemaining; i++) {
+      newDate.setDate(newDate.getDate() + days * i);
+      newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
+
+      reminders.push(newDate);
+      console.log(newDate);
+    }
+    return reminders;
   }
 
   checkRecurringReminders(selectedRecurringReminders: RecurringRemindersEnum, deadline: string): boolean {
@@ -88,7 +86,7 @@ export class RecurringReminders {
     const now = Date.now();
     const diff = deadlineMs - now;
 
-    switch(selectedRecurringReminders){
+    switch (selectedRecurringReminders) {
       case RecurringRemindersEnum.Never:
         return true;
       case RecurringRemindersEnum.EveryHour:
@@ -114,5 +112,7 @@ export class RecurringReminders {
     }
   }
 
-  private ensureBeforeDeadline(date: Date, deadlineMs: number) : Date {return date.getTime() > deadlineMs ?  new Date(deadlineMs) : date;}
+  private ensureBeforeDeadline(date: Date, deadlineMs: number): Date {
+    return date.getTime() > deadlineMs ? new Date(deadlineMs) : date;
+  }
 }
