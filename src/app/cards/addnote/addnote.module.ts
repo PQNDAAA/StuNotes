@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import {AddnoteComponent} from "./addnote.component";
 import {TranslatePipe} from "@ngx-translate/core";
+import {NgxsmkDatepickerComponent} from "ngxsmk-datepicker";
 
 @NgModule({
-    imports: [CommonModule, FormsModule, IonicModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, IonicModule, TranslatePipe, NgxsmkDatepickerComponent],
   declarations: [AddnoteComponent],
   exports: [AddnoteComponent]
 })

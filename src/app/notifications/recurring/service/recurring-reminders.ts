@@ -124,10 +124,6 @@ export class RecurringReminders {
         const nextMonth = new Date();
         nextMonth.setMonth(nextMonth.getMonth() + 1);
         return deadlineMs >= nextMonth.getTime();
-      case RecurringRemindersEnum.EveryYear:
-        const nextYear = new Date();
-        nextYear.setFullYear(nextYear.getFullYear() + 1);
-        return deadlineMs >= nextYear.getTime();
       default:
         return false;
     }

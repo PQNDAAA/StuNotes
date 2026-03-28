@@ -57,6 +57,7 @@
     "Status": "Statut",
     "Deadline": "Date limite",
     "RecurringReminders": "Rappels récurrents",
+    "CustomReminders": "Rappels personnalisés",
     "ReminderType": "Type de rappel",
     "NoteTitlePlaceholder": "Entrez le titre",
     "DescriptionPlaceholder": "Entrez la description",

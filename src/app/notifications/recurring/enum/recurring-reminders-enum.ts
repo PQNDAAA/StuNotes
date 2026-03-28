@@ -6,5 +6,4 @@ export enum RecurringRemindersEnum {
   EveryTwoDays = 'EveryTwoDays',
   EveryWeek = 'EveryWeek',
   EveryMonth = 'EveryMonth',
-  EveryYear = 'EveryYear',
 }

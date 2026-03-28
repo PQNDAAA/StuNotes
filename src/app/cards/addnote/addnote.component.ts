@@ -25,10 +25,24 @@ export class AddnoteComponent implements OnInit {
 
   //INPUT SOURCE
   @Input() card: Card = {
-    reminder: {type: ReminderTypeEnum.None, recurringReminders:RecurringRemindersEnum.Never}, taskId: [], deadline: this.cs.toLocalISOString(new Date()), important: false,
-    status: Cardstatus.Open, createdAt: new Date(), description: "", name: "", tag: ""
+    reminder: {type: ReminderTypeEnum.None, recurringReminders: RecurringRemindersEnum.Never},
+    taskId: [],
+    deadline: this.cs.toLocalISOString(new Date()),
+    important: false,
+    status: Cardstatus.Open,
+    createdAt: new Date(),
+    description: "",
+    name: "",
+    tag: ""
   }
   @Input() isEditable: boolean = false;
+
+  customReminders: number[] = [];
+
+  customReminder = {
+    date: new Date(),
+    time: new Date()
+  }
 
   //DATA SOURCE
   cardEdited!: Card;
@@ -92,39 +106,83 @@ export class AddnoteComponent implements OnInit {
     const value = event.target.value;
     this.cardEdited.reminder.type = value;
 
-    if(value === ReminderTypeEnum.SmartReminder){
+    if (value === ReminderTypeEnum.SmartReminder) {
       this.cardEdited.reminder.smartReminders = true;
       return;
     }
-    if(this.cardEdited.reminder.smartReminders){
+    if (this.cardEdited.reminder.smartReminders) {
       this.cardEdited.reminder.smartReminders = false;
       return;
     }
   }
 
-  onRecurringRemindersChanged(event:any){this.cardEdited.reminder.recurringReminders = event.target.value;}
+  async onCustomRemindersChanged(event: any, presentation: string) {
 
-  onDateTimeChanged(event:any){this.cardEdited.deadline = event.detail.value;}
+    const value = new Date(event.target.value);
 
-  isMatchedManualRemindersAndDeadline(selectedRecurringReminders: RecurringRemindersEnum): boolean{
+    if (presentation === 'date') {
+      this.customReminder.date = value
+      console.log(this.customReminder.date);
+    } else if (presentation === 'time') {
+      this.customReminder.time = value;
+      console.log(this.customReminder.time);
+    }
+  }
+
+  validCustomDate() {
+    const customDate = this.customReminder.date;
+    customDate.setHours(this.customReminder.time.getHours());
+    this.customReminders.push(customDate.getTime());
+
+    for (const date of this.customReminders) {
+      console.log(new Date(date));
+    }
+  }
+
+  getMaxDate() {
+    return this.cs.toLocalISOString(new Date(this.cardEdited.deadline));
+  }
+
+  onRecurringRemindersChanged(event: any) {
+    this.cardEdited.reminder.recurringReminders = event.target.value;
+  }
+
+  onDateTimeChanged(event: any) {
+    this.cardEdited.deadline = event.detail.value;
+  }
+
+  isMatchedManualRemindersAndDeadline(selectedRecurringReminders: RecurringRemindersEnum): boolean {
     return this.recurringRemindersService.checkRecurringReminders(selectedRecurringReminders, this.cardEdited.deadline);
   }
 
-  get getManualRemindersBoolean(): boolean{return this.settingsService.getSettings().manualReminders;}
+  getRecurringReminders(key: RecurringRemindersEnum): string {
+    return this.recurringRemindersService.getRecurringReminders(key);
+  }
 
-  getRecurringReminders(key: RecurringRemindersEnum): string{return this.recurringRemindersService.getRecurringReminders(key);}
+  getRecurringRemindersValues() {
+    return Object.values(RecurringRemindersEnum);
+  }
 
-  getRecurringRemindersValues(){return Object.values(RecurringRemindersEnum);}
+  getReminderTypeValues() {
+    return Object.values(ReminderTypeEnum);
+  }
 
-  getReminderTypeValues(){return Object.values(ReminderTypeEnum);}
+  getReminderType(type: ReminderTypeEnum): string {
+    return this.reminderTypeService.getReminderTypeValue(type);
+  }
 
-  getReminderType(type: ReminderTypeEnum): string {return this.reminderTypeService.getReminderTypeValue(type);}
+  async closePopUp() {
+    await this.mc.dismiss(null, 'cancel');
+  }
 
-  async closePopUp() {await this.mc.dismiss(null, 'cancel');}
+  get getCurrentLang(): string {
+    return this.translate.getCurrentLang();
+  }
 
-  get getCurrentLang(): string {return this.translate.getCurrentLang();}
-
-  getStatus(key: Cardstatus): string {return this.cardStatusService.getStatus(key);}
+  getStatus(key: Cardstatus): string {
+    return this.cardStatusService.getStatus(key);
+  }
 
   protected readonly ReminderTypeEnum = ReminderTypeEnum;
+  protected readonly Date = Date;
 }

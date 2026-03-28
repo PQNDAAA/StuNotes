@@ -58,6 +58,7 @@
     "Status": "Status",
     "Deadline": "Deadline",
     "RecurringReminders": "Recurring reminders",
+    "CustomReminders": "Custom reminders",
     "ReminderType": "Reminder type",
     "NoteTitlePlaceholder": "Enter the title",
     "DescriptionPlaceholder": "Enter the description",

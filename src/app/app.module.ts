@@ -6,6 +6,7 @@ import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {NgxsmkDatepickerComponent } from 'ngxsmk-datepicker';
 
 // import ngx-translate and the http loader
 import {provideHttpClient} from "@angular/common/http";
@@ -34,7 +35,7 @@ export function initializeTags(tags : TagsService){
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, TranslatePipe,
-    TranslateDirective,NgxsmkDatepickerModule],
+    TranslateDirective,NgxsmkDatepickerModule,NgxsmkDatepickerComponent],
   providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     {
       provide: APP_INITIALIZER,
