@@ -1,0 +1,45 @@
+ion-datetime {
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.customDate-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  ion-button {
+    --border-radius: 12px;
+    --background: #ff8228;
+    --background-hover: #fca685;
+    --background-activated: #fca685;
+    font-weight: 500;
+  }
+}
+
+ion-card {
+  border-radius: 16px;
+  box-shadow: none;
+  background: #ffffff;
+  padding: 8px;
+  border: 1px solid #eee;
+}
+
+ion-card-header {
+  padding-bottom: 4px;
+}
+
+ion-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #444;
+}
+
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

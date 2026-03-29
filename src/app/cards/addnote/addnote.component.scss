@@ -14,3 +14,38 @@ ion-list{
   margin: 15px;
   padding: 20px;
 }
+
+.custom-modal{
+  --border-radius: 20px;
+
+  ion-header ion-toolbar {
+    --background: transparent;
+    --border-width: 0;
+    padding: 8px 8px 0 8px;
+  }
+  ion-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: left;
+  }
+  ion-toolbar ion-button {
+    --color: #666;
+  }
+}
+
+.custom-modal::part(content) {
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.custom-modal::part(handle) {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

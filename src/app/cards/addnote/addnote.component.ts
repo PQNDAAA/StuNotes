@@ -27,7 +27,7 @@ export class AddnoteComponent implements OnInit {
   @Input() card: Card = {
     reminder: {type: ReminderTypeEnum.None, recurringReminders: RecurringRemindersEnum.Never},
     taskId: [],
-    deadline: this.cs.toLocalISOString(new Date()),
+    deadline: this.cs.toLocalISOString(new Date(), true),
     important: false,
     status: Cardstatus.Open,
     createdAt: new Date(),
@@ -37,12 +37,7 @@ export class AddnoteComponent implements OnInit {
   }
   @Input() isEditable: boolean = false;
 
-  customReminders: number[] = [];
-
-  customReminder = {
-    date: new Date(),
-    time: new Date()
-  }
+  isOpen = false;
 
   //DATA SOURCE
   cardEdited!: Card;
@@ -61,7 +56,7 @@ export class AddnoteComponent implements OnInit {
               private reminderTypeService: ReminderType) {
 
     //DEFINIT UNE DATE MINIMUM DANS LE FORMULAIRE
-    this.minDeadline = this.cs.toLocalISOString(new Date());
+    this.minDeadline = this.cs.toLocalISOString(new Date(), true);
   }
 
   async ngOnInit() {
@@ -114,33 +109,6 @@ export class AddnoteComponent implements OnInit {
       this.cardEdited.reminder.smartReminders = false;
       return;
     }
-  }
-
-  async onCustomRemindersChanged(event: any, presentation: string) {
-
-    const value = new Date(event.target.value);
-
-    if (presentation === 'date') {
-      this.customReminder.date = value
-      console.log(this.customReminder.date);
-    } else if (presentation === 'time') {
-      this.customReminder.time = value;
-      console.log(this.customReminder.time);
-    }
-  }
-
-  validCustomDate() {
-    const customDate = this.customReminder.date;
-    customDate.setHours(this.customReminder.time.getHours());
-    this.customReminders.push(customDate.getTime());
-
-    for (const date of this.customReminders) {
-      console.log(new Date(date));
-    }
-  }
-
-  getMaxDate() {
-    return this.cs.toLocalISOString(new Date(this.cardEdited.deadline));
   }
 
   onRecurringRemindersChanged(event: any) {
