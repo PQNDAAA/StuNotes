@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {Card} from "../cards/cards-interface/card";
 import {CardsService} from "../cards/cards-service/cards-service";
@@ -16,21 +16,33 @@ import {AsyncPipe, NgForOf} from "@angular/common";
     NgForOf
   ]
 })
-export class CustomRemindersModalComponent  implements OnInit {
+export class CustomRemindersModalComponent implements OnInit {
 
-  @Input() cardEdited!: Card;
+  @Input() card!: Card;
+  @Output() customRemindersChange = new EventEmitter<number>();
 
   customReminders$ = new BehaviorSubject<number[]>([]);
   results$ = this.customReminders$.asObservable();
 
-  customRemindersA:number[] = []
+  customRemindersA: number[] = [];
+
+  cardEdited!: Card;
 
 
   customReminder: Date = new Date();
 
-  constructor(private cs: CardsService, private translate: TranslateService) { }
+  constructor(private cs: CardsService, private translate: TranslateService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.cardEdited = structuredClone(this.card);
+
+    const cardEditedCustomReminders = this.cardEdited.reminder.customReminders?.reminders;
+    if (cardEditedCustomReminders &&
+      cardEditedCustomReminders.length > 0) {
+      this.customReminders$.next(cardEditedCustomReminders);
+      console.log("CustomReminders reminders found");
+    }
+  }
 
   onCustomRemindersChanged(event: any) {
     this.customReminder = new Date(event.target.value);
@@ -41,12 +53,13 @@ export class CustomRemindersModalComponent  implements OnInit {
 
     this.customReminders$.pipe(take(1),
       map(customReminders =>
-    customReminders.includes(customDate.getTime()))
+        customReminders.includes(customDate.getTime()))
     ).subscribe(value => {
-      if(value){
+      if (value) {
         console.log("Le rappel a cette heure-ci a déjà été ajouté ", value);
       } else {
         this.customRemindersA.push(customDate.getTime());
+        this.customRemindersChange.emit(customDate.getTime());
         this.customReminders$.next(this.customRemindersA);
       }
     });
@@ -60,7 +73,7 @@ export class CustomRemindersModalComponent  implements OnInit {
     return this.cs.toLocalISOString(new Date(), false);
   }
 
-  get getMaxDate() : string {
+  get getMaxDate(): string {
     return this.cs.toLocalISOString(new Date(this.cardEdited.deadline), false);
   }
 
@@ -68,16 +81,15 @@ export class CustomRemindersModalComponent  implements OnInit {
     return this.translate.getCurrentLang();
   }
 
-  getCustomReminders(dateMs : number){
+  getCustomReminders(dateMs: number) {
     console.log("getCustomReminders", dateMs);
     return new Date(dateMs).toLocaleString(this.getCurrentLang,
       {
         year: "numeric",
-        month:"long",
-        day:"numeric",
+        month: "long",
+        day: "numeric",
         hour: "numeric",
-        minute:"2-digit"
+        minute: "2-digit"
       });
   }
-
 }

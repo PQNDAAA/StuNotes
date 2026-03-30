@@ -25,7 +25,7 @@ export class AddnoteComponent implements OnInit {
 
   //INPUT SOURCE
   @Input() card: Card = {
-    reminder: {type: ReminderTypeEnum.None, recurringReminders: RecurringRemindersEnum.Never},
+    reminder: {type: ReminderTypeEnum.None, recurringReminders: RecurringRemindersEnum.Never, customReminders: {reminders: []}},
     taskId: [],
     deadline: this.cs.toLocalISOString(new Date(), true),
     important: false,
@@ -109,6 +109,11 @@ export class AddnoteComponent implements OnInit {
       this.cardEdited.reminder.smartReminders = false;
       return;
     }
+  }
+
+  onCustomRemindersChanged(value:number){
+    console.log("Card editée: ",this.cardEdited.reminder);
+    this.cardEdited.reminder.customReminders?.reminders.push(value);
   }
 
   onRecurringRemindersChanged(event: any) {

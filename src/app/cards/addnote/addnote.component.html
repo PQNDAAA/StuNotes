@@ -85,7 +85,7 @@
               </ion-toolbar>
             </ion-header>
             <ion-content class="ion-padding modal-content">
-            <app-custom-reminders-modal [cardEdited]="cardEdited"></app-custom-reminders-modal>
+            <app-custom-reminders-modal [card]="cardEdited" (customRemindersChange)="onCustomRemindersChanged($event)"></app-custom-reminders-modal>
             </ion-content>
           </ng-template>
         </ion-modal>
