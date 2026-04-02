@@ -38,7 +38,6 @@ export class LocalNotificationService {
   calculateRecurringReminders(card: Card): Date[] {
     const deadLineMs = new Date(card.deadline).getTime();
     const now = Date.now();
-    const diff = deadLineMs - now;
 
     if (card.id === undefined || deadLineMs < now) {
       console.log(card.id);

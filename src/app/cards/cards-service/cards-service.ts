@@ -79,6 +79,11 @@ export class CardsService {
           card.taskId = await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card), card);
           console.log("RecurringReminder");
           break;
+        case ReminderTypeEnum.CustomReminder:
+          card.taskId = await this.lns.createLocalNotifications(this.checkCustomReminders(
+            this.convertCustomRemindersToDates(card)), card);
+          console.log("CustomReminder");
+          break;
         default:
           console.log("default");
           break;
@@ -201,6 +206,11 @@ export class CardsService {
           card.taskId = await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card), card);
           console.log("RecurringReminder");
           break;
+        case ReminderTypeEnum.CustomReminder:
+          card.taskId = await this.lns.createLocalNotifications(this.checkCustomReminders(
+            this.convertCustomRemindersToDates(card)), card);
+          console.log("CustomReminder");
+          break;
         default:
           break;
       }
@@ -233,9 +243,30 @@ export class CardsService {
     return cards.find(card => card.id === id);
   }
 
-  clearCards() {this.db.clearCards();}
+  convertCustomRemindersToDates(card: Card) {
+    const dates: Date[] = [];
 
-  async clearScheduledTasks(ids: number[]) {await this.lns.clearScheduledTasks(ids);}
+    if (card.reminder.customReminders?.reminders) {
+      for (const date of card.reminder.customReminders.reminders) {
+        dates.push(new Date(date));
+      }
+    }
+    return dates;
+  }
 
-  async createLocalNotifications(card: Card): Promise<number[]> {return await this.lns.createLocalNotifications(this.lns.calculateSchedule(card), card);}
+  checkCustomReminders(dates: Date[]) {
+    return dates.filter(date => date.getTime() >= Date.now());
+  }
+
+  clearCards() {
+    this.db.clearCards();
+  }
+
+  async clearScheduledTasks(ids: number[]) {
+    await this.lns.clearScheduledTasks(ids);
+  }
+
+  async createLocalNotifications(card: Card): Promise<number[]> {
+    return await this.lns.createLocalNotifications(this.lns.calculateSchedule(card), card);
+  }
 }

@@ -9,7 +9,7 @@
     <ion-card-content>
       <ion-item *ngFor="let date of results$ |async">
       <ion-label>{{getCustomReminders(date)}}</ion-label>
-        <ion-button slot="end" fill="clear"><ion-icon name="trash-outline"></ion-icon></ion-button>
+        <ion-button slot="end" fill="clear" (click)="deleteCustomDate(date)"><ion-icon name="trash-outline"></ion-icon></ion-button>
       </ion-item>
     </ion-card-content>
   </ion-card>

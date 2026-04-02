@@ -19,17 +19,16 @@ import {AsyncPipe, NgForOf} from "@angular/common";
 export class CustomRemindersModalComponent implements OnInit {
 
   @Input() card!: Card;
-  @Output() customRemindersChange = new EventEmitter<number>();
+  @Output() customRemindersChange = new EventEmitter<number[]>();
 
   customReminders$ = new BehaviorSubject<number[]>([]);
   results$ = this.customReminders$.asObservable();
 
-  customRemindersA: number[] = [];
+  localCustomReminders: number[] = [];
 
   cardEdited!: Card;
 
-
-  customReminder: Date = new Date();
+  customReminder: Date = new Date(); // valeur visible actuellement
 
   constructor(private cs: CardsService, private translate: TranslateService) {}
 
@@ -58,15 +57,28 @@ export class CustomRemindersModalComponent implements OnInit {
       if (value) {
         console.log("Le rappel a cette heure-ci a déjà été ajouté ", value);
       } else {
-        this.customRemindersA.push(customDate.getTime());
-        this.customRemindersChange.emit(customDate.getTime());
-        this.customReminders$.next(this.customRemindersA);
+        this.localCustomReminders.push(customDate.getTime());
+        this.emitCustomReminders(this.localCustomReminders);
+        this.customReminders$.next(this.localCustomReminders);
       }
     });
-
-    for (const date of this.customRemindersA) {
+    for (const date of this.localCustomReminders) {
       console.log(new Date(date));
     }
+  }
+
+  deleteCustomDate(date: number){
+    const index = this.localCustomReminders.indexOf(date);
+
+    if(index > -1){
+      this.localCustomReminders.splice(index, 1);
+      this.emitCustomReminders(this.localCustomReminders);
+      this.customReminders$.next(this.localCustomReminders);
+    }
+  }
+
+  emitCustomReminders(numbers: number[]) {
+    return this.customRemindersChange.emit(numbers);
   }
 
   get getMinDate(): string {

@@ -111,9 +111,9 @@ export class AddnoteComponent implements OnInit {
     }
   }
 
-  onCustomRemindersChanged(value:number){
+  onCustomRemindersChanged(values:number[]){
     console.log("Card editée: ",this.cardEdited.reminder);
-    this.cardEdited.reminder.customReminders?.reminders.push(value);
+    if(this.cardEdited.reminder.customReminders?.reminders){this.cardEdited.reminder.customReminders.reminders = values;}
   }
 
   onRecurringRemindersChanged(event: any) {
