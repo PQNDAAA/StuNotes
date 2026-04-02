@@ -19,7 +19,7 @@ export class RecurringReminders {
     });
     return value;
   }
-
+//PRENDRE LA DATE.NOW pour la var now
   calculateRecurringReminders(card: Card): Date[] {
     const deadlineMs = new Date(card.deadline).getTime();
     const now = new Date(card.createdAt).getTime();

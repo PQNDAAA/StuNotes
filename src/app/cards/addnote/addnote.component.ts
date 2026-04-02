@@ -101,14 +101,14 @@ export class AddnoteComponent implements OnInit {
     const value = event.target.value;
     this.cardEdited.reminder.type = value;
 
-    if (value === ReminderTypeEnum.SmartReminder) {
-      this.cardEdited.reminder.smartReminders = true;
-      return;
+    const reminder = this.cardEdited.reminder;
+
+    if(value !== ReminderTypeEnum.CustomReminder &&
+      reminder.customReminders?.reminders.length){
+      reminder.customReminders.reminders = [];
+      console.log("Custom Reminders clear");
     }
-    if (this.cardEdited.reminder.smartReminders) {
-      this.cardEdited.reminder.smartReminders = false;
-      return;
-    }
+    reminder.smartReminders = (value === ReminderTypeEnum.SmartReminder);
   }
 
   onCustomRemindersChanged(values:number[]){

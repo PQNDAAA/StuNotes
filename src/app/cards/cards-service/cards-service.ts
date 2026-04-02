@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, map, Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, map, Observable} from 'rxjs';
 import {Card} from "../cards-interface/card";
 import {Cardstatus} from "../cards-enum/cardstatus";
 import {CardstatusColors} from "../cards-const/cardstatus-colors";
@@ -70,24 +70,7 @@ export class CardsService {
     card.id = id;
 
     if (isActive && hasReminderType) {
-      switch (reminderType) {
-        case ReminderTypeEnum.SmartReminder:
-          card.taskId = await this.createLocalNotifications(card);
-          console.log("SmartReminder");
-          break;
-        case ReminderTypeEnum.RecurringReminder:
-          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card), card);
-          console.log("RecurringReminder");
-          break;
-        case ReminderTypeEnum.CustomReminder:
-          card.taskId = await this.lns.createLocalNotifications(this.checkCustomReminders(
-            this.convertCustomRemindersToDates(card)), card);
-          console.log("CustomReminder");
-          break;
-        default:
-          console.log("default");
-          break;
-      }
+      await this.handleReminderByType(card);
     }
     await this.getCardsDB.put(card);
     await this.refreshCards();
@@ -136,10 +119,10 @@ export class CardsService {
       cardEdited = await this.processUpdateCard(oldCard, cardEdited);
       cards[id] = cardEdited;
       await this.getCardsDB.put(cards[id]);
+      await this.refreshCards();
     } else {
       console.log("ID Error.");
     }
-    await this.refreshCards();
   }
 
   filterCardsCount(status: Cardstatus): Observable<number> {
@@ -197,45 +180,51 @@ export class CardsService {
       ![Cardstatus.Late, Cardstatus.Done].includes(card.status));
 
     await Promise.all(activeCards.map(async card => {
-      switch (card.reminder?.type) {
-        case ReminderTypeEnum.SmartReminder:
-          card.taskId = await this.createLocalNotifications(card);
-          console.log("SmartReminder");
-          break;
-        case ReminderTypeEnum.RecurringReminder:
-          card.taskId = await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card), card);
-          console.log("RecurringReminder");
-          break;
-        case ReminderTypeEnum.CustomReminder:
-          card.taskId = await this.lns.createLocalNotifications(this.checkCustomReminders(
-            this.convertCustomRemindersToDates(card)), card);
-          console.log("CustomReminder");
-          break;
-        default:
-          break;
-      }
+      await this.handleReminderByType(card);
       await this.getCardsDB.put(card);
     }));
     await this.refreshCards();
   }
 
   async processUpdateCard(oldCard: Card, card: Card) {
-
     const hasFinished = card.status.trim() === Cardstatus.Done;
-    const taskId = card.taskId.length !== 0;
-
+    const hasTaskId = card.taskId.length !== 0;
     const deadLineHasChanged = oldCard.deadline !== card.deadline;
+    const reminderTypeChanged = oldCard.reminder.type !== card.reminder.type;
 
-    if (hasFinished && taskId) {
+    if(hasFinished) {
+      if(hasTaskId) {
+        await this.clearScheduledTasks(card.taskId);
+        card.taskId = [];
+      }
+      return card;
+    }
+
+    if(hasTaskId && (deadLineHasChanged || reminderTypeChanged)){
       await this.clearScheduledTasks(card.taskId);
       card.taskId = [];
-    } else if (!hasFinished && deadLineHasChanged && taskId) {
-      await this.clearScheduledTasks(card.taskId);
-      card.taskId = await this.createLocalNotifications(card);
-    } else if (!hasFinished && !taskId) {
-      card.taskId = await this.createLocalNotifications(card);
+    }
+
+    if(card.taskId.length === 0){
+     card.taskId = await this.handleReminderByType(card);
     }
     return card;
+  }
+
+  async handleReminderByType(card: Card) {
+    switch (card.reminder?.type) {
+      case ReminderTypeEnum.SmartReminder:
+        return await this.createLocalNotifications(card);
+      case ReminderTypeEnum.RecurringReminder:
+        return await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card),
+          card);
+      case ReminderTypeEnum.CustomReminder:
+        return await this.lns.createLocalNotifications(this.checkCustomReminders(
+          this.convertCustomRemindersToDates(card)), card);
+      default:
+        console.log("default");
+        return [];
+    }
   }
 
   async getCardById(id: number): Promise<Card | undefined> {

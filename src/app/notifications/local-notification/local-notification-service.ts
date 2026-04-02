@@ -30,11 +30,6 @@ export class LocalNotificationService {
     await this.registerLocalNotifications();
   }
 
-  async rebuildReminderForCard(card: Card): Promise<Card> {
-    card.taskId = await this.createLocalNotifications(this.calculateSchedule(card), card);
-    return card;
-  }
-
   calculateRecurringReminders(card: Card): Date[] {
     const deadLineMs = new Date(card.deadline).getTime();
     const now = Date.now();
