@@ -19,10 +19,10 @@ export class RecurringReminders {
     });
     return value;
   }
-//PRENDRE LA DATE.NOW pour la var now
+
   calculateRecurringReminders(card: Card): Date[] {
     const deadlineMs = new Date(card.deadline).getTime();
-    const now = new Date(card.createdAt).getTime();
+    const now = Date.now();
     const diff = deadlineMs - now;
 
     const hours = Math.round(diff / 1000 / 3600);
@@ -32,9 +32,12 @@ export class RecurringReminders {
       case RecurringRemindersEnum.EveryHour:
         const remindersEveryHour: Date[] = [];
 
+        const baseDate = new Date(deadlineMs);
+        baseDate.setHours(baseDate.getHours(), 0, 0 ,0);
+
         for (let i = 0; i <= hours - 1; i++) {
-          const newDate = new Date(deadlineMs);
-          newDate.setHours(newDate.getHours() - i, 0, 0, 0);
+          const newDate = new Date(baseDate);
+          newDate.setHours(baseDate.getHours() - i);
           remindersEveryHour.push(newDate);
           console.log(newDate);
         }
