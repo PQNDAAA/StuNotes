@@ -84,7 +84,10 @@ export class LocalNotificationService {
       return [];
     }
     for (let alert of alerts) {
-      const taskId = (card.id * 10) + alerts.indexOf(alert);
+      const timestamp = Date.now() % 1_000_000_000;
+      const alertIndex = alerts.indexOf(alert);
+      const taskId = (card.id * 10000) + alertIndex + timestamp;
+
       const title = this.translate.instant('NOTIFICATIONS.Title');
       const body = this.translate.instant('NOTIFICATIONS.Body');
       await LocalNotifications.schedule({

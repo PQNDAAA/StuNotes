@@ -70,7 +70,7 @@ export class CardsService {
     card.id = id;
 
     if (isActive && hasReminderType) {
-      await this.handleReminderByType(card);
+      card.taskId = await this.handleReminderByType(card);
     }
     await this.getCardsDB.put(card);
     await this.refreshCards();
