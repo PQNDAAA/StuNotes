@@ -58,7 +58,7 @@ export class LocalNotificationService {
 
 // Pour une petit deadline on prend un grand F et pour une grande deadline on prend un petit F
   private generateDynamicOffSets(card: Card, f: number = 1, a: number = 0, n: number = 4, minWindowHours: number = 0.5, maxWindowHours: number = 360): Date[] {
-    const fractions = [0.25, 0.5, 0.85, 0.975].slice(a, n);
+    const fractions = [0.1, 0.3, 0.5, 0.7, 0.9].slice(a, n);
     const deadlineFractions = 1;
     fractions.push(deadlineFractions);
 
@@ -179,19 +179,19 @@ export class LocalNotificationService {
   }
 
   private computeDynamicNumberReminders(diffMs: number) {
-    if (diffMs > 360 * 60 * 60 * 1000) return [0, 4];
-    if (diffMs > 72 * 60 * 60 * 1000) return [0, 4];
-    if (diffMs > 24 * 60 * 60 * 1000) return [0, 3];
-    if (diffMs > 6 * 60 * 60 * 1000) return [1, 3];
-    if(diffMs > 50 * 60 * 1000) return [1, 2];
+    if (diffMs > 360 * 60 * 60 * 1000) return [0, 5];
+    if (diffMs > 72 * 60 * 60 * 1000) return [0, 5];
+    if (diffMs > 24 * 60 * 60 * 1000) return [0, 4];
+    if (diffMs > 6 * 60 * 60 * 1000) return [2, 4];
+    if(diffMs > 50 * 60 * 1000) return [2, 3];
     return [0,0];
   }
 
   private computeDynamicF(diffMs: number) {
-    if (diffMs > 360 * 60 * 60 * 1000) return 0.4;
-    if (diffMs > 72 * 60 * 60 * 1000) return 0.46;
-    if (diffMs > 24 * 60 * 60 * 1000) return 0.55;
-    if (diffMs > 6 * 60 * 60 * 1000) return 0.7;
+    if (diffMs > 360 * 60 * 60 * 1000) return 0.5;
+    if (diffMs > 72 * 60 * 60 * 1000) return 0.67;
+    if (diffMs > 24 * 60 * 60 * 1000) return 0.78;
+    if (diffMs > 6 * 60 * 60 * 1000) return 0.8;
     if (diffMs > 2 * 60 * 60 * 1000) return 0.85;
     return 0.95;
   }
