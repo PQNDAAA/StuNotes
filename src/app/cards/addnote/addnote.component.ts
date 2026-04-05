@@ -49,10 +49,11 @@ export class AddnoteComponent implements OnInit {
 
   //BOOLEAN
   noDeadLineVisibility: boolean = false;
+  noReminderTypeVisibility: boolean = false;
 
   constructor(private mc: ModalController, private cs: CardsService, private ts: TagsService,
               private cardStatusService: CardStatusService, private translate: TranslateService,
-              private settingsService: Settings, private recurringRemindersService: RecurringReminders,
+              private recurringRemindersService: RecurringReminders,
               private reminderTypeService: ReminderType) {
 
     //DEFINIT UNE DATE MINIMUM DANS LE FORMULAIRE
@@ -66,8 +67,8 @@ export class AddnoteComponent implements OnInit {
     // GET TAGS
     this.tags = await this.ts.getTags();
 
-    // On vérifie la visibilité de la date d'échéance, (si on l'affiche ou non)
-    this.checkVisibilityDeadline();
+    // On vérifie la visibilité des elements
+    this.checkElementsVisibility();
   }
 
   async valid(form: NgForm) {
@@ -85,16 +86,23 @@ export class AddnoteComponent implements OnInit {
   // Fonction pour vérifier la visibilité de la date d'échéance, (si on l'affiche ou non)
   checkVisibilityDeadline(): boolean {
     return this.noDeadLineVisibility = !(this.isEditable
-      && this.cardEdited.status !== Cardstatus.Done
       && this.cardEdited.status !== Cardstatus.Late || !this.isEditable);
   }
 
+  checkReminderTypeVisibility(): boolean {
+    return this.noReminderTypeVisibility = !(this.isEditable
+    && this.cardEdited.status !== Cardstatus.Late && this.cardEdited.status !== Cardstatus.Done
+      || !this.isEditable);
+  }
+
+  checkElementsVisibility() {
+    this.checkVisibilityDeadline();
+    this.checkReminderTypeVisibility();
+  }
+
   onChangeStatus(event: any) {
-    const value = event.target.value;
-    this.cardEdited.status = value;
-    if (value !== Cardstatus.Late && this.cardEdited.status === Cardstatus.Late) {
-      this.noDeadLineVisibility = false
-    }
+    this.cardEdited.status = event.target.value;
+    this.checkElementsVisibility();
   }
 
   onReminderTypeChanged(event: any) {

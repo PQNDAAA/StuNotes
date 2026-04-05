@@ -54,14 +54,15 @@
 
       <ion-item>
         <ion-label>{{ 'TASKS.ReminderType' | translate }}</ion-label>
-        <ion-select  (ionChange)="onReminderTypeChanged($event)" interface="popover" name="reminderType" [value]="cardEdited.reminder.type">
+        <ion-select  (ionChange)="onReminderTypeChanged($event)" interface="popover" name="reminderType"
+                     [value]="cardEdited.reminder.type" [disabled]="noReminderTypeVisibility">
           <ion-select-option *ngFor="let value of getReminderTypeValues()" [value]="value">
             {{getReminderType(value)}}
           </ion-select-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="cardEdited.reminder.type === ReminderTypeEnum.RecurringReminder">
+      <ion-item *ngIf="cardEdited.reminder.type === ReminderTypeEnum.RecurringReminder" [disabled]="noReminderTypeVisibility">
         <ion-label>{{ 'TASKS.RecurringReminders' | translate }}</ion-label>
         <ion-select  (ionChange)="onRecurringRemindersChanged($event)" interface="popover" name="taskRecurringReminders"
                      [value]="cardEdited.reminder.recurringReminders">
@@ -72,7 +73,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="cardEdited.reminder.type === ReminderTypeEnum.CustomReminder">
+      <ion-item *ngIf="cardEdited.reminder.type === ReminderTypeEnum.CustomReminder" [disabled]="noReminderTypeVisibility">
         <ion-label>{{ 'TASKS.CustomReminders' | translate }}</ion-label>
         <ion-button slot="end" fill="clear" id="customReminders-modal"><ion-icon name="open-outline"></ion-icon></ion-button>
 

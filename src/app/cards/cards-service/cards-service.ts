@@ -84,7 +84,7 @@ export class CardsService {
 
   async deleteCard(card: Card) {
     if (card.id !== undefined) {
-      await this.clearScheduledTasks(card.taskId); // A REFAIRE
+      await this.clearScheduledTasks(card.taskId);
       await this.getCardsDB.delete(card.id);
 
       await this.refreshCards();
@@ -110,7 +110,6 @@ export class CardsService {
   }
 
   async updateCard(cardEdited: Card) {
-
     const cards = await this.getCards();
     const id = cards.findIndex(card => card.id === cardEdited.id);
     const oldCard = cards[id];
@@ -118,16 +117,12 @@ export class CardsService {
     if (id !== -1) {
       cardEdited = await this.processUpdateCard(oldCard, cardEdited);
       cards[id] = cardEdited;
+
       await this.getCardsDB.put(cards[id]);
       await this.refreshCards();
     } else {
       console.log("ID Error.");
     }
-  }
-
-  filterCardsCount(status: Cardstatus): Observable<number> {
-    return this.cards$.pipe(map(cards => cards.filter(c => c.status.trim() === status)
-      .length));
   }
 
   async removeTaskId(id: number) {
@@ -160,17 +155,14 @@ export class CardsService {
   async updateOverdueTasks() {
     const allCards = await this.getCards();
     const now = Date.now();
+    const overdueCards = allCards.filter(card => card.status.trim() !== Cardstatus.Done &&
+      card.status.trim() !== Cardstatus.Late && new Date(card.deadline).getTime() < now);
 
-    for (const card of allCards) {
-      const deadLineMs = new Date(card.deadline).getTime();
-
-      if (card.status.trim() !== Cardstatus.Done && card.status.trim() !== Cardstatus.Late
-        && deadLineMs < now) {
-        card.status = Cardstatus.Late;
-        console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
-        await this.getCardsDB.put(card);
-      }
-    }
+    await Promise.all(overdueCards.map(async (card) => {
+      card.status = Cardstatus.Late;
+      console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
+      await this.getCardsDB.put(card);
+    }));
     await this.refreshCards();
   }
 
@@ -188,19 +180,24 @@ export class CardsService {
 
   async processUpdateCard(oldCard: Card, card: Card) {
     const hasFinished = card.status.trim() === Cardstatus.Done;
+    const isLate = card.status.trim() === Cardstatus.Late;
+
     const hasTaskId = card.taskId.length !== 0;
+
     const deadLineHasChanged = oldCard.deadline !== card.deadline;
     const reminderTypeChanged = oldCard.reminder.type !== card.reminder.type;
+    const recurringReminderTypeChanged = oldCard.reminder.recurringReminders !== card.reminder.recurringReminders;
 
-    if(hasFinished) {
+    if(hasFinished || isLate) {
       if(hasTaskId) {
         await this.clearScheduledTasks(card.taskId);
         card.taskId = [];
       }
+      console.log(card.status.trim());
       return card;
     }
 
-    if(hasTaskId && (deadLineHasChanged || reminderTypeChanged)){
+    if(hasTaskId && (deadLineHasChanged || reminderTypeChanged || recurringReminderTypeChanged)) {
       await this.clearScheduledTasks(card.taskId);
       card.taskId = [];
     }
@@ -222,7 +219,7 @@ export class CardsService {
         return await this.lns.createLocalNotifications(this.checkCustomReminders(
           this.convertCustomRemindersToDates(card)), card);
       default:
-        console.log("default");
+        console.log("none");
         return [];
     }
   }
