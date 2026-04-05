@@ -1,10 +1,11 @@
 <div class="customDate-container">
-  <ion-datetime presentation="date-time" [min]="getMinDate" [max]="getMaxDate" [locale]="getCurrentLang" (ionChange)="onCustomRemindersChanged($event)"></ion-datetime>
-  <ion-button (click)="validCustomDate()">Ajouter une date</ion-button>
+  <ion-datetime presentation="date-time" [min]="getMinDate" [max]="getMaxDate" [locale]="getCurrentLang"
+                prefer-wheel="true" (ionChange)="onCustomRemindersChanged($event)"></ion-datetime>
+  <ion-button (click)="validCustomDate()">{{ 'CUSTOMREMINDERS.AddDate' | translate }}</ion-button>
 </div>
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Rappels personnalisés :</ion-card-title>
+      <ion-card-title>{{ 'CUSTOMREMINDERS.ListCustomReminders' | translate }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-item *ngFor="let date of results$ |async">

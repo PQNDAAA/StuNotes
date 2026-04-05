@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {Card} from "../cards/cards-interface/card";
 import {CardsService} from "../cards/cards-service/cards-service";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {BehaviorSubject, map, take} from "rxjs";
 import {AsyncPipe, NgForOf} from "@angular/common";
 
@@ -13,7 +13,8 @@ import {AsyncPipe, NgForOf} from "@angular/common";
   imports: [
     IonicModule,
     AsyncPipe,
-    NgForOf
+    NgForOf,
+    TranslatePipe
   ]
 })
 export class CustomRemindersModalComponent implements OnInit {
@@ -38,9 +39,19 @@ export class CustomRemindersModalComponent implements OnInit {
     const cardEditedCustomReminders = this.cardEdited.reminder.customReminders?.reminders;
     if (cardEditedCustomReminders &&
       cardEditedCustomReminders.length > 0) {
-      this.customReminders$.next(cardEditedCustomReminders);
-      console.log("CustomReminders reminders found");
+      const activeCustomReminders = cardEditedCustomReminders.filter(reminder => reminder <
+        new Date(this.cardEdited.deadline).getTime() && reminder >= Date.now());
+
+      if (activeCustomReminders.length > 0) {
+        this.localCustomReminders = activeCustomReminders;
+        this.emitCustomReminders(activeCustomReminders);
+        this.customReminders$.next(activeCustomReminders);
+        console.log("CustomReminders reminders found");
+      }
     }
+  }
+
+  ngOnChanges() {
   }
 
   onCustomRemindersChanged(event: any) {

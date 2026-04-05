@@ -101,5 +101,9 @@
     "SmartReminder": "Smart reminder",
     "RecurringReminder": "Recurring reminder",
     "CustomReminder": "Custom reminder"
+  },
+  "CUSTOMREMINDERS": {
+    "AddDate": "Add date",
+    "ListCustomReminders": "List of custom reminders :"
   }
 }

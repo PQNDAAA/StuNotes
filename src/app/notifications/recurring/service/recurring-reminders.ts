@@ -39,7 +39,6 @@ export class RecurringReminders {
           const newDate = new Date(baseDate);
           newDate.setHours(baseDate.getHours() - i);
           remindersEveryHour.push(newDate);
-          console.log(newDate);
         }
         return remindersEveryHour;
 
@@ -51,7 +50,6 @@ export class RecurringReminders {
           const newDate = new Date(now);
           newDate.setHours(newDate.getHours() + 3 * i);
           remindersEveryThreeHours.push(newDate);
-          console.log(newDate);
         }
         return remindersEveryThreeHours;
 
@@ -83,7 +81,6 @@ export class RecurringReminders {
             newDate.setMonth(newDate.getMonth() + i);
             newDate = this.ensureBeforeDeadline(newDate, deadlineMs);
             remindersEveryMonth.push(newDate);
-            console.log(newDate);
           }
           return remindersEveryMonth;
       default:

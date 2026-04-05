@@ -7,14 +7,22 @@ import {ISettingsHome} from "../../settings/settings-interface/isettings-home";
 import {Settings} from "../../settings/settings-service/settings";
 import {RecurringReminders} from "../recurring/service/recurring-reminders";
 
+type notificationReceived = {
+  id: number;
+  customReminder: number;
+};
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class LocalNotificationService {
 
-  public notificationReceived$ = new Subject<number>();
+
+  public notificationReceived$ = new Subject<notificationReceived>();
   public notificationActionPerformed$ = new Subject<number>();
   public notificationGranted$ = new Subject<ISettingsHome>();
+
 
   settings!: ISettingsHome;
 
@@ -105,11 +113,13 @@ export class LocalNotificationService {
             schedule: {at: alert}, // Date précise
             sound: 'default',
             extra: {
-              cardId: card.id
+              cardId: card.id,
+              customReminder: alert.getTime()
             }
           }]
       });
       taskIds.push(taskId);
+      console.log("taskId: " + taskId + " Rappel date: " + alert);
     }
     return taskIds;
   }
@@ -159,7 +169,7 @@ export class LocalNotificationService {
 
     await LocalNotifications.addListener("localNotificationReceived", (notification) => {
       console.log("Notification reçue par l'utilisateur", notification);
-      this.notificationReceived$.next(notification.id);
+      this.notificationReceived$.next({id: notification.id, customReminder: notification.extra.customReminder});
     })
 
     await LocalNotifications.addListener("localNotificationActionPerformed", (notification) => {

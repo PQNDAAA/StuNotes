@@ -125,13 +125,21 @@ body.dark {
     color: var(--ion-text-color);
   }
 
-  ion-datetime {
-    --background: var(--ion-background-color);
+  ion-datetime, .custom-modal .customDate-container ion-datetime {
+    --background: #121212;
     --wheel-highlight-background: #222;
-    --wheel-fade-background-rgb: 0, 0, 0;
+    --wheel-fade-background-rgb: #1e1e1e;
 
     --title-color: #ffffff;
     --placeholder-color: #aaa;
+  }
+
+  ion-datetime::part(wheel-item active) {
+    color: #aaa;
+  }
+
+  .custom-modal ion-content {
+    --background: #1e1e1e;
   }
 
   ion-datetime-button::part(native) {
@@ -282,4 +290,8 @@ ion-fab-button{
   align-items: center;
   flex-direction: column;
   margin: 4%
+}
+
+ion-datetime::part(wheel-item active) {
+  color: #faa66c;
 }

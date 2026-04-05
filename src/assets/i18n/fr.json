@@ -100,5 +100,9 @@
     "SmartReminder": "Rappel intelligent",
     "RecurringReminder": "Rappel récurrent",
     "CustomReminder": "Rappel personnalisé"
+  },
+  "CUSTOMREMINDERS": {
+    "AddDate": "Ajouter une date",
+    "ListCustomReminders": "Liste des rappels personnalisés :"
   }
 }

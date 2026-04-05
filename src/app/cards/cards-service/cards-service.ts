@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, map, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {Card} from "../cards-interface/card";
 import {Cardstatus} from "../cards-enum/cardstatus";
 import {CardstatusColors} from "../cards-const/cardstatus-colors";
@@ -26,7 +26,8 @@ export class CardsService {
 
   constructor(private lns: LocalNotificationService, private settingsService: Settings) {
     //Subscribe to this event
-    this.lns.notificationReceived$.subscribe(id => this.removeTaskId(id));
+    this.lns.notificationReceived$.subscribe(notification => this.removeTaskId(notification.id,
+      notification.customReminder));
     this.lns.notificationGranted$.subscribe(value => this.reBuildRemindersForCards());
   }
 
@@ -124,13 +125,19 @@ export class CardsService {
       console.log("ID Error.");
     }
   }
-
-  async removeTaskId(id: number) {
+// A TRIER ( promise.all et faire var)
+  async removeTaskId(id: number, notifcation: number) {
     const allCards = await this.getCards();
 
     for (const card of allCards) {
       if (card.taskId.includes(id)) {
         card.taskId = card.taskId.filter(ids => ids !== id);
+
+        if(card.reminder.type === ReminderTypeEnum.CustomReminder &&
+          card.reminder.customReminders?.reminders.includes(notifcation)){
+          card.reminder.customReminders.reminders = card.reminder.customReminders.reminders.filter(
+            reminder => reminder !== notifcation);
+        }
         await this.getCardsDB.put(card);
       }
     }
@@ -184,6 +191,8 @@ export class CardsService {
 
     const hasTaskId = card.taskId.length !== 0;
 
+    const customReminderChanged = oldCard.reminder.customReminders?.reminders.length !==
+      card.reminder.customReminders?.reminders.length;
     const deadLineHasChanged = oldCard.deadline !== card.deadline;
     const reminderTypeChanged = oldCard.reminder.type !== card.reminder.type;
     const recurringReminderTypeChanged = oldCard.reminder.recurringReminders !== card.reminder.recurringReminders;
@@ -197,7 +206,8 @@ export class CardsService {
       return card;
     }
 
-    if(hasTaskId && (deadLineHasChanged || reminderTypeChanged || recurringReminderTypeChanged)) {
+    if(hasTaskId && (deadLineHasChanged || reminderTypeChanged || recurringReminderTypeChanged
+      || customReminderChanged)) {
       await this.clearScheduledTasks(card.taskId);
       card.taskId = [];
     }
@@ -216,8 +226,7 @@ export class CardsService {
         return await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card),
           card);
       case ReminderTypeEnum.CustomReminder:
-        return await this.lns.createLocalNotifications(this.checkCustomReminders(
-          this.convertCustomRemindersToDates(card)), card);
+        return await this.lns.createLocalNotifications(await this.checkCustomReminders(card), card);
       default:
         console.log("none");
         return [];
@@ -228,20 +237,30 @@ export class CardsService {
     const cards = await this.getCards();
     return cards.find(card => card.id === id);
   }
-
-  convertCustomRemindersToDates(card: Card) {
+// A TRIER avec la fonction dans custom reminder modal .ts
+  async checkCustomReminders(card: Card) {
     const dates: Date[] = [];
 
-    if (card.reminder.customReminders?.reminders) {
-      for (const date of card.reminder.customReminders.reminders) {
-        dates.push(new Date(date));
+    const reminder = card.reminder;
+
+    if (reminder.customReminders?.reminders) {
+      const activeCustomReminders = reminder.customReminders?.reminders.filter(
+        reminder => reminder < new Date(card.deadline).getTime()
+          && reminder >= Date.now());
+
+      if (activeCustomReminders.length > 0) {
+        for (const date of activeCustomReminders) {
+          dates.push(new Date(date));
+        }
+      }
+
+      if (activeCustomReminders.length !== reminder.customReminders?.reminders.length) {
+        reminder.customReminders.reminders = activeCustomReminders;
+        await this.getCardsDB.put(card);
+        console.log("Reminders updated");
       }
     }
     return dates;
-  }
-
-  checkCustomReminders(dates: Date[]) {
-    return dates.filter(date => date.getTime() >= Date.now());
   }
 
   clearCards() {

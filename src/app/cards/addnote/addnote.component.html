@@ -77,11 +77,11 @@
         <ion-label>{{ 'TASKS.CustomReminders' | translate }}</ion-label>
         <ion-button slot="end" fill="clear" id="customReminders-modal"><ion-icon name="open-outline"></ion-icon></ion-button>
 
-        <ion-modal #modal trigger="customReminders-modal" [keepContentsMounted]="true" class="custom-modal" [handle]="true">
+        <ion-modal #modal trigger="customReminders-modal" class="custom-modal" [handle]="true">
           <ng-template>
             <ion-header>
               <ion-toolbar>
-                <ion-title>Test</ion-title>
+                <ion-title>{{'TASKS.CustomReminders' | translate}}</ion-title>
                 <ion-button slot="end" fill="clear" (click)="modal.dismiss()"><ion-icon name="close"></ion-icon></ion-button>
               </ion-toolbar>
             </ion-header>
