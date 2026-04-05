@@ -245,7 +245,7 @@ export class CardsService {
 
     if (reminder.customReminders?.reminders) {
       const activeCustomReminders = reminder.customReminders?.reminders.filter(
-        reminder => reminder < new Date(card.deadline).getTime()
+        reminder => reminder <= new Date(card.deadline).getTime()
           && reminder >= Date.now());
 
       if (activeCustomReminders.length > 0) {

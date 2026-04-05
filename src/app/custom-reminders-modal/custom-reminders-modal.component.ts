@@ -39,7 +39,7 @@ export class CustomRemindersModalComponent implements OnInit {
     const cardEditedCustomReminders = this.cardEdited.reminder.customReminders?.reminders;
     if (cardEditedCustomReminders &&
       cardEditedCustomReminders.length > 0) {
-      const activeCustomReminders = cardEditedCustomReminders.filter(reminder => reminder <
+      const activeCustomReminders = cardEditedCustomReminders.filter(reminder => reminder <=
         new Date(this.cardEdited.deadline).getTime() && reminder >= Date.now());
 
       if (activeCustomReminders.length > 0) {
