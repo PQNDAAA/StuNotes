@@ -239,28 +239,27 @@ export class CardsService {
   }
 // A TRIER avec la fonction dans custom reminder modal .ts
   async checkCustomReminders(card: Card) {
-    const dates: Date[] = [];
+    let currentCustomReminders = card.reminder.customReminders?.reminders;
+    if (!currentCustomReminders) return [];
 
-    const reminder = card.reminder;
+    const correctCustomReminders = this.getCorrectCustomReminders(card);
+    if (!correctCustomReminders || correctCustomReminders.length === 0) return []
 
-    if (reminder.customReminders?.reminders) {
-      const activeCustomReminders = reminder.customReminders?.reminders.filter(
-        reminder => reminder <= new Date(card.deadline).getTime()
-          && reminder >= Date.now());
+    const dates = correctCustomReminders.map(date => new Date(date));
 
-      if (activeCustomReminders.length > 0) {
-        for (const date of activeCustomReminders) {
-          dates.push(new Date(date));
-        }
-      }
-
-      if (activeCustomReminders.length !== reminder.customReminders?.reminders.length) {
-        reminder.customReminders.reminders = activeCustomReminders;
+      const isDifferent = correctCustomReminders.length !== currentCustomReminders.length;
+      if(isDifferent && card.reminder.customReminders?.reminders){
+        card.reminder.customReminders.reminders = correctCustomReminders;
         await this.getCardsDB.put(card);
         console.log("Reminders updated");
-      }
     }
     return dates;
+  }
+
+  getCorrectCustomReminders(card: Card) {
+    return card.reminder.customReminders?.reminders.filter(
+      reminder => reminder <= new Date(card.deadline).getTime()
+        && reminder >= Date.now());
   }
 
   clearCards() {

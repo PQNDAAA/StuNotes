@@ -36,22 +36,27 @@ export class CustomRemindersModalComponent implements OnInit {
   ngOnInit() {
     this.cardEdited = structuredClone(this.card);
 
-    const cardEditedCustomReminders = this.cardEdited.reminder.customReminders?.reminders;
-    if (cardEditedCustomReminders &&
-      cardEditedCustomReminders.length > 0) {
-      const activeCustomReminders = cardEditedCustomReminders.filter(reminder => reminder <=
-        new Date(this.cardEdited.deadline).getTime() && reminder >= Date.now());
-
-      if (activeCustomReminders.length > 0) {
-        this.localCustomReminders = activeCustomReminders;
-        this.emitCustomReminders(activeCustomReminders);
-        this.customReminders$.next(activeCustomReminders);
-        console.log("CustomReminders reminders found");
-      }
-    }
+    this.checkCustomReminders(this.cardEdited);
   }
 
-  ngOnChanges() {
+
+  checkCustomReminders(card: Card) {
+    const currentCustomReminders = card.reminder.customReminders?.reminders;
+    if(!currentCustomReminders || currentCustomReminders.length === 0) return;
+
+    const correctCustomReminders = this.cs.getCorrectCustomReminders(card);
+    if(!correctCustomReminders) return;
+
+    if(correctCustomReminders.length > 0) {
+      this.localCustomReminders = correctCustomReminders;
+      this.customReminders$.next(correctCustomReminders);
+      console.log("CustomReminders reminders found ", correctCustomReminders);
+    }
+
+    const isDifferent = currentCustomReminders.length !== correctCustomReminders.length;
+    if(isDifferent) {
+      this.emitCustomReminders(correctCustomReminders);
+    }
   }
 
   onCustomRemindersChanged(event: any) {
