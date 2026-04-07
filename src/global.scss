@@ -113,6 +113,10 @@ body.dark {
     --color: var(--ion-text-color);
   }
 
+  .element-item{
+    --background: transparent;
+  }
+
   ion-card {
     --color: var(--ion-text-color);
   }
@@ -149,8 +153,15 @@ body.dark {
   ion-card-title{
     color: var(--ion-text-color);
   }
-  ion-list {
-    --background: pink;
+  .dark-alert {
+    --background: var(--ion-background-color);
+    --color: #ffffff;
+  }
+  .elements-content{
+    --background: #1e1e1e;
+  }
+  ion-tabs{
+    background-color: #1e1e1e;
   }
 }
 
@@ -294,4 +305,13 @@ ion-fab-button{
 
 ion-datetime::part(wheel-item active) {
   color: #faa66c;
+}
+
+.element-list{
+  padding: 0;
+  background: transparent;
+}
+
+.element-item{
+  --background: transparent;
 }

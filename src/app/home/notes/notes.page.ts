@@ -119,6 +119,7 @@ export class NotesPage implements OnInit {
     const modal = await this.ac.create({
       header: this.translate.instant('NOTIFICATIONS.AlertTitle'),
       message: this.translate.instant('NOTIFICATIONS.AlertBody') + card.name,
+      cssClass: 'dark-alert',
       buttons: [
         {
           text: "OK",

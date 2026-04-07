@@ -21,12 +21,11 @@ ion-button{
   font-size: 24px;
 }
 
-.custom-tab-bar{
+.custom-tab-bar {
   display: flex;
   height: 70px;
   border-radius: 20% 20% 0 0;
-  box-shadow: 0 -2px 20px rgba(0,0,0,0.15);
-
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.15);
   z-index: 999;
 }
 
@@ -36,6 +35,7 @@ ion-button{
 
 ion-tab-button{
   --color-selected: #ff8228;
+
 }
 
 ion-tab-button.tab-selected{

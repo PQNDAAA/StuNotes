@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content class="elements-content">
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -80,7 +80,7 @@
     <app-notes-tab (filterChanged)="onFilterChanged($event)"></app-notes-tab>
   </div>
 
-  <div *ngFor="let card of results$ | async">
+  <div *ngFor="let card of results$ | async" class="card-container">
     <app-notecard  [card]="card">
     </app-notecard>
   </div>

@@ -115,15 +115,13 @@ export class CardsService {
     const id = cards.findIndex(card => card.id === cardEdited.id);
     const oldCard = cards[id];
 
-    if (id !== -1) {
+    if(id === -1) return console.log("ID Error.");
+
       cardEdited = await this.processUpdateCard(oldCard, cardEdited);
       cards[id] = cardEdited;
 
       await this.getCardsDB.put(cards[id]);
       await this.refreshCards();
-    } else {
-      console.log("ID Error.");
-    }
   }
 // A TRIER ( promise.all et faire var)
   async removeTaskId(id: number, notifcation: number) {
@@ -202,7 +200,6 @@ export class CardsService {
         await this.clearScheduledTasks(card.taskId);
         card.taskId = [];
       }
-      console.log(card.status.trim());
       return card;
     }
 
