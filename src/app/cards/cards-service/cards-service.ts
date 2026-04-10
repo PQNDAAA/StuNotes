@@ -8,6 +8,7 @@ import {LocalNotificationService} from "../../notifications/local-notification/l
 import {CardsDB} from "../db/cards-db";
 import {Settings} from "../../settings/settings-service/settings";
 import {ReminderTypeEnum} from "../../notifications/types/reminder-type-enum";
+import {LocalNotifications} from "@capacitor/local-notifications";
 
 @Injectable({
   providedIn: 'root'
@@ -157,7 +158,7 @@ export class CardsService {
     // date = UTC + 60min ce qui donne la date au moment present
   }
 
-  async updateOverdueTasks() {
+  async syncOverdueTasks() {
     const allCards = await this.getCards();
     const now = Date.now();
     const overdueCards = allCards.filter(card => card.status.trim() !== Cardstatus.Done &&
@@ -171,13 +172,47 @@ export class CardsService {
     await this.refreshCards();
   }
 
+  //A REFAIRE SELON RESULTAT
+  async syncTaskReminders(){
+    const allCards = await this.getCards();
+    const currentNotifications = await LocalNotifications.getPending();
+    const idsNotifications = currentNotifications.notifications.map(
+      notification => notification.id);
+    const notifications = currentNotifications.notifications.map(
+      notification =>
+        notification.extra.customReminders
+      );
+
+
+    for (const card of allCards) {
+      //const hasReminderType = card.reminder.type !== ReminderTypeEnum.None;
+      const activeReminders = card.taskId.filter(ids => idsNotifications.includes(ids));
+
+      if(activeReminders.length !== card.taskId.length) {
+        card.taskId = activeReminders;
+        console.log("La synchronisation des id des rappels a été faite avec succés sur cette tâche", card);
+      }
+      if(card.reminder.type === ReminderTypeEnum.CustomReminder
+        && card.reminder.customReminders?.reminders){
+        const activeCustomReminders = card.reminder.customReminders?.reminders.filter(
+          customReminder => notifications.includes(customReminder));
+        if(activeCustomReminders.length !== card.reminder.customReminders.reminders.length){
+          card.reminder.customReminders.reminders = activeCustomReminders;
+          console.log("La suppression des id des rappels personnalisés a été effectuée avec succés", card);
+        }
+      }
+      await this.getCardsDB.put(card);
+    }
+    await this.refreshCards();
+  }
+
   async reBuildRemindersForCards() {
     const allCards = await this.getCards();
     const activeCards = allCards.filter(card =>
       ![Cardstatus.Late, Cardstatus.Done].includes(card.status));
 
     await Promise.all(activeCards.map(async card => {
-      await this.handleReminderByType(card);
+      card.taskId = await this.handleReminderByType(card);
       await this.getCardsDB.put(card);
     }));
     await this.refreshCards();

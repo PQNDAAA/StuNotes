@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
    await this.languageService.initLanguages();
    await this.checkLocalNotifications();
    this.fcm.initPush();
-   await this.checkOverdueTasks();
+   await this.checkTasks();
 
    setTimeout(async () => {
      await SplashScreen.hide({
@@ -61,8 +61,9 @@ export class AppComponent implements OnInit {
     await this.lns.initLocalNotifications();
   }
 
-  private async checkOverdueTasks(){
-    await this.cards.updateOverdueTasks();
+  private async checkTasks(){
+    await this.cards.syncTaskReminders();
+    await this.cards.syncOverdueTasks();
   }
 
 }

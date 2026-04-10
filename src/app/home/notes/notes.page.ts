@@ -154,7 +154,7 @@ export class NotesPage implements OnInit {
 
   doRefresh(event: any) {
     setTimeout(async () => {
-      await this.cs.updateOverdueTasks();
+      await this.cs.syncOverdueTasks();
 
       event.target.complete();
     })

@@ -166,7 +166,7 @@ export class LocalNotificationService {
       await this.clearAllScheduledTasks();
     }
 
-    console.log(await this.getAllScheduled());
+    console.log("Notifications en cours: ",await this.getAllScheduled());
 
      await LocalNotifications.addListener("localNotificationReceived", (notification) => {
        console.log("Notification reçue par l'utilisateur", notification);
