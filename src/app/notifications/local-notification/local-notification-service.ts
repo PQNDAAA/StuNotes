@@ -88,7 +88,8 @@ export class LocalNotificationService {
   async createLocalNotifications(alerts: Date[], card: Card) {
     const taskIds = [];
 
-    if (alerts.length === 0 || card.id === undefined) {
+    if (alerts.length === 0 || card.id === undefined || !this.settings.taskReminders) {
+      console.log("Reminders canceled.", card);
       return [];
     }
     for (let alert of alerts) {
@@ -119,7 +120,7 @@ export class LocalNotificationService {
           }]
       });
       taskIds.push(taskId);
-      console.log("taskId: " + taskId + " Rappel date: " + alert);
+      console.log("taskId: " + taskId + " Rappel date: " + alert, card);
     }
     return taskIds;
   }
@@ -153,12 +154,12 @@ export class LocalNotificationService {
         console.log("notif disabled");
         return;
       }
-      if (!this.settings.taskReminders) {
-        const remindersUpdated = {...this.settings, taskReminders: true};
-        await this.settingsService.changeSettingsValue(remindersUpdated);
-        this.notificationGranted$.next(remindersUpdated);
-      }
-      return;
+     // if (!this.settings.taskReminders) {
+       // const remindersUpdated = {...this.settings, taskReminders: true};
+        //await this.settingsService.changeSettingsValue(remindersUpdated);
+        //this.notificationGranted$.next(remindersUpdated);
+      //}
+      //return;
     }
 
     if (!this.settings.taskReminders) {
@@ -167,10 +168,10 @@ export class LocalNotificationService {
 
     console.log(await this.getAllScheduled());
 
-    await LocalNotifications.addListener("localNotificationReceived", (notification) => {
-      console.log("Notification reçue par l'utilisateur", notification);
-      this.notificationReceived$.next({id: notification.id, customReminder: notification.extra.customReminder});
-    })
+     await LocalNotifications.addListener("localNotificationReceived", (notification) => {
+       console.log("Notification reçue par l'utilisateur", notification);
+       this.notificationReceived$.next({id: notification.id, customReminder: notification.extra.customReminder});
+     })
 
     await LocalNotifications.addListener("localNotificationActionPerformed", (notification) => {
       console.log("L'utilisateur a intéragi avec la notification", notification);

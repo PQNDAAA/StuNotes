@@ -24,10 +24,12 @@ export class AppComponent implements OnInit {
               private languageService: LanguageService) {
 
     this.translate.addLangs(['fr','en']);
-    this.initializeApp();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    await this.initializeApp();
+
     this.settingsService.settingsHome$.subscribe(async data => {
       document.body.classList.toggle('dark', data.darkMode);
       this.settings = data;
@@ -40,21 +42,19 @@ export class AppComponent implements OnInit {
     }
   }
 
- initializeApp() {
+ async initializeApp() {
     //On attend que la plateforme (Android/iOS) soit prête
-    this.platform.ready().then(() => {
-      this.languageService.initLanguages();
-      this.fcm.initPush();
-      this.checkLocalNotifications();
-      this.checkOverdueTasks();
+   await this.platform.ready();
+   await this.languageService.initLanguages();
+   await this.checkLocalNotifications();
+   this.fcm.initPush();
+   await this.checkOverdueTasks();
 
-
-      setTimeout(async () => {
-        await SplashScreen.hide({
-          fadeOutDuration: 500 // Effet de fondu progressif très propre
-        });
-      }, 500);
-    });
+   setTimeout(async () => {
+     await SplashScreen.hide({
+       fadeOutDuration: 500 // Effet de fondu progressif très propre
+     });
+   }, 500);
   }
 
   private async checkLocalNotifications(){
