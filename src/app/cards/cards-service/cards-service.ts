@@ -124,22 +124,27 @@ export class CardsService {
       await this.getCardsDB.put(cards[id]);
       await this.refreshCards();
   }
-// A TRIER ( promise.all et faire var)
-  async removeTaskId(id: number, notifcation: number) {
+
+  async removeTaskId(id: number, customReminderTimestamp: number) {
     const allCards = await this.getCards();
 
-    for (const card of allCards) {
-      if (card.taskId.includes(id)) {
-        card.taskId = card.taskId.filter(ids => ids !== id);
+    await Promise.all(allCards.map(async card => {
+      const taskIds = card.taskId ?? [];
+      const reminder = card.reminder;
 
-        if(card.reminder.type === ReminderTypeEnum.CustomReminder &&
-          card.reminder.customReminders?.reminders.includes(notifcation)){
-          card.reminder.customReminders.reminders = card.reminder.customReminders.reminders.filter(
-            reminder => reminder !== notifcation);
+      if(taskIds.includes(id)) {
+        card.taskId = taskIds.filter(ids => ids !== id);
+
+        const reminders = reminder.customReminders?.reminders ?? [];
+        if(reminder.type === ReminderTypeEnum.CustomReminder &&
+          reminders.includes(customReminderTimestamp) &&
+        card.reminder.customReminders?.reminders) {
+          card.reminder.customReminders.reminders = reminders.filter(
+            r => r !== customReminderTimestamp);
         }
         await this.getCardsDB.put(card);
       }
-    }
+    }));
     await this.refreshCards();
   }
 
@@ -172,37 +177,42 @@ export class CardsService {
     await this.refreshCards();
   }
 
-  //A REFAIRE SELON RESULTAT
-  async syncTaskReminders(){
+  async syncTaskReminders() {
     const allCards = await this.getCards();
     const currentNotifications = await LocalNotifications.getPending();
-    const idsNotifications = currentNotifications.notifications.map(
-      notification => notification.id);
-    const notifications = currentNotifications.notifications.map(
+
+    const idsNotifications = new Set(currentNotifications.notifications.map(
+      notification => notification.id));
+
+    const customRemindersTimestamp = new Set(currentNotifications.notifications.map(
       notification =>
-        notification.extra.customReminders
-      );
+        notification.extra?.customReminder
+    ));
 
+    await Promise.all(allCards.map(async (card) => {
+      const taskId = card.taskId ?? [];
+      const activeReminders = taskId.filter(ids => idsNotifications.has(ids));
+      const reminder = card.reminder;
 
-    for (const card of allCards) {
-      //const hasReminderType = card.reminder.type !== ReminderTypeEnum.None;
-      const activeReminders = card.taskId.filter(ids => idsNotifications.includes(ids));
-
-      if(activeReminders.length !== card.taskId.length) {
+      const remindersIdsIsDifferent = activeReminders.length !== taskId.length;
+      if (remindersIdsIsDifferent) {
         card.taskId = activeReminders;
         console.log("La synchronisation des id des rappels a été faite avec succés sur cette tâche", card);
       }
-      if(card.reminder.type === ReminderTypeEnum.CustomReminder
-        && card.reminder.customReminders?.reminders){
-        const activeCustomReminders = card.reminder.customReminders?.reminders.filter(
-          customReminder => notifications.includes(customReminder));
-        if(activeCustomReminders.length !== card.reminder.customReminders.reminders.length){
+
+      if (reminder.type === ReminderTypeEnum.CustomReminder
+        && reminder.customReminders?.reminders) {
+        const activeCustomReminders = reminder.customReminders?.reminders.filter(
+          customReminder => customRemindersTimestamp.has(customReminder));
+        const customRemindersIsDifferent = activeCustomReminders.length !== reminder.customReminders.reminders.length;
+        if (customRemindersIsDifferent &&
+          card.reminder.customReminders?.reminders) {
           card.reminder.customReminders.reminders = activeCustomReminders;
           console.log("La suppression des id des rappels personnalisés a été effectuée avec succés", card);
         }
       }
       await this.getCardsDB.put(card);
-    }
+    }));
     await this.refreshCards();
   }
 

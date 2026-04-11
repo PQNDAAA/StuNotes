@@ -6,6 +6,7 @@ import {AddtagComponent} from "../../tags/addtag/addtag.component";
 import {SettingsPageModule} from "../../settings/settings.module";
 import {SettingsPage} from "../../settings/settings.page";
 import {CardsService} from "../../cards/cards-service/cards-service";
+import {LocalNotifications} from "@capacitor/local-notifications";
 
 @Component({
   selector: 'app-tabs',
@@ -19,6 +20,15 @@ export class TabsPage {
 
   async showAllNotes(){
     console.log(await this.cards.getCards());
+
+    const currentNotifications = await LocalNotifications.getPending();
+    const idsNotifications = currentNotifications.notifications.map(
+      notification => notification.id);
+    const notifications = currentNotifications.notifications.map(
+      notification =>
+        notification.extra.customReminder
+    )
+    console.log(notifications, idsNotifications);
   }
 
   hasOpenSettings():boolean{
