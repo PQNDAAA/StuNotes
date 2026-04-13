@@ -18,11 +18,9 @@ type notificationReceived = {
 
 export class LocalNotificationService {
 
-
   public notificationReceived$ = new Subject<notificationReceived>();
   public notificationActionPerformed$ = new Subject<number>();
   public notificationGranted$ = new Subject<ISettingsHome>();
-
 
   settings!: ISettingsHome;
 
@@ -86,16 +84,17 @@ export class LocalNotificationService {
   }
 
   async createLocalNotifications(alerts: Date[], card: Card) {
-    const taskIds = [];
+    const reminderIds = [];
 
     if (alerts.length === 0 || card.id === undefined || !this.settings.taskReminders) {
       console.log("Reminders canceled.", card);
       return [];
     }
-    for (let alert of alerts) {
-      const timestamp = Date.now() % 1_000_000_000;
-      const alertIndex = alerts.indexOf(alert);
-      const taskId = (card.id * 10000) + alertIndex + timestamp;
+
+    for (let i = 0; i < alerts.length; i++) {
+      const alert = alerts[i];
+
+      const reminderId = card.id * 10000 + i;
 
       const title = this.translate.instant('NOTIFICATIONS.Title');
       const body = this.translate.instant('NOTIFICATIONS.Body');
@@ -110,8 +109,11 @@ export class LocalNotificationService {
               hour: "numeric",
               minute: "2-digit"
             }) + " •" + card.tag,
-            id: taskId,
-            schedule: {at: alert}, // Date précise
+            id: reminderId,
+            schedule: {
+              at: alert,
+              allowWhileIdle: true
+            }, // Date précise
             sound: 'default',
             extra: {
               cardId: card.id,
@@ -119,10 +121,10 @@ export class LocalNotificationService {
             }
           }]
       });
-      taskIds.push(taskId);
-      console.log("taskId: " + taskId + " Rappel date: " + alert, card);
+      reminderIds.push(reminderId);
+      console.log("ReminderId: " + reminderId + " Rappel date: " + alert, card);
     }
-    return taskIds;
+    return reminderIds;
   }
 
   async clearScheduledTasks(ids: number[]) {
@@ -140,7 +142,7 @@ export class LocalNotificationService {
       }
     }
     const stillScheduled = await this.getAllScheduled();
-    console.log("Voici les notifications actuelles : ", stillScheduled);
+    console.log("Voici les notifications actuelles: ", stillScheduled);
   }
 
   private async registerLocalNotifications() {

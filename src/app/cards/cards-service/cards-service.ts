@@ -4,7 +4,7 @@ import {Card} from "../cards-interface/card";
 import {Cardstatus} from "../cards-enum/cardstatus";
 import {CardstatusColors} from "../cards-const/cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
-import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
+import {LocalNotificationService} from "../../notifications/service/local-notification-service";
 import {CardsDB} from "../db/cards-db";
 import {Settings} from "../../settings/settings-service/settings";
 import {ReminderTypeEnum} from "../../notifications/types/reminder-type-enum";
@@ -25,7 +25,7 @@ export class CardsService {
   private db = new CardsDB();
 
 
-  constructor(private lns: LocalNotificationService, private settingsService: Settings) {
+  constructor(private lns: LocalNotificationService) {
     //Subscribe to this event
     this.lns.notificationReceived$.subscribe(notification => this.removeTaskId(notification.id,
       notification.customReminder));
@@ -72,7 +72,7 @@ export class CardsService {
     card.id = id;
 
     if (isActive && hasReminderType) {
-      card.taskId = await this.handleReminderByType(card);
+      card.reminder.remindersIds = await this.handleReminderByType(card);
     }
     await this.getCardsDB.put(card);
     await this.refreshCards();
@@ -86,7 +86,7 @@ export class CardsService {
 
   async deleteCard(card: Card) {
     if (card.id !== undefined) {
-      await this.clearScheduledTasks(card.taskId);
+      await this.clearScheduledTasks(card.reminder.remindersIds);
       await this.getCardsDB.delete(card.id);
 
       await this.refreshCards();
@@ -129,11 +129,11 @@ export class CardsService {
     const allCards = await this.getCards();
 
     await Promise.all(allCards.map(async card => {
-      const taskIds = card.taskId ?? [];
+      const reminderIds = card.reminder.remindersIds ?? [];
       const reminder = card.reminder;
 
-      if(taskIds.includes(id)) {
-        card.taskId = taskIds.filter(ids => ids !== id);
+      if(reminderIds.includes(id)) {
+        card.reminder.remindersIds = reminderIds.filter(ids => ids !== id);
 
         const reminders = reminder.customReminders?.reminders ?? [];
         if(reminder.type === ReminderTypeEnum.CustomReminder &&
@@ -190,14 +190,14 @@ export class CardsService {
     ));
 
     await Promise.all(allCards.map(async (card) => {
-      const taskId = card.taskId ?? [];
-      const activeReminders = taskId.filter(ids => idsNotifications.has(ids));
+      const remindersIds = card.reminder.remindersIds ?? [];
+      const activeRemindersIds = remindersIds.filter(ids => idsNotifications.has(ids));
       const reminder = card.reminder;
 
-      const remindersIdsIsDifferent = activeReminders.length !== taskId.length;
+      const remindersIdsIsDifferent = activeRemindersIds.length !== remindersIds.length;
       if (remindersIdsIsDifferent) {
-        card.taskId = activeReminders;
-        console.log("La synchronisation des id des rappels a été faite avec succés sur cette tâche", card);
+        card.reminder.remindersIds = activeRemindersIds;
+        console.log("Sync Reminder ID -> task n°"+card.id, card);
       }
 
       if (reminder.type === ReminderTypeEnum.CustomReminder
@@ -208,7 +208,7 @@ export class CardsService {
         if (customRemindersIsDifferent &&
           card.reminder.customReminders?.reminders) {
           card.reminder.customReminders.reminders = activeCustomReminders;
-          console.log("La suppression des id des rappels personnalisés a été effectuée avec succés", card);
+          console.log("Sync Custom Reminders -> task n°"+card.id, card);
         }
       }
       await this.getCardsDB.put(card);
@@ -222,7 +222,7 @@ export class CardsService {
       ![Cardstatus.Late, Cardstatus.Done].includes(card.status));
 
     await Promise.all(activeCards.map(async card => {
-      card.taskId = await this.handleReminderByType(card);
+      card.reminder.remindersIds = await this.handleReminderByType(card);
       await this.getCardsDB.put(card);
     }));
     await this.refreshCards();
@@ -232,7 +232,7 @@ export class CardsService {
     const hasFinished = card.status.trim() === Cardstatus.Done;
     const isLate = card.status.trim() === Cardstatus.Late;
 
-    const hasTaskId = card.taskId.length !== 0;
+    const hasRemindersIds = card.reminder.remindersIds.length !== 0;
 
     const customReminderChanged = oldCard.reminder.customReminders?.reminders.length !==
       card.reminder.customReminders?.reminders.length;
@@ -241,21 +241,21 @@ export class CardsService {
     const recurringReminderTypeChanged = oldCard.reminder.recurringReminders !== card.reminder.recurringReminders;
 
     if(hasFinished || isLate) {
-      if(hasTaskId) {
-        await this.clearScheduledTasks(card.taskId);
-        card.taskId = [];
+      if(hasRemindersIds) {
+        await this.clearScheduledTasks(card.reminder.remindersIds);
+        card.reminder.remindersIds = [];
       }
       return card;
     }
 
-    if(hasTaskId && (deadLineHasChanged || reminderTypeChanged || recurringReminderTypeChanged
+    if(hasRemindersIds && (deadLineHasChanged || reminderTypeChanged || recurringReminderTypeChanged
       || customReminderChanged)) {
-      await this.clearScheduledTasks(card.taskId);
-      card.taskId = [];
+      await this.clearScheduledTasks(card.reminder.remindersIds);
+      card.reminder.remindersIds = [];
     }
 
-    if(card.taskId.length === 0){
-     card.taskId = await this.handleReminderByType(card);
+    if(card.reminder.remindersIds.length === 0){
+     card.reminder.remindersIds = await this.handleReminderByType(card);
     }
     return card;
   }
@@ -263,12 +263,13 @@ export class CardsService {
   async handleReminderByType(card: Card) {
     switch (card.reminder?.type) {
       case ReminderTypeEnum.SmartReminder:
-        return await this.createLocalNotifications(card);
+        return this.createLocalNotifications(card);
       case ReminderTypeEnum.RecurringReminder:
-        return await this.lns.createLocalNotifications(this.lns.calculateRecurringReminders(card),
-          card);
+        const recurringReminders = this.lns.calculateRecurringReminders(card);
+        return this.lns.createLocalNotifications(recurringReminders, card);
       case ReminderTypeEnum.CustomReminder:
-        return await this.lns.createLocalNotifications(await this.checkCustomReminders(card), card);
+        const customReminders = await this.checkCustomReminders(card);
+        return this.lns.createLocalNotifications(customReminders, card);
       default:
         console.log("none");
         return [];

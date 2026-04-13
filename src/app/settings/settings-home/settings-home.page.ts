@@ -3,7 +3,7 @@ import {Settings} from "../settings-service/settings";
 import {ISettingsHome} from "../settings-interface/isettings-home";
 import {Observable} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
-import {LocalNotificationService} from "../../notifications/local-notification/local-notification-service";
+import {LocalNotificationService} from "../../notifications/service/local-notification-service";
 import {CardsService} from "../../cards/cards-service/cards-service";
 import {Cardstatus} from "../../cards/cards-enum/cardstatus";
 

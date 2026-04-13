@@ -10,6 +10,5 @@ export interface Card {
   status: Cardstatus;
   important: boolean;
   deadline: string;
-  taskId: number[];
   reminder: Reminder;
 }

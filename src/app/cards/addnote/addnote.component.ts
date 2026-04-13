@@ -9,7 +9,6 @@ import {Cardstatus} from "../cards-enum/cardstatus";
 import {CardStatusService} from "../cards-service/card-status-service";
 import {TranslateService} from "@ngx-translate/core";
 import {NgForm} from "@angular/forms";
-import {Settings} from "../../settings/settings-service/settings";
 import {RecurringRemindersEnum} from "../../notifications/recurring/enum/recurring-reminders-enum";
 import {RecurringReminders} from "../../notifications/recurring/service/recurring-reminders";
 import {ReminderTypeEnum} from "../../notifications/types/reminder-type-enum";
@@ -25,8 +24,10 @@ export class AddnoteComponent implements OnInit {
 
   //INPUT SOURCE
   @Input() card: Card = {
-    reminder: {type: ReminderTypeEnum.None, recurringReminders: RecurringRemindersEnum.Never, customReminders: {reminders: []}},
-    taskId: [],
+    reminder: {
+      type: ReminderTypeEnum.None, recurringReminders: RecurringRemindersEnum.Never, customReminders: {reminders: []},
+      remindersIds: []
+    },
     deadline: this.cs.toLocalISOString(new Date(), true),
     important: false,
     status: Cardstatus.Open,

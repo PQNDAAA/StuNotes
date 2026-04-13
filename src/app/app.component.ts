@@ -3,7 +3,7 @@ import {SplashScreen} from "@capacitor/splash-screen";
 import {Settings} from "./settings/settings-service/settings";
 import {Platform} from "@ionic/angular";
 import {Fcm} from "./notifications/fcm/fcm";
-import {LocalNotificationService} from "./notifications/local-notification/local-notification-service";
+import {LocalNotificationService} from "./notifications/service/local-notification-service";
 import {CardsService} from "./cards/cards-service/cards-service";
 import {LanguageService} from "./language/language-service/language-service";
 import {TranslateService} from "@ngx-translate/core";

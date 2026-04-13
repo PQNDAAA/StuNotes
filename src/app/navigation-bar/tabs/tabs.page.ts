@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import {ModalController} from "@ionic/angular";
-import {AddnoteComponent} from "../../cards/addnote/addnote.component";
 import {Router} from "@angular/router";
-import {AddtagComponent} from "../../tags/addtag/addtag.component";
-import {SettingsPageModule} from "../../settings/settings.module";
 import {SettingsPage} from "../../settings/settings.page";
 import {CardsService} from "../../cards/cards-service/cards-service";
 import {LocalNotifications} from "@capacitor/local-notifications";

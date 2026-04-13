@@ -5,6 +5,7 @@ import {CardsService} from "../cards/cards-service/cards-service";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {BehaviorSubject, map, take} from "rxjs";
 import {AsyncPipe, NgForOf} from "@angular/common";
+import {CustomReminderViewModel} from "./custom-reminder-view-model";
 
 @Component({
   selector: 'app-custom-reminders-modal',
@@ -22,7 +23,7 @@ export class CustomRemindersModalComponent implements OnInit {
   @Input() card!: Card;
   @Output() customRemindersChange = new EventEmitter<number[]>();
 
-  customReminders$ = new BehaviorSubject<number[]>([]);
+  customReminders$ = new BehaviorSubject<CustomReminderViewModel[]>([]);
   results$ = this.customReminders$.asObservable();
 
   localCustomReminders: number[] = [];
@@ -31,14 +32,30 @@ export class CustomRemindersModalComponent implements OnInit {
 
   customReminder: Date = new Date(); // valeur visible actuellement
 
+  minDate!: string;
+  maxDate!: string;
+
+  intervalId: any;
+
   constructor(private cs: CardsService, private translate: TranslateService) {}
 
   ngOnInit() {
     this.cardEdited = structuredClone(this.card);
 
+    this.minDate = this.getMinDate;
+    this.maxDate = this.getMaxDate;
+
+    this.intervalId = setInterval(() => {
+      this.updateMinDate();
+    }, 1000);
+
     this.checkCustomReminders(this.cardEdited);
   }
 
+  ngOnDestroy() {
+    clearInterval(this.intervalId);
+    console.log("Clear IntervalId");
+  }
 
   checkCustomReminders(card: Card) {
     const currentCustomReminders = card.reminder.customReminders?.reminders;
@@ -49,7 +66,9 @@ export class CustomRemindersModalComponent implements OnInit {
 
     if(correctCustomReminders.length > 0) {
       this.localCustomReminders = correctCustomReminders;
-      this.customReminders$.next(correctCustomReminders);
+      this.customReminders$.next(this.localCustomReminders.map(v => ({
+        dateMs: v,
+        label: this.getCustomReminders(v)})));
       console.log("CustomReminders reminders found ", correctCustomReminders);
     }
 
@@ -67,15 +86,20 @@ export class CustomRemindersModalComponent implements OnInit {
     const customDate = this.customReminder;
 
     this.customReminders$.pipe(take(1),
-      map(customReminders =>
-        customReminders.includes(customDate.getTime()))
-    ).subscribe(value => {
-      if (value) {
-        console.log("Le rappel a cette heure-ci a déjà été ajouté ", value);
+      map(v => v.map(date => date.dateMs)
+        .includes(customDate.getTime()))
+      ).subscribe(exists => {
+      if (exists) {
+        console.log("Le rappel a cette heure-ci a déjà été ajouté ", exists);
       } else {
         this.localCustomReminders.push(customDate.getTime());
         this.emitCustomReminders(this.localCustomReminders);
-        this.customReminders$.next(this.localCustomReminders);
+
+        const value : CustomReminderViewModel[] = this.localCustomReminders.map(n => ({
+          dateMs: n,
+          label: this.getCustomReminders(n)
+        }))
+        this.customReminders$.next(value);
       }
     });
     for (const date of this.localCustomReminders) {
@@ -86,10 +110,15 @@ export class CustomRemindersModalComponent implements OnInit {
   deleteCustomDate(date: number){
     const index = this.localCustomReminders.indexOf(date);
 
+    console.log(index);
+
     if(index > -1){
       this.localCustomReminders.splice(index, 1);
       this.emitCustomReminders(this.localCustomReminders);
-      this.customReminders$.next(this.localCustomReminders);
+      this.customReminders$.next(this.localCustomReminders.map(v => ({
+        dateMs:v,
+        label: this.getCustomReminders(v)
+      })));
     }
   }
 
@@ -103,6 +132,10 @@ export class CustomRemindersModalComponent implements OnInit {
 
   get getMaxDate(): string {
     return this.cs.toLocalISOString(new Date(this.cardEdited.deadline), false);
+  }
+
+  private updateMinDate(){
+    this.minDate = this.getMinDate;
   }
 
   get getCurrentLang(): string {
