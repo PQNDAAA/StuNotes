@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {SettingsPage} from "../../settings/settings.page";
 import {CardsService} from "../../cards/cards-service/cards-service";
 import {LocalNotifications} from "@capacitor/local-notifications";
+import {Api} from "../../api/services/api";
 
 @Component({
   selector: 'app-tabs',
@@ -13,7 +14,8 @@ import {LocalNotifications} from "@capacitor/local-notifications";
 })
 export class TabsPage {
 
-  constructor(private mc : ModalController, private router : Router, private cards: CardsService) {}
+  constructor(private mc : ModalController, private router : Router, private cards: CardsService,
+              private api: Api) {}
 
   async showAllNotes(){
     console.log(await this.cards.getCards());
@@ -26,6 +28,14 @@ export class TabsPage {
         notification.extra.customReminder
     )
     console.log(notifications, idsNotifications);
+
+    this.getUsers();
+  }
+
+  private getUsers(){
+    this.api.getUsersByEmail("gayvallet.dylan@gmail.com").subscribe(response => {
+      console.log("Utilisateurs crées avec cette adresse email: ",response);
+    })
   }
 
   hasOpenSettings():boolean{

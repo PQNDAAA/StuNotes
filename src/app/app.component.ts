@@ -8,6 +8,7 @@ import {CardsService} from "./cards/cards-service/cards-service";
 import {LanguageService} from "./language/language-service/language-service";
 import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "./settings/settings-interface/isettings-home";
+import {Api} from "./api/services/api";
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
 
   constructor(private settingsService: Settings, private platform: Platform, private fcm: Fcm,
               private lns: LocalNotificationService, private cards : CardsService, private translate: TranslateService,
-              private languageService: LanguageService) {
+              private languageService: LanguageService, private api: Api) {
 
     this.translate.addLangs(['fr','en']);
   }
@@ -50,6 +51,8 @@ export class AppComponent implements OnInit {
    this.fcm.initPush();
    await this.checkTasks();
 
+   this.createUser({email: "gayvallet.dylan@gmail.com", password:"dadazdazdzadza"});
+
    setTimeout(async () => {
      await SplashScreen.hide({
        fadeOutDuration: 500 // Effet de fondu progressif très propre
@@ -66,4 +69,9 @@ export class AppComponent implements OnInit {
     await this.cards.syncOverdueTasks();
   }
 
+  private createUser(data: {email: string; password: string }){
+    this.api.createUser(data).subscribe(response => {
+      console.log("Utilisateur crée avec succés: ",response);
+    })
+  }
 }
