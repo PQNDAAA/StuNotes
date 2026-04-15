@@ -33,8 +33,8 @@ export class TabsPage {
   }
 
   private getUsers(){
-    this.api.getUsersByEmail("gayvallet.dylan@gmail.com").subscribe(response => {
-      console.log("Utilisateurs crées avec cette adresse email: ",response);
+    this.api.getUsers().subscribe(users => {
+      console.log(users);
     })
   }
 

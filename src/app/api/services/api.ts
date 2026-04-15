@@ -14,13 +14,15 @@ export class Api {
     return this.http.get(`${this.baseUrl}/users`);
   }
 
-  createUser(data: {email: string; password: string }) {
+  createUser(data: {email: string, name: string, password: string, age: number }) {
     return this.http.post(`${this.baseUrl}/users`, data);
   }
 
-  getUsersByEmail(email: string){
-    return this.http.get(`${this.baseUrl}/users/by-email/${email}`);
+  login(data: {email: string, password: string}) {
+    return this.http.post(`${this.baseUrl}/auth/login`, data);
   }
 
-
+  getUserByEmail(email: string){
+    return this.http.get(`${this.baseUrl}/users/by-email/${email}`);
+  }
 }
