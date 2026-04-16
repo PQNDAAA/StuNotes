@@ -5,6 +5,11 @@
     "EditButton": "Edit",
     "DeleteButton": "Delete"
   },
+  "LOGIN": {
+    "Login": "Login",
+    "NoAccount": "Don't have an account ?",
+    "Signup": "Sign Up"
+  },
   "HOME": {
     "TITLE": "Home",
     "WELCOME": "Welcome",

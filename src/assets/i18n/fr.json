@@ -5,6 +5,11 @@
     "EditButton": "Editer",
     "DeleteButton": "Supprimer"
   },
+  "LOGIN": {
+    "Login": "Se Connecter",
+    "NoAccount": "Vous n'avez pas de compte ?",
+    "Signup": "Inscrivez-vous"
+  },
   "HOME": {
     "TITLE": "Accueil",
     "WELCOME": "Bienvenue",

@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ 'LOGIN.Login' | translate}}</ion-card-title>
+        <ion-card-subtitle>{{'LOGIN.NoAccount' | translate}}
+          <ion-button class="signupbtn" fill="clear">{{'LOGIN.Signup' | translate}}</ion-button>
+        </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item lines="none" class="inputElement">
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-input type="email" placeholder="Enter your email adress"></ion-input>
+      </ion-item>
+      <ion-item lines="none" class="inputElement">
+        <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+      <ion-input type="password" placeholder="Enter your password">
+        <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
+      </ion-input>
+      </ion-item>
+      <ion-button id="validbtn" expand="block" class="loginBtn" (click)="getUser()">{{ 'LOGIN.Login' | translate}}</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

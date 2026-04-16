@@ -52,8 +52,7 @@ export class AppComponent implements OnInit {
    await this.checkTasks();
 
    //this.createUser({email: "123@gmail.com",name:"dylangvt_", password:"1234",age:22});
-   //this.getUser("gayvallet.dylan@gmail.com");
-   //this.login({email:"123@gmail.com",password:"1234"});
+   this.login({email:"123@gmail.com",password:"1234"});
 
    setTimeout(async () => {
      await SplashScreen.hide({
@@ -79,19 +78,12 @@ export class AppComponent implements OnInit {
     })
   }
 
-  private getUser(email: string){
-    this.api.getUserByEmail(email).subscribe(response => {
-      const str = JSON.stringify(response);
-      const result = JSON.parse(str);
-      console.log(result.name);
-    }, error => {
-      console.error(error.error.message);
-    })
-  }
-
   private login(data: {email: string, password: string}) {
     this.api.login(data).subscribe(response => {
-      console.log(response);
+      const str = JSON.stringify(response);
+      const result = JSON.parse(str);
+      localStorage.setItem('token', result.accessToken);
+      console.log(result.accessToken);
     }, error => {
       console.error(error.error.message);
     })

@@ -9,7 +9,7 @@ import {AppComponent} from './app.component';
 import {NgxsmkDatepickerComponent } from 'ngxsmk-datepicker';
 
 // import ngx-translate and the http loader
-import {provideHttpClient, HttpClientModule} from "@angular/common/http";
+import {provideHttpClient, HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import {provideTranslateService, TranslateService} from "@ngx-translate/core";
 import {provideTranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslatePipe, TranslateDirective} from '@ngx-translate/core';
@@ -18,6 +18,7 @@ import {NgxsmkDatepickerModule } from 'ngxsmk-datepicker';
 import {FilterService} from "./home/filter/service/filter-service";
 import {CardsService} from "./cards/cards-service/cards-service";
 import {TagsService} from "./tags/tags-service/tags-service";
+import {AuthInterceptorComponent} from "./auth-interceptor/auth-interceptor.component";
 
 export function initializeSettings(settings : Settings){
   return() => settings.initSettings()
@@ -37,6 +38,11 @@ export function initializeTags(tags : TagsService){
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, TranslatePipe,
     TranslateDirective,NgxsmkDatepickerModule,NgxsmkDatepickerComponent, HttpClientModule],
   providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorComponent,
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeSettings,

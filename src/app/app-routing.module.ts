@@ -41,7 +41,11 @@ const routes: Routes = [
   {
     path: 'first-launch',
     loadChildren: () => import('./first-launch/first-launch.module').then( m => m.FirstLaunchPageModule)
+  },  {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },
+
 ];
 @NgModule({
   imports: [

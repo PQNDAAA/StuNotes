@@ -1,0 +1,40 @@
+ion-card-header{
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+ion-card-content{
+  order: 1;
+}
+
+ion-card-subtitle{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  gap: 6px;
+
+  ion-button{
+    text-transform: none;
+  }
+}
+
+.signupbtn{
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+
+  --background: transparent;
+
+  height: auto;
+  min-height: unset;
+}
+
+.loginBtn{
+  margin-top: 24px;
+  font-size: 12px;
+}

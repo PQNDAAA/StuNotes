@@ -22,7 +22,7 @@ export class Api {
     return this.http.post(`${this.baseUrl}/auth/login`, data);
   }
 
-  getUserByEmail(email: string){
-    return this.http.get(`${this.baseUrl}/users/by-email/${email}`);
+  getUserById(){
+    return this.http.get(`${this.baseUrl}/users/name`);
   }
 }
