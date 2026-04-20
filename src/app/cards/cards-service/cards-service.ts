@@ -190,7 +190,7 @@ export class CardsService {
     ));
 
     await Promise.all(allCards.map(async (card) => {
-      const remindersIds = card.reminder.remindersIds ?? [];
+      const remindersIds = card.reminder?.remindersIds ?? [];
       const activeRemindersIds = remindersIds.filter(ids => idsNotifications.has(ids));
       const reminder = card.reminder;
 

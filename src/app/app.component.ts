@@ -51,8 +51,7 @@ export class AppComponent implements OnInit {
    this.fcm.initPush();
    await this.checkTasks();
 
-   //this.createUser({email: "123@gmail.com",name:"dylangvt_", password:"1234",age:22});
-   this.login({email:"123@gmail.com",password:"1234"});
+   this.createUser({email:"test",name:"test",password:"1234",age:12});
 
    setTimeout(async () => {
      await SplashScreen.hide({
@@ -73,17 +72,6 @@ export class AppComponent implements OnInit {
   private createUser(data: {email: string, name: string, password: string, age: number }){
     this.api.createUser(data).subscribe(response => {
       console.log("Utilisateur crée avec succés: ",response);
-    }, error => {
-      console.error(error.error.message);
-    })
-  }
-
-  private login(data: {email: string, password: string}) {
-    this.api.login(data).subscribe(response => {
-      const str = JSON.stringify(response);
-      const result = JSON.parse(str);
-      localStorage.setItem('token', result.accessToken);
-      console.log(result.accessToken);
     }, error => {
       console.error(error.error.message);
     })

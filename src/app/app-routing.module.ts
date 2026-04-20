@@ -4,15 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./navigation-bar/tabs/tabs.module').then(m => m.TabsPageModule)
-  },
-  {
-    path: 'notes',
-    loadChildren: () => import('./home/notes/notes.module').then(m => m.NotesPageModule)
-  },
-  {
-    path: 'tags',
-    loadChildren: () => import('./tags/tags.module').then( m => m.TagsPageModule)
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'settings',
@@ -41,10 +33,11 @@ const routes: Routes = [
   {
     path: 'first-launch',
     loadChildren: () => import('./first-launch/first-launch.module').then( m => m.FirstLaunchPageModule)
-  },  {
-    path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path:'tabs',
+    loadChildren: () => import('./navigation-bar/tabs/tabs.module').then( m => m.TabsPageModule)
+  }
 
 ];
 @NgModule({

@@ -7,17 +7,21 @@
         </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
+      <form #authForm="ngForm">
       <ion-item lines="none" class="inputElement">
         <ion-icon slot="start" name="mail-outline"></ion-icon>
-        <ion-input type="email" placeholder="Enter your email adress"></ion-input>
+        <ion-input type="email" name="email" placeholder="Enter your email adress" [(ngModel)]="user.email" [required]="true"></ion-input>
       </ion-item>
       <ion-item lines="none" class="inputElement">
         <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
-      <ion-input type="password" placeholder="Enter your password">
+      <ion-input type="password" placeholder="Enter your password" name="password" [(ngModel)]="user.password" [required]="true">
         <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
       </ion-input>
       </ion-item>
-      <ion-button id="validbtn" expand="block" class="loginBtn" (click)="getUser()">{{ 'LOGIN.Login' | translate}}</ion-button>
+      <ion-button id="validbtn"  expand="block" class="loginBtn" (click)="valid(authForm)"
+                  [disabled]="!authForm.valid" [strong]="true">{{ 'LOGIN.Login' | translate}}
+      </ion-button>
+      </form>
     </ion-card-content>
   </ion-card>
 </ion-content>

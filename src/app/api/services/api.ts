@@ -6,7 +6,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class Api {
 
-  private baseUrl = 'http://57.129.40.192:3000';
+  private baseUrl = 'http://51.91.250.24:3000';
 
   constructor(private http: HttpClient) {}
 
