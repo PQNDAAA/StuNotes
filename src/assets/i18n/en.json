@@ -7,8 +7,11 @@
   },
   "LOGIN": {
     "Login": "Login",
-    "NoAccount": "Don't have an account ?",
-    "Signup": "Sign Up"
+    "NoAccount": "Don't have an account ?"
+  },
+  "SIGNUP": {
+    "SignUp": "Sign Up",
+    "HaveAccount": "Do you already have an account ?"
   },
   "HOME": {
     "TITLE": "Home",

@@ -7,8 +7,11 @@
   },
   "LOGIN": {
     "Login": "Se Connecter",
-    "NoAccount": "Vous n'avez pas de compte ?",
-    "Signup": "Inscrivez-vous"
+    "NoAccount": "Vous n'avez pas de compte ?"
+  },
+  "SIGNUP": {
+    "SignUp": "M'inscrire",
+    "HaveAccount": "Avez-vous déjà un compte ?"
   },
   "HOME": {
     "TITLE": "Accueil",

@@ -104,7 +104,7 @@ body.dark {
     --color: var(--ion-text-color);
   }
 
-  ion-tabs ion-tab-bar{
+  ion-tabs ion-tab-bar {
     --background: var(--ion-background-color);
   }
 
@@ -113,7 +113,7 @@ body.dark {
     --color: var(--ion-text-color);
   }
 
-  .element-item{
+  .element-item {
     --background: transparent;
   }
 
@@ -150,23 +150,27 @@ body.dark {
     background-color: var(--ion-background-color);
     color: #ffffff;
   }
-  ion-card-title{
+
+  ion-card-title {
     color: var(--ion-text-color);
   }
+
   .dark-alert {
     --background: var(--ion-background-color);
     --color: #ffffff;
   }
-  .elements-content{
+
+  .elements-content {
     --background: #1e1e1e;
   }
-  ion-tabs{
+
+  ion-tabs {
     background-color: #1e1e1e;
   }
 }
 
 body.dark .settings-theme-content,
-body.dark .background-theme{
+body.dark .background-theme {
   --background: #1e1e1e;
 }
 
@@ -189,39 +193,41 @@ ion-content {
 }
 
 /* Theme Header Settings */
-.settings-theme-header{
-  ion-title{
+.settings-theme-header {
+  ion-title {
     font-size: 24px;
     transition: font-size 0.3s ease;
   }
+
   ion-title.condensate {
     font-size: 20px;
     font-weight: 600;
     left: 50%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
   }
 }
+
 /* Theme du contenu Settings */
-.settings-theme-content{
+.settings-theme-content {
   --background: #F7F6F3;
 
-  ion-list{
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  ion-list {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 4%;
     margin: 15px;
     padding: 20px;
   }
 
-  h3{
+  h3 {
     font-size: 16px;
     font-weight: 600;
   }
 }
 
 /* Theme des textes ERROR */
-.errorText{
+.errorText {
   color: var(--ion-color-danger);
   font-size: 14px;
   font-weight: 500;
@@ -229,7 +235,7 @@ ion-content {
 }
 
 /* Theme des textes pour savoir l'état de l'action faite */
-.StateText{
+.StateText {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -241,7 +247,7 @@ ion-content {
 }
 
 /* Theme BACKGROUND */
-.background-theme{
+.background-theme {
   --background: #F7F6F3;
 }
 
@@ -253,7 +259,7 @@ ion-content {
   padding: 16px;
   text-align: center;
 
-  ion-label{
+  ion-label {
     width: 80%;
     font-size: 16px;
     color: rgba(28, 28, 28, 0.55);
@@ -261,42 +267,42 @@ ion-content {
 }
 
 ion-datetime-button::part(native) {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   background-color: #F7F6F3;
   color: #000000;
 }
 
-ion-item-option{
+ion-item-option {
   border-radius: 8%;
   margin-top: auto;
   margin-bottom: auto;
 }
 
-ion-fab-button{
+ion-fab-button {
   --background: linear-gradient(135deg, #ff8228, #ffb347);
   --background-activated: linear-gradient(135deg, #e6731f, #ff9a3d);
 }
 
 //FORMS
 
-#cancelbtn{
+#cancelbtn {
   --background: white;
-  --color:black;
+  --color: black;
   --background-activated: #e6e6e6;
 }
 
-#validbtn{
+#validbtn {
   --background: #ff8228;
   --color: white;
   --background-activated: #e6731f;
 }
 
-#validbtn, #cancelbtn{
+#validbtn, #cancelbtn {
   width: 100%;
   padding-bottom: 2%;
 }
 
-#formbtn{
+#formbtn {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -307,11 +313,60 @@ ion-datetime::part(wheel-item active) {
   color: #faa66c;
 }
 
-.element-list{
+.element-list {
   padding: 0;
   background: transparent;
 }
 
-.element-item{
+.element-item {
   --background: transparent;
 }
+
+//AUTH CONTENT
+
+.auth-content {
+  ion-card-header {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+
+    ion-card-subtitle {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: none;
+      gap: 6px;
+
+      ion-button {
+        text-transform: none;
+      }
+    }
+  }
+
+  ion-card-content {
+    order: 1;
+
+
+  }
+}
+
+.changeMethodBtn {
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+
+  --background: transparent;
+
+  height: auto;
+  min-height: unset;
+}
+
+.validBtn {
+  margin-top: 24px;
+  font-size: 12px;
+}
+//-----------------------------------------------------------------------------

@@ -37,7 +37,11 @@ const routes: Routes = [
   {
     path:'tabs',
     loadChildren: () => import('./navigation-bar/tabs/tabs.module').then( m => m.TabsPageModule)
+  },  {
+    path: 'signup',
+    loadChildren: () => import('./auth/signup/signup.module').then( m => m.SignupPageModule)
   }
+
 
 ];
 @NgModule({
