@@ -6,12 +6,19 @@
     "DeleteButton": "Delete"
   },
   "LOGIN": {
-    "Login": "Login",
+    "Login": "Log in",
     "NoAccount": "Don't have an account ?"
   },
   "SIGNUP": {
-    "SignUp": "Sign Up",
-    "HaveAccount": "Do you already have an account ?"
+    "CreateAnAccountTitle": "Create an account",
+    "SignUpBtn": "Sign up",
+    "HaveAccount": "Already have an account ?",
+    "Password": "Password",
+    "Username": "Username",
+    "DateBirthday": "Date of birthday",
+    "UsernamePH": "Enter your username",
+    "EmailPH": "Enter your email address",
+    "PasswordPH": "Enter your password"
   },
   "HOME": {
     "TITLE": "Home",

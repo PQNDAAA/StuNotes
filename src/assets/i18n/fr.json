@@ -6,12 +6,19 @@
     "DeleteButton": "Supprimer"
   },
   "LOGIN": {
-    "Login": "Se Connecter",
-    "NoAccount": "Vous n'avez pas de compte ?"
+    "Login": "Se connecter",
+    "NoAccount": "Pas de compte ?"
   },
   "SIGNUP": {
-    "SignUp": "M'inscrire",
-    "HaveAccount": "Avez-vous déjà un compte ?"
+    "CreateAnAccountTitle": "Créer un compte",
+    "SignUpBtn": "S'inscrire",
+    "HaveAccount": "Déjà inscrit ?",
+    "Password": "Mot de passe",
+    "Username": "Nom d'utilisateur",
+    "DateBirthday": "Date de naissance",
+    "UsernamePH": "Entrez votre nom d'utilisateur",
+    "EmailPH": "Entrez votre adresse email",
+    "PasswordPH": "Entrez votre mot de passe"
   },
   "HOME": {
     "TITLE": "Accueil",

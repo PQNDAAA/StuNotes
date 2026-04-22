@@ -121,6 +121,10 @@ body.dark {
     --color: var(--ion-text-color);
   }
 
+  .auth-container {
+    --background: #1e1e1e;
+  }
+
   ion-label {
     color: #ffffff;
   }
@@ -326,30 +330,9 @@ ion-datetime::part(wheel-item active) {
 
 .auth-content {
   ion-card-header {
-    display: flex;
-    text-align: center;
-    flex-direction: column;
 
     ion-card-subtitle {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      font-weight: 500;
-      text-transform: none;
-      gap: 6px;
-
-      ion-button {
-        text-transform: none;
-      }
     }
-  }
-
-  ion-card-content {
-    order: 1;
-
-
   }
 }
 
@@ -369,4 +352,171 @@ ion-datetime::part(wheel-item active) {
   margin-top: 24px;
   font-size: 12px;
 }
+
+// 1. FOND DE PAGE
+.auth-container {
+  &::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    right: -15%;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(255, 107, 26, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glow-pulse 6s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: fixed;
+    bottom: -25%;
+    left: -15%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 209, 102, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    animation: glow-pulse 8s ease-in-out infinite reverse;
+    z-index: 0;
+  }
+
+  // 2. CARD
+  .auth-content {
+    position: relative;
+    z-index: 1;
+    margin: 10vh auto auto;
+    width: min(500px, 92%);
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+
+    animation: slide-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+    transform: translateY(28px);
+
+    &::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, #ff8228, #ffd166, transparent);
+      border-radius: 24px 24px 0 0;
+    }
+
+    ion-card-header {
+      display: flex;
+      text-align: center;
+      flex-direction: column;
+      padding: 32px 28px 8px;
+
+      ion-card-title {
+        font-family: 'Syne', sans-serif !important;
+        font-weight: 800;
+        font-size: 32px;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+        margin-bottom: 10px;
+      }
+
+      ion-card-subtitle {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-transform: none;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 14px;
+        gap: 6px;
+      }
+    }
+
+    // 4. CONTENT
+    ion-card-content {
+      padding: 16px 28px 32px;
+      order: 1;
+    }
+  }
+
+  .changeMethodBtn {
+    --color: #ff8228;
+    font-size: 14px;
+    text-transform: none;
+  }
+
+  // 5. INPUTS
+  .inputElement {
+    --background: #f9f9f9;
+    --color: #1a1a1a;
+    --highlight-color-focused: #ff8228;
+
+    border-radius: 12px;
+    border: 1.5px solid #e5e5e5;
+    margin-bottom: 14px;
+    transition: all 0.2s ease;
+
+    &:nth-child(1) {
+      animation: fade-in 0.4s 0.15s ease forwards;
+      opacity: 0;
+    }
+
+    &:nth-child(2) {
+      animation: fade-in 0.4s 0.23s ease forwards;
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      animation: fade-in 0.4s 0.31s ease forwards;
+      opacity: 0;
+    }
+
+    &:nth-child(4) {
+      animation: fade-in 0.4s 0.39s ease forwards;
+      opacity: 0;
+    }
+
+    ion-icon[slot="start"] {
+      color: #999;
+      font-size: 20px;
+      margin-inline: 14px;
+    }
+
+    ion-input {
+      --color: #1a1a1a;
+      --placeholder-color: #aaa;
+
+      font-size: 15px;
+
+      &::part(label) {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #888;
+      }
+    }
+  }
+
+  // 7. ANIMATIONS
+  @keyframes slide-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.6;
+    }
+  }
+}
+
 //-----------------------------------------------------------------------------

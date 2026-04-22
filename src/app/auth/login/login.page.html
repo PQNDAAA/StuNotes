@@ -1,20 +1,20 @@
-<ion-content>
+<ion-content class="auth-container">
   <ion-card class="auth-content">
     <ion-card-header>
       <ion-card-title>{{ 'LOGIN.Login' | translate}}</ion-card-title>
         <ion-card-subtitle>{{'LOGIN.NoAccount' | translate}}
-          <ion-button class="changeMethodBtn" fill="clear" href="/signup">{{'SIGNUP.SignUp' | translate}}</ion-button>
+          <ion-button class="changeMethodBtn" fill="clear" href="/signup">{{'SIGNUP.CreateAnAccountTitle' | translate}} →</ion-button>
         </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <form #loginForm="ngForm">
       <ion-item lines="none" class="inputElement">
         <ion-icon slot="start" name="mail-outline"></ion-icon>
-        <ion-input type="email" name="email" placeholder="Enter your email adress" [(ngModel)]="user.email" [required]="true"></ion-input>
+        <ion-input type="email" labelPlacement="stacked" label="Email" name="email" placeholder="{{'SIGNUP.EmailPH' | translate}}" [(ngModel)]="user.email" [required]="true"></ion-input>
       </ion-item>
       <ion-item lines="none" class="inputElement">
         <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
-      <ion-input type="password" placeholder="Enter your password" name="password" [(ngModel)]="user.password" [required]="true">
+      <ion-input type="password" labelPlacement="stacked" label="{{'SIGNUP.Password' | translate}}" placeholder="{{'SIGNUP.PasswordPH' | translate}}" name="password" [(ngModel)]="user.password" [required]="true">
         <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
       </ion-input>
       </ion-item>

@@ -1,31 +1,37 @@
-<ion-content xmlns="http://www.w3.org/1999/html">
+<ion-content class="auth-container">
   <ion-card class="auth-content">
     <ion-card-header>
-      <ion-card-title>{{'SIGNUP.SignUp' | translate}}</ion-card-title>
+      <ion-card-title>{{'SIGNUP.CreateAnAccountTitle' | translate}}</ion-card-title>
       <ion-card-subtitle>{{'SIGNUP.HaveAccount' | translate}}
-      <ion-button class="changeMethodBtn" fill="clear" href="/login">{{'LOGIN.Login' | translate}}</ion-button>
+      <ion-button class="changeMethodBtn" fill="clear" href="/login">{{'LOGIN.Login' | translate}} →</ion-button>
       </ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       <form #signupForm = "ngForm">
         <ion-item lines="none" class="inputElement">
           <ion-icon slot="start" name="mail-outline"></ion-icon>
-          <ion-input type="email" name="email" placeholder="Enter your email adress" [required]="true"></ion-input>
+          <ion-input type="email" labelPlacement="stacked" label="Email" name="email" placeholder="{{'SIGNUP.EmailPH' | translate}}"
+                     [required]="true"></ion-input>
         </ion-item>
         <ion-item lines="none" class="inputElement">
-          <ion-input type="text" name="name" placeholder="Enter your name" [required]="true"></ion-input>
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-input type="text" labelPlacement="stacked" label="{{'SIGNUP.Username' | translate}}" name="username"
+                     placeholder="{{'SIGNUP.UsernamePH' | translate}}" [required]="true"></ion-input>
         </ion-item>
         <ion-item lines="none" class="inputElement">
           <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
-          <ion-input type="password" placeholder="Enter your password" name="password" [required]="true">
+          <ion-input type="password" labelPlacement="stacked" label="{{'SIGNUP.Password' | translate}}"
+                     placeholder="{{'SIGNUP.PasswordPH' | translate}}" name="password" [required]="true">
             <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
           </ion-input>
         </ion-item>
-        <ion-item lines="none">
-          <ion-input type="date">Date de naissance</ion-input>
+        <ion-item lines="none" class="inputElement">
+          <ion-icon slot="start" name="gift-outline"></ion-icon>
+          <ion-input type="date" labelPlacement="stacked" label="{{'SIGNUP.DateBirthday' | translate}}"
+                     placeholder="Enter your date of birthday"></ion-input>
         </ion-item>
       <ion-button id="validbtn"  expand="block" class="validBtn" [disabled]="!signupForm.valid"
-                   [strong]="true">{{ 'SIGNUP.SignUp' | translate}}
+                   [strong]="true">{{ 'SIGNUP.SignUpBtn' | translate}}
       </ion-button>
       </form>
     </ion-card-content>
