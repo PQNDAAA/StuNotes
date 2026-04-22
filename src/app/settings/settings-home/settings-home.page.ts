@@ -6,6 +6,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {LocalNotificationService} from "../../notifications/service/local-notification-service";
 import {CardsService} from "../../cards/cards-service/cards-service";
 import {Cardstatus} from "../../cards/cards-enum/cardstatus";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings-home',
@@ -21,7 +22,8 @@ export class SettingsHomePage implements OnInit {
   isCondensate = false;
 
   constructor(private settingsService: Settings, private translate: TranslateService,
-              private localNotification: LocalNotificationService, private cards: CardsService) {
+              private localNotification: LocalNotificationService, private cards: CardsService,
+              private router: Router) {
     this.settings$ = this.settingsService.settingsHome$;
   }
 
@@ -77,6 +79,11 @@ export class SettingsHomePage implements OnInit {
       case 'urgentDeadlineAlerts':
         break;
     }
+  }
+
+  async logOut(){
+    localStorage.removeItem('token');
+    await this.router.navigate(['/login']);
   }
 
   async clearAllScheduledTasks(){await this.localNotification.clearAllScheduledTasks();}

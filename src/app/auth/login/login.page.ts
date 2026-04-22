@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Api} from "../../api/services/api";
 import {NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
+import {LoginInterface} from "./interface/login-interface";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import {Router} from "@angular/router";
 })
 export class LoginPage implements OnInit {
 
-  user = {
+  currentUser: LoginInterface = {
     email: '',
     password: '',
   }
@@ -23,7 +24,7 @@ export class LoginPage implements OnInit {
 
   valid(form: NgForm){
     if(form.valid){
-      this.api.login(this.user).subscribe(response=> {
+      this.api.login(this.currentUser).subscribe(response=> {
         const str = JSON.stringify(response);
         const result = JSON.parse(str);
         localStorage.setItem('token', result.accessToken);

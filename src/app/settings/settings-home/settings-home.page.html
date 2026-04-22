@@ -56,4 +56,10 @@
       </ion-select>
     </ion-item>
   </ion-list>
+  <ion-list lines="none">
+    <ion-item [button]="true" [detail]="false" (click)="logOut()">
+      <ion-icon slot="end" name="log-out-outline"></ion-icon>
+      <ion-label>{{'SETTINGS.Logout' | translate}}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -45,7 +45,8 @@
     "NoNotesDeleted":"Pas de tâches à supprimer",
     "NoSubjectsDeleted":"Pas de matières à supprimer",
     "ManualReminders": "Rappels manuels et récurrents",
-    "TaskReminders": "Autoriser les notifications des tâches"
+    "TaskReminders": "Autoriser les notifications des tâches",
+    "Logout": "Se déconnecter"
   },
   "STATUS": {
     "Ongoing": "En Cours",

@@ -45,7 +45,8 @@
     "NoNotesDeleted":"No tasks deleted",
     "NoSubjectsDeleted":"No Subjects deleted",
     "ManualReminders": "Manual & Recurring reminders",
-    "TaskReminders": "Enable task reminders"
+    "TaskReminders": "Enable task reminders",
+    "Logout": "Log out"
   },
   "STATUS": {
     "Ongoing": "Ongoing",
