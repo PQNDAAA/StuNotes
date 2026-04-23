@@ -57,7 +57,7 @@ export class NotesPage implements OnInit {
     this.subjects$ = this.subjectsService.tags$;
     this.filter$ = this.filterService.filters$;
 
-    this.notificationService.notificationActionPerformed$.subscribe(id => {this.openTaskLocalNotificationPopup(id);});
+   // this.notificationService.notificationActionPerformed$.subscribe(id => {this.openTaskLocalNotificationPopup(id);});
 
     this.cardsByFilters$ = combineLatest([
       this.cards$,

@@ -328,31 +328,6 @@ ion-datetime::part(wheel-item active) {
 
 //AUTH CONTENT
 
-.auth-content {
-  ion-card-header {
-
-    ion-card-subtitle {
-    }
-  }
-}
-
-.changeMethodBtn {
-  --padding-start: 0;
-  --padding-end: 0;
-  --padding-top: 0;
-  --padding-bottom: 0;
-
-  --background: transparent;
-
-  height: auto;
-  min-height: unset;
-}
-
-.validBtn {
-  margin-top: 24px;
-  font-size: 12px;
-}
-
 // 1. FOND DE PAGE
 .auth-container {
   &::before {
@@ -440,6 +415,28 @@ ion-datetime::part(wheel-item active) {
     --color: #ff8228;
     font-size: 14px;
     text-transform: none;
+
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+
+    --background: transparent;
+
+    height: auto;
+    min-height: unset;
+  }
+
+  .validBtn {
+    margin-top: 24px;
+    --border-radius: 14px;
+    --padding-top: 18px;
+    --padding-bottom: 18px;
+
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
   }
 
   // 5. INPUTS

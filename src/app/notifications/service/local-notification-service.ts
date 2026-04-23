@@ -28,7 +28,6 @@ export class LocalNotificationService {
               private recurringRemindersService: RecurringReminders) {
     this.settingsService.settingsHome$.subscribe(data => {
       this.settings = data;
-      console.log(data);
     })
   }
 

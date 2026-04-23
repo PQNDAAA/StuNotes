@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./auth/landing/landing.module').then(m => m.LandingPageModule)
   },
   {
     path: 'settings',
@@ -43,8 +43,8 @@ const routes: Routes = [
     loadChildren: () => import('./auth/signup/signup.module').then( m => m.SignupPageModule)
   },
   {
-    path: 'landing',
-    loadChildren: () => import('./auth/landing/landing.module').then(m => m.LandingPageModule)
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
   }
 
 

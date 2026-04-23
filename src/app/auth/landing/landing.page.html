@@ -1,13 +1,32 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>landing</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="wrapper">
+  <ion-card class="landing-wrapper">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">landing</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <!-- Blobs décoratifs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="hero">
+      <div class="logo-wrap">
+      <img src="assets/icon/icon-only.png" alt="app-logo" class="app-logo">
+      </div>
+      <ion-label class="app-name">Stu'Notes</ion-label>
+      <ion-label class="app-tagline">Tes notes, tes matières,<br>tout en un seul endroit</ion-label>
+    </div>
+
+    <ion-list class="features-list" lines="none">
+      <ion-label class="feature">📝 Notes</ion-label>
+      <ion-label class="feature">📚 Matières</ion-label>
+      <ion-label class="feature">👥 Groupes</ion-label>
+    </ion-list>
+
+    <ion-list class="cta-list" lines="none">
+      <ion-button expand="block" class="signup-button" [routerLink]="['/signup']">Créer un compte</ion-button>
+      <ion-button expand="block" fill="outline" class="login-button" [routerLink]="['/login']">Se connecter</ion-button>
+    </ion-list>
+
+
+  </ion-card>
+  </div>
 </ion-content>

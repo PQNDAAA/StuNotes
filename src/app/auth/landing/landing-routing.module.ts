@@ -5,7 +5,7 @@ import { LandingPage } from './landing.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'landing',
     component: LandingPage
   }
 ];

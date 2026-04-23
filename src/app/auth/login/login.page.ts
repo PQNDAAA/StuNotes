@@ -3,6 +3,7 @@ import {Api} from "../../api/services/api";
 import {NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
 import {LoginInterface} from "./interface/login-interface";
+import {AppComponent} from "../../app.component";
 
 @Component({
   selector: 'app-login',
@@ -28,13 +29,16 @@ export class LoginPage implements OnInit {
         const str = JSON.stringify(response);
         const result = JSON.parse(str);
         localStorage.setItem('token', result.accessToken);
-        console.log(result.accessToken);
 
         this.router.navigate(['/tabs/notes']);
       }, error => {
         console.error(error.error.message);
       });
     }
+  }
+
+  async initApp(){
+
   }
 
   getUser(){
