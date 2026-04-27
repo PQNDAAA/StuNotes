@@ -8,7 +8,7 @@ import {LoginInterface} from "../../auth/login/interface/login-interface";
 })
 export class Api {
 
-  private baseUrl = 'http://51.91.250.24:3000';
+  private baseUrl = 'https://api.stunotes.fr';
 
   constructor(private http: HttpClient) {}
 
