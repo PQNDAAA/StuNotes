@@ -14,7 +14,8 @@ import {Api} from "../../api/services/api";
 })
 export class TabsPage {
 
-  constructor(private mc : ModalController, private router : Router, private cards: CardsService) {}
+  constructor(private mc : ModalController, private router : Router, private cards: CardsService,
+              private api: Api) {}
 
   async showAllNotes(){
     console.log(await this.cards.getCards());
@@ -27,6 +28,15 @@ export class TabsPage {
         notification.extra.customReminder
     )
     console.log(notifications, idsNotifications);
+
+    this.api.createSubject("test").subscribe(
+      result => {
+        console.log(result);
+      },
+      error => {
+        console.log(error.error.message);
+      }
+    );
   }
 
   hasOpenSettings():boolean{

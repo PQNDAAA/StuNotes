@@ -27,4 +27,8 @@ export class Api {
   getUserById(){
     return this.http.get(`${this.baseUrl}/users/username`);
   }
+
+  createSubject(name: string){
+    return this.http.post(`${this.baseUrl}/users/createSubject`, { name });
+  }
 }
