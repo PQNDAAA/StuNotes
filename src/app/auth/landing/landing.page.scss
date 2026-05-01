@@ -65,6 +65,7 @@ ion-content{
   animation: slide-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   opacity: 0;
   transform: translateY(30px);
+  width: 100%;
 
   --background: transparent;
 }
@@ -84,7 +85,7 @@ ion-content{
   color: var(--ion-text-color);
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: 42px;
+  font-size: clamp(32px, 10vw, 42px);
   margin: 0 0 14px;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -95,7 +96,7 @@ ion-content{
   font-size: 17px;
   color: #888;
   line-height: 1.5;
-  max-width: 260px;
+  max-width: min(260px, 90%);
   margin: 0;
 
   .dot{
@@ -112,6 +113,7 @@ ion-content{
   z-index: 1;
   margin: 40px 0;
   width: 100%;
+  flex-wrap: wrap;
 
   animation: slide-up 0.7s 0.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   opacity: 0;
