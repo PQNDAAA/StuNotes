@@ -1,0 +1,47 @@
+/* Bouton Apple */
+ion-button[color="dark"] {
+  --background: #111111;
+  --background-hover: #2a2a2a;
+  --background-activated: #2a2a2a;
+  --color: #ffffff;
+}
+
+/* Bouton Google */
+.google-btn{
+  --background: #1a73e8;
+  --background-hover: #1765cc;
+  --background-activated: #1558b0;
+  --color: #ffffff;
+}
+
+.auth-category ion-button{
+  --border-radius: 10px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --box-shadow: none;
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.auth-category::part(native) {
+  display: flex;
+  gap: 10px;
+  padding: 0;
+}
+
+.auth-category {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-end: 0;
+}
+
+ion-button ion-icon {
+  font-size: 18px;
+}
+

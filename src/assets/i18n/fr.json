@@ -7,7 +7,9 @@
   },
   "LOGIN": {
     "Login": "Se connecter",
-    "NoAccount": "Pas de compte ?"
+    "NoAccount": "Pas de compte ?",
+    "Apple": "Continuer avec Apple",
+    "Google": "Continuer avec Google"
   },
   "SIGNUP": {
     "CreateAnAccountTitle": "Créer un compte",

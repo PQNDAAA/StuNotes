@@ -4,6 +4,7 @@ import {NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
 import {LoginInterface} from "./interface/login-interface";
 import {AppComponent} from "../../app.component";
+import {Platform} from "@ionic/angular";
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginPage implements OnInit {
     password: '',
   }
 
-  constructor(private api: Api, private router:Router) { }
+  isIos = false;
+
+  constructor(private api: Api, private router:Router, private platform:Platform) {
+    this.isIos = this.platform.is('ios');
+  }
 
   ngOnInit() {
   }
