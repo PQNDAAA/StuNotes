@@ -7,6 +7,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "./settings/settings-interface/isettings-home";
 import {App} from "./app";
 import {SocialLogin} from "@capgo/capacitor-social-login";
+import {Capacitor} from "@capacitor/core";
 
 @Component({
   selector: 'app-root',
@@ -58,7 +59,7 @@ export class AppComponent implements OnInit {
        webClientId: '257842785862-3uq9f88k9fhds7tl8d07otkqu9av930p.apps.googleusercontent.com',
        iOSClientId: '257842785862-lrur566dp7g9di4s97u9jbj4jmfirejg.apps.googleusercontent.com',
      },
-     apple: {}
+     apple: Capacitor.getPlatform() === 'ios' ? {} : undefined
    });
    await this.appService.checkToken();
 

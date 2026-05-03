@@ -20,10 +20,9 @@ export class Auth {
       });
 
       if(result.provider === 'google'){
-        const googleResult = result.result as any;
+        const req = result.result as any;
 
-        console.log("Utilisateur Android: ", googleResult.name, googleResult.email);
-
+        console.log("Utilisateur Android: ", req.profile.name,req.profile.email);
       }
     } catch(err) {
       console.log(err);
