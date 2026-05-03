@@ -30,6 +30,15 @@ const config: CapacitorConfig = {
       smallIcon: "ic_stat_ic_notification",
       iconColor: "#488AFF",
       sound: "beep.wav"
+    },
+    SocialLogin: {
+      providers: {
+        google: true,      // true = enabled (bundled), false = disabled (not bundled)
+        facebook: false,   // Use false to reduce app size
+        apple: true,      // Apple uses system APIs, no external deps
+        twitter: false   // false = disabled (not bundled)
+      },
+      logLevel: 1
     }
   },
 };

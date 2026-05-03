@@ -6,6 +6,7 @@ import {LanguageService} from "./language/language-service/language-service";
 import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "./settings/settings-interface/isettings-home";
 import {App} from "./app";
+import {SocialLogin} from "@capgo/capacitor-social-login";
 
 @Component({
   selector: 'app-root',
@@ -52,6 +53,13 @@ export class AppComponent implements OnInit {
     //On attend que la plateforme (Android/iOS) soit prête
    await this.platform.ready();
    await this.languageService.initLanguages();
+   await SocialLogin.initialize({
+     google: {
+       webClientId: '257842785862-3uq9f88k9fhds7tl8d07otkqu9av930p.apps.googleusercontent.com',
+       iOSClientId: '257842785862-lrur566dp7g9di4s97u9jbj4jmfirejg.apps.googleusercontent.com',
+     },
+     apple: {}
+   });
    await this.appService.checkToken();
 
    setTimeout(async () => {

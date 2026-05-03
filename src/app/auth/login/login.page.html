@@ -23,11 +23,11 @@
       </ion-button>
 
         <ion-item lines="none" class="auth-category">
-          <ion-button color="dark" *ngIf="isIos">
+          <ion-button color="dark" *ngIf="isIos" (click)="loginWithApple()">
             <ion-icon slot="start" name="logo-apple"></ion-icon>
             {{ 'LOGIN.Apple' |translate }}
           </ion-button>
-          <ion-button class="google-btn">
+          <ion-button class="google-btn" (click)="loginWithGoogle()">
             <ion-icon slot="start" name="logo-google"></ion-icon>
             {{ 'LOGIN.Google' |translate }}
           </ion-button>
