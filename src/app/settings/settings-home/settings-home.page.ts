@@ -83,6 +83,7 @@ export class SettingsHomePage implements OnInit {
 
   async logOut(){
     localStorage.removeItem('token');
+    await this.localNotification.clearAllScheduledTasks();
     await this.router.navigate(['/login']);
   }
 

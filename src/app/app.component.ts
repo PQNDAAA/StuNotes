@@ -2,17 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {SplashScreen} from "@capacitor/splash-screen";
 import {Settings} from "./settings/settings-service/settings";
 import {Platform} from "@ionic/angular";
-import {Fcm} from "./notifications/fcm/fcm";
-import {LocalNotificationService} from "./notifications/service/local-notification-service";
-import {CardsService} from "./cards/cards-service/cards-service";
 import {LanguageService} from "./language/language-service/language-service";
 import {TranslateService} from "@ngx-translate/core";
 import {ISettingsHome} from "./settings/settings-interface/isettings-home";
-import {Api} from "./api/services/api";
-import {SignupInterface} from "./auth/signup/interface/signup-interface";
-import {Router} from "@angular/router";
-import {firstValueFrom} from "rxjs";
-import {FilterService} from "./home/filter/service/filter-service";
 import {App} from "./app";
 
 @Component({

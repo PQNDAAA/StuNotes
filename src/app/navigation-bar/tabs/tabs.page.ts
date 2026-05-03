@@ -29,7 +29,7 @@ export class TabsPage {
     )
     console.log(notifications, idsNotifications);
 
-    this.api.createSubject("test").subscribe(
+    this.api.createSubject("Philosophie").subscribe(
       result => {
         console.log(result);
       },
