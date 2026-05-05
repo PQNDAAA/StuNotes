@@ -8,6 +8,7 @@ import {ISettingsHome} from "./settings/settings-interface/isettings-home";
 import {App} from "./app";
 import {SocialLogin} from "@capgo/capacitor-social-login";
 import {Capacitor} from "@capacitor/core";
+import {Auth} from "./auth/auth";
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,9 @@ export class AppComponent implements OnInit {
   settings!: ISettingsHome;
 
   constructor(private settingsService: Settings, private platform: Platform, private translate: TranslateService,
-              private languageService: LanguageService, private appService: App) {
+              private languageService: LanguageService, private appService: App, private authService: Auth) {
 
-    this.translate.addLangs(['fr','en']);
+    this.translate.addLangs(['fr', 'en']);
     this.checkApp();
   }
 
@@ -33,40 +34,37 @@ export class AppComponent implements OnInit {
       document.body.classList.toggle('dark', data.darkMode);
       this.settings = data;
     });
-
-    if(this.settings.firstLaunch){
-      //this.router.navigateByUrl('/first-launch', {replaceUrl:true});
-      //this.settings.firstLaunch = false;
-      //this.settingsService.changeSettingsValue(this.settings);
-    }
   }
 
-  checkApp(){
+  checkApp() {
     this.platform.ready().then(() => {
       this.platform.resume.subscribe(async () => {
+        if(this.authService.loginInProgress) return;
         await this.appService.checkToken();
         console.log("Reload de l'app fait.");
       });
     });
   }
 
- async initMainApp() {
+  async initMainApp() {
     //On attend que la plateforme (Android/iOS) soit prête
-   await this.platform.ready();
-   await this.languageService.initLanguages();
-   await SocialLogin.initialize({
-     google: {
-       webClientId: '257842785862-3uq9f88k9fhds7tl8d07otkqu9av930p.apps.googleusercontent.com',
-       iOSClientId: '257842785862-lrur566dp7g9di4s97u9jbj4jmfirejg.apps.googleusercontent.com',
-     },
-     apple: Capacitor.getPlatform() === 'ios' ? {} : undefined
-   });
-   await this.appService.checkToken();
+    await this.platform.ready();
+    await this.languageService.initLanguages();
 
-   setTimeout(async () => {
-     await SplashScreen.hide({
-       fadeOutDuration: 500 // Effet de fondu progressif très propre
-     });
-   }, 500);
+    await SocialLogin.initialize({
+      google: {
+        webClientId: '257842785862-3uq9f88k9fhds7tl8d07otkqu9av930p.apps.googleusercontent.com',
+        iOSClientId: '257842785862-lrur566dp7g9di4s97u9jbj4jmfirejg.apps.googleusercontent.com',
+      },
+
+      apple: Capacitor.getPlatform() === 'ios' ? {} : undefined
+    });
+    await this.appService.checkToken();
+
+    setTimeout(async () => {
+      await SplashScreen.hide({
+        fadeOutDuration: 500 // Effet de fondu progressif très propre
+      });
+    }, 500);
   }
 }

@@ -31,4 +31,11 @@ export class Api {
   createSubject(name: string){
     return this.http.post(`${this.baseUrl}/users/createSubject`, { name });
   }
+
+  appleSignup(identityToken: string, email: string, name: string){
+    return this.http.post(`${this.baseUrl}/auth/apple/signup`, { identityToken, email, name });
+}
+  googleSignup(idToken: any){
+    return this.http.post(`${this.baseUrl}/auth/google/signup`, { idToken });
+  }
 }
