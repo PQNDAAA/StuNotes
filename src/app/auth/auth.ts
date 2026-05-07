@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {SocialLogin} from "@capgo/capacitor-social-login";
 import {Api} from "../api/services/api";
 import {Router} from "@angular/router";
@@ -14,7 +14,7 @@ export class Auth {
   constructor(private api: Api, private router: Router, private loadingCtrl: LoadingController,) {
   }
 
-  async loginWithGoogle(){
+  async loginWithGoogle() {
     const loading = await this.loadingCtrl.create({
       spinner: 'crescent',
     });
@@ -25,25 +25,27 @@ export class Auth {
 
       const result = await SocialLogin.login({
         provider: 'google',
-        options: {scopes: ['profile', 'email']
+        options: {
+          scopes: ['profile', 'email']
         }
       });
 
-      if(result.provider === 'google'){
+      if (result.provider === 'google') {
         const req = result.result as any;
-        const idToken : string = req.idToken;
+        const idToken: string = req.idToken;
 
-        console.log("Utilisateur Android: ", req.profile.name,req.profile.email);
+        console.log("Utilisateur Android: ", req.profile.name, req.profile.email);
 
-        this.api.googleSignup(idToken).subscribe(async response=>{
+        this.api.googleSignup(idToken).subscribe(async response => {
           const str = JSON.stringify(response);
           const result = JSON.parse(str);
-          console.log(result.accessToken);
+          localStorage.setItem('token', result.accessToken);
+
           await loading.dismiss();
           await this.router.navigate(['/tabs/notes']);
         });
       }
-    } catch(err) {
+    } catch (err) {
       await loading.dismiss();
       console.log(err);
     } finally {
@@ -67,10 +69,26 @@ export class Auth {
 
       if (result.provider === 'apple') {
         const req = result.result;
+        const idToken = req.idToken;
+        const email = req.profile.email
+        const user = req.profile.user;
+
+        if (!idToken || !email || !user) {
+          await loading.dismiss();
+          return;
+        }
+
         console.log("Utilisateur Apple: ", req);
 
-        await loading.dismiss();
-        await this.router.navigate(['/tabs/notes']);
+        this.api.appleSignup(idToken, email, user).subscribe(async response => {
+          const str = JSON.stringify(response);
+          const result = JSON.parse(str);
+          localStorage.setItem('token', result.accessToken);
+          console.log("Token: ", result.accessToken);
+
+          await loading.dismiss();
+          await this.router.navigate(['/tabs/notes']);
+        });
       }
     } catch (err) {
       await loading.dismiss();
