@@ -45,7 +45,11 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
+  },  {
+    path: 'username-form',
+    loadChildren: () => import('./auth/username-form/username-form.module').then( m => m.UsernameFormPageModule)
   }
+
 
 
 ];

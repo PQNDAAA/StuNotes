@@ -10,7 +10,13 @@
       <form #loginForm="ngForm">
       <ion-item lines="none" class="inputElement">
         <ion-icon slot="start" name="mail-outline"></ion-icon>
-        <ion-input type="email" labelPlacement="stacked" label="Email" name="email" placeholder="{{'SIGNUP.EmailPH' | translate}}" [(ngModel)]="currentUser.email" [required]="true"></ion-input>
+        <div class="warning-input-container">
+        <ion-input type="email" labelPlacement="stacked" label="Email" name="email" placeholder="{{'SIGNUP.EmailPH' | translate}}"
+                   [(ngModel)]="currentUser.email" [required]="true"></ion-input>
+        <ion-label *ngIf="!isValidEmail(currentUser.email) && !(currentUser.email.length === 0)">
+          {{ 'SIGNUP.Email-WarningMessage' | translate }}
+        </ion-label>
+        </div>
       </ion-item>
       <ion-item lines="none" class="inputElement">
         <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
@@ -19,7 +25,7 @@
       </ion-input>
       </ion-item>
       <ion-button id="validbtn"  expand="block" class="validBtn" (click)="valid(loginForm)"
-                  [disabled]="!loginForm.valid" [strong]="true">{{ 'LOGIN.Login' | translate}}
+                  [disabled]="!loginForm.valid || !(isValidEmail(currentUser.email))" [strong]="true">{{ 'LOGIN.Login' | translate}}
       </ion-button>
 
         <ion-item lines="none" class="auth-category">

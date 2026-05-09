@@ -40,9 +40,14 @@ export class Auth {
           const str = JSON.stringify(response);
           const result = JSON.parse(str);
           localStorage.setItem('token', result.accessToken);
+          console.log("Nouveau utilisateur : ", result.isNewUser);
 
+          if(result.isNewUser){
+            await this.router.navigate(['/username-form']);
+          } else {
+            await this.router.navigate(['/tabs/notes']);
+          }
           await loading.dismiss();
-          await this.router.navigate(['/tabs/notes']);
         });
       }
     } catch (err) {
@@ -84,10 +89,13 @@ export class Auth {
           const str = JSON.stringify(response);
           const result = JSON.parse(str);
           localStorage.setItem('token', result.accessToken);
-          console.log("Token: ", result.accessToken);
 
+          if(result.isNewUser){
+            await this.router.navigate(['/username-form']);
+          } else {
+            await this.router.navigate(['/tabs/notes']);
+          }
           await loading.dismiss();
-          await this.router.navigate(['/tabs/notes']);
         });
       }
     } catch (err) {
@@ -96,5 +104,13 @@ export class Auth {
     } finally {
       this.loginInProgress = false;
     }
+  }
+
+  isValidUsername(username: string): boolean {
+    return username.length >= 3 && username.length <= 20;
+  }
+
+  isValidEmail(email: string){
+    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z.-]{2,}$/.test(email);
   }
 }

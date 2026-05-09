@@ -20,7 +20,10 @@
     "DateBirthday": "Date de naissance",
     "UsernamePH": "Entrez votre nom d'utilisateur",
     "EmailPH": "Entrez votre adresse email",
-    "PasswordPH": "Entrez votre mot de passe"
+    "PasswordPH": "Entrez votre mot de passe",
+    "Username-WarningMessage": "Au moins 3 caractères (a-z, 0-9, _ et -)",
+    "Email-WarningMessage": "L'email n'est pas valide",
+    "Password-WarningMessage": "Le mot de passe doit contenir au moins: \n- 8 caractères \n- Une majuscule \n- Une minuscule \n- Un chiffre \n- Un caractère spécial (!@#$%^&*_-+=)"
   },
   "HOME": {
     "TITLE": "Accueil",

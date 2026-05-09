@@ -517,4 +517,11 @@ ion-datetime::part(wheel-item active) {
   }
 }
 
+.warning-input-container {
+  width: 100%;
+  color: var(--ion-color-danger);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
 //-----------------------------------------------------------------------------

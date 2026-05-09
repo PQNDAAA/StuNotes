@@ -65,4 +65,7 @@ export class LoginPage implements OnInit {
     })
   }
 
+   isValidEmail(email: string) {
+    return this.auth.isValidEmail(email);
+  }
 }

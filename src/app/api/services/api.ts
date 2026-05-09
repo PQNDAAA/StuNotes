@@ -28,8 +28,12 @@ export class Api {
     return this.http.get(`${this.baseUrl}/users/username`);
   }
 
-  createSubject(name: string){
+  createSubject(name: string) {
     return this.http.post(`${this.baseUrl}/users/createSubject`, { name });
+  }
+
+  modifyUsername(username: string){
+    return this.http.post(`${this.baseUrl}/users/username/edit`, { username });
   }
 
   appleSignup(identityToken: string, email: string, name: string){
