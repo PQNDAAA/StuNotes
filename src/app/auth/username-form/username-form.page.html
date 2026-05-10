@@ -11,12 +11,14 @@
           <ion-input type="text" labelPlacement="stacked" label="{{'SIGNUP.Username' | translate}}" name="username"
                      placeholder="{{'SIGNUP.UsernamePH' | translate}}" [(ngModel)]="username" [required]="true"
                      [maxlength]="20" [counter]="true"
-                     (ionInput)="checkUsername($event)"></ion-input>
+                     (ionInput)="checkUsername($event)" (ionBlur)="checkUsernameExists(username)"></ion-input>
           <ion-label *ngIf="!isValidUsername(username) && !(username.length === 0)">
             {{'SIGNUP.Username-WarningMessage' | translate}}</ion-label>
+            <ion-label *ngIf="usernameExists">
+              {{'SIGNUP.UsernameExists' | translate}}</ion-label>
           </div>
         </ion-item>
-        <ion-button id="validbtn" expand="block" class="validBtn" [disabled]="!usernameForm.valid || !isValidUsername(username)"
+        <ion-button id="validbtn" expand="block" class="validBtn" [disabled]="!usernameForm.valid || !isValidForm()"
                     [strong]="true" (click)="valid(usernameForm)">{{ 'GENERAL.SaveButton' | translate }}
         </ion-button>
       </form>

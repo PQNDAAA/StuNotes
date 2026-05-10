@@ -3,6 +3,8 @@ import {SocialLogin} from "@capgo/capacitor-social-login";
 import {Api} from "../api/services/api";
 import {Router} from "@angular/router";
 import {LoadingController} from "@ionic/angular";
+import {firstValueFrom} from "rxjs";
+import {App} from "../app";
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,8 @@ export class Auth {
 
   loginInProgress = false;
 
-  constructor(private api: Api, private router: Router, private loadingCtrl: LoadingController,) {
+  constructor(private api: Api, private router: Router, private loadingCtrl: LoadingController,
+              private appService : App) {
   }
 
   async loginWithGoogle() {
@@ -42,10 +45,10 @@ export class Auth {
           localStorage.setItem('token', result.accessToken);
           console.log("Nouveau utilisateur : ", result.isNewUser);
 
-          if(result.isNewUser){
+          if (result.isNewUser) {
             await this.router.navigate(['/username-form']);
           } else {
-            await this.router.navigate(['/tabs/notes']);
+            await this.appService.checkToken();
           }
           await loading.dismiss();
         });
@@ -90,10 +93,10 @@ export class Auth {
           const result = JSON.parse(str);
           localStorage.setItem('token', result.accessToken);
 
-          if(result.isNewUser){
+          if (result.isNewUser) {
             await this.router.navigate(['/username-form']);
           } else {
-            await this.router.navigate(['/tabs/notes']);
+            await this.appService.checkToken();
           }
           await loading.dismiss();
         });
@@ -106,11 +109,33 @@ export class Auth {
     }
   }
 
+  async checkUsernameExists(username: string): Promise<boolean> {
+    if (!this.isValidUsername(username)) return false;
+
+    let value: boolean;
+
+    const result = await firstValueFrom(this.api.checkUsernameExists(username));
+
+    const str = JSON.stringify(result);
+    value = JSON.parse(str);
+    return value;
+  }
+
+  async checkEmailExists(email: string): Promise<boolean> {
+    if(!this.isValidEmail(email)) return false;
+
+    let value: boolean;
+    const result = await firstValueFrom(this.api.checkEmailExists(email));
+    const str = JSON.stringify(result);
+    value = JSON.parse(str);
+    return value;
+  }
+
   isValidUsername(username: string): boolean {
     return username.length >= 3 && username.length <= 20;
   }
 
-  isValidEmail(email: string){
+  isValidEmail(email: string) {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z.-]{2,}$/.test(email);
   }
 }

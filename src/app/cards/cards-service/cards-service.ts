@@ -6,7 +6,6 @@ import {CardstatusColors} from "../cards-const/cardstatus-colors";
 import {Haptics, ImpactStyle} from "@capacitor/haptics";
 import {LocalNotificationService} from "../../notifications/service/local-notification-service";
 import {CardsDB} from "../db/cards-db";
-import {Settings} from "../../settings/settings-service/settings";
 import {ReminderTypeEnum} from "../../notifications/types/reminder-type-enum";
 import {LocalNotifications} from "@capacitor/local-notifications";
 
@@ -263,13 +262,13 @@ export class CardsService {
   async handleReminderByType(card: Card) {
     switch (card.reminder?.type) {
       case ReminderTypeEnum.SmartReminder:
-        return this.createLocalNotifications(card);
+        return await this.createLocalNotifications(card);
       case ReminderTypeEnum.RecurringReminder:
         const recurringReminders = this.lns.calculateRecurringReminders(card);
-        return this.lns.createLocalNotifications(recurringReminders, card);
+        return await this.lns.createLocalNotifications(recurringReminders, card);
       case ReminderTypeEnum.CustomReminder:
         const customReminders = await this.checkCustomReminders(card);
-        return this.lns.createLocalNotifications(customReminders, card);
+        return await this.lns.createLocalNotifications(customReminders, card);
       default:
         console.log("none");
         return [];

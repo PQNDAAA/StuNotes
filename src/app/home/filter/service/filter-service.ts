@@ -36,7 +36,7 @@ export class FilterService {
   async changeFiltersValue(filtersValue: FilterInterface) {
     const allValues = await this.db.filters.get(1);
     const values = {...allValues, ...filtersValue};
-    this.db.filters.put(values,1);
+    await this.db.filters.put(values,1);
     await this.refreshValues();
   }
 

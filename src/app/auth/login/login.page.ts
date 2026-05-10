@@ -6,6 +6,7 @@ import {LoginInterface} from "./interface/login-interface";
 import {AppComponent} from "../../app.component";
 import {Platform} from "@ionic/angular";
 import {Auth} from "../auth";
+import {App} from "../../app";
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginPage implements OnInit {
 
   isIos = false;
 
-  constructor(private api: Api, private router: Router, private platform: Platform, private auth: Auth) {
+  constructor(private api: Api, private router: Router, private platform: Platform, private auth: Auth,
+              private appService : App) {
     this.isIos = this.platform.is('ios');
   }
 
@@ -31,12 +33,11 @@ export class LoginPage implements OnInit {
 
   valid(form: NgForm) {
     if (form.valid) {
-      this.api.login(this.currentUser).subscribe(response => {
+      this.api.login(this.currentUser).subscribe(async response => {
         const str = JSON.stringify(response);
         const result = JSON.parse(str);
         localStorage.setItem('token', result.accessToken);
-
-        this.router.navigate(['/tabs/notes']);
+        await this.appService.checkToken();
       }, error => {
         console.error(error.error.message);
       });

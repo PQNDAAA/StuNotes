@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Api} from "./api/services/api";
 import {Settings} from "./settings/settings-service/settings";
 import {Platform} from "@ionic/angular";
@@ -16,46 +16,52 @@ import {firstValueFrom} from "rxjs";
 })
 export class App {
 
-  constructor(private fcm: Fcm, private lns: LocalNotificationService, private cards : CardsService,
-              private api: Api, private router : Router) {
+  constructor(private fcm: Fcm, private lns: LocalNotificationService, private cards: CardsService,
+              private api: Api, private router: Router) {
   }
 
-  async initApp(){
+  async initApp() {
     await this.checkLocalNotifications();
     this.fcm.initPush();
     await this.checkTasks();
     console.log("Token existing");
   }
 
-  private async checkLocalNotifications(){
+  private async checkLocalNotifications() {
     await this.lns.initLocalNotifications();
   }
 
-  private async checkTasks(){
+  private async checkTasks() {
     await this.cards.syncTaskReminders();
     await this.cards.syncOverdueTasks();
   }
 
-  async checkToken(){
+  async checkToken() {
     const token = localStorage.getItem("token");
 
-    if(!token){
+    if (!token) {
       await this.router.navigate(['/landing']);
       console.log("Token not found");
       return;
     }
 
-    try{
-      const result = await firstValueFrom(this.api.getUserById());
+    this.api.getUserById().subscribe(async response => {
+      const str = JSON.stringify(response);
+      const value = JSON.parse(str);
 
-      await this.initApp();
-      await this.router.navigate(['/tabs']);
-    } catch(error: any){
-      if(error.status == 401){
+      if (!value) {
+        localStorage.removeItem("token");
+        await this.router.navigate(['/login']);
+      } else {
+        await this.initApp();
+        await this.router.navigate(['/tabs']);
+      }
+    }, async error => {
+      if (error.status == 401) {
         localStorage.removeItem("token");
         await this.router.navigate(['/login']);
       }
-    }
+    });
   }
 
 }

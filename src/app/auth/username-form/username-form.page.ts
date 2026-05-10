@@ -3,6 +3,7 @@ import {NgForm} from "@angular/forms";
 import {Api} from "../../api/services/api";
 import {Router} from "@angular/router";
 import {Auth} from "../auth";
+import {App} from "../../app";
 
 @Component({
   selector: 'app-username-form',
@@ -12,10 +13,11 @@ import {Auth} from "../auth";
 })
 export class UsernameFormPage implements OnInit {
 
-  username!: string;
+  username: string = "";
+  usernameExists: boolean = false;
 
-  constructor(private api: Api, private router: Router, private authService: Auth) {
-  }
+  constructor(private api: Api, private router: Router, private authService: Auth,
+              private appService : App) {}
 
   ngOnInit() {
   }
@@ -25,6 +27,10 @@ export class UsernameFormPage implements OnInit {
     event.target.value =  this.username;
   }
 
+  async checkUsernameExists(username: string) {
+    this.usernameExists = await this.authService.checkUsernameExists(username);
+  }
+
   isValidUsername(username: string) {
     return this.authService.isValidUsername(username);
   }
@@ -32,10 +38,14 @@ export class UsernameFormPage implements OnInit {
   valid(usernameForm: NgForm) {
     if (usernameForm.valid) {
       this.api.modifyUsername(this.username).subscribe(async () => {
-        await this.router.navigate(['/tabs/notes']);
+        await this.appService.checkToken();
       }, error => {
         console.log(error.message);
       });
     }
+  }
+
+  isValidForm(){
+    return this.isValidUsername(this.username) && !this.usernameExists;
   }
 }

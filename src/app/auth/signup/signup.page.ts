@@ -28,7 +28,7 @@ export class SignupPage implements OnInit {
   ngOnInit() {
   }
 
-  // FINIR LA VALIDATION DE L INSCRIPTION et au niveau backend regarder si l'email & le username sont déjà utilisé au moment de l'inscription
+  // FINIR LA VALIDATION DE L INSCRIPTION et ajouter dans username form le check username (exists)
   valid(form: NgForm) {
     if (form.valid) {
       this.api.createUser(this.newUser).subscribe(response => {
@@ -44,28 +44,12 @@ export class SignupPage implements OnInit {
     event.target.value = this.newUser.username;
   }
 
-  checkEmailExists(email: string) {
-    if (!this.isValidEmail(email)) {
-      if (this.emailExists) this.emailExists = false;
-      return;
-    }
-
-    this.api.checkEmailExists(email).subscribe(response => {
-      const str = JSON.stringify(response);
-      this.emailExists = JSON.parse(str);
-    });
+  async checkEmailExists(email: string) {
+    this.emailExists = await this.authService.checkEmailExists(email);
   }
 
-  checkUsernameExists(username: string) {
-    if (!this.isValidUsername(username)) {
-      if (this.usernameExists) this.usernameExists = false;
-      return;
-    }
-
-    this.api.checkUsernameExists(username).subscribe(response => {
-      const str = JSON.stringify(response);
-      this.usernameExists = JSON.parse(str);
-    });
+  async checkUsernameExists(username: string) {
+    this.usernameExists = await this.authService.checkUsernameExists(username);
   }
 
   isValidUsername(username: string): boolean {
