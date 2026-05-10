@@ -16,6 +16,14 @@ export class Api {
     return this.http.get(`${this.baseUrl}/users`);
   }
 
+  checkUsernameExists(username: string) {
+    return this.http.get(`${this.baseUrl}/users/check-username/${username}`);
+  }
+
+  checkEmailExists(email: string) {
+    return this.http.get(`${this.baseUrl}/users/check-email/${email}`);
+  }
+
   createUser(data: SignupInterface) {
     return this.http.post(`${this.baseUrl}/users`, data);
   }

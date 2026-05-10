@@ -19,12 +19,16 @@ export class SignupPage implements OnInit {
     username: ""
   }
 
+  emailExists: boolean = false;
+  usernameExists: boolean = false;
+
   constructor(private api: Api, private authService: Auth) {
   }
 
   ngOnInit() {
   }
 
+  // FINIR LA VALIDATION DE L INSCRIPTION et au niveau backend regarder si l'email & le username sont déjà utilisé au moment de l'inscription
   valid(form: NgForm) {
     if (form.valid) {
       this.api.createUser(this.newUser).subscribe(response => {
@@ -38,6 +42,30 @@ export class SignupPage implements OnInit {
   checkUsername(event: any) {
     this.newUser.username = event.target.value.replace(/[^a-zA-Z0-9_-]/g, '');
     event.target.value = this.newUser.username;
+  }
+
+  checkEmailExists(email: string) {
+    if (!this.isValidEmail(email)) {
+      if (this.emailExists) this.emailExists = false;
+      return;
+    }
+
+    this.api.checkEmailExists(email).subscribe(response => {
+      const str = JSON.stringify(response);
+      this.emailExists = JSON.parse(str);
+    });
+  }
+
+  checkUsernameExists(username: string) {
+    if (!this.isValidUsername(username)) {
+      if (this.usernameExists) this.usernameExists = false;
+      return;
+    }
+
+    this.api.checkUsernameExists(username).subscribe(response => {
+      const str = JSON.stringify(response);
+      this.usernameExists = JSON.parse(str);
+    });
   }
 
   isValidUsername(username: string): boolean {
@@ -60,6 +88,6 @@ export class SignupPage implements OnInit {
 
   isValidForm(): boolean {
     return this.isValidPassword(this.newUser.password) && this.isValidUsername(this.newUser.username) &&
-      this.isValidEmail(this.newUser.email);
+      this.isValidEmail(this.newUser.email) && !this.emailExists && !this.usernameExists;
   }
 }

@@ -12,11 +12,15 @@
         <ion-item lines="none" class="inputElement">
           <ion-icon slot="start" name="mail-outline"></ion-icon>
           <div class="warning-input-container">
-          <ion-input type="email" labelPlacement="stacked" label="Email" name="email"
-                     placeholder="{{'SIGNUP.EmailPH' | translate}}"
-                     [(ngModel)]="newUser.email" [required]="true"></ion-input>
+            <ion-input type="email" labelPlacement="stacked" label="Email" name="email"
+                       placeholder="{{'SIGNUP.EmailPH' | translate}}"
+                       [(ngModel)]="newUser.email" [required]="true"
+                       (ionBlur)="checkEmailExists(newUser.email)"></ion-input>
             <ion-label *ngIf="!isValidEmail(newUser.email) && !(newUser.email.length === 0)">
               {{ 'SIGNUP.Email-WarningMessage' | translate }}
+            </ion-label>
+            <ion-label *ngIf="emailExists">
+              {{ 'SIGNUP.EmailExists' | translate }}
             </ion-label>
           </div>
         </ion-item>
@@ -26,9 +30,13 @@
             <ion-input type="text" labelPlacement="stacked" label="{{'SIGNUP.Username' | translate}}" name="username"
                        placeholder="{{'SIGNUP.UsernamePH' | translate}}" [(ngModel)]="newUser.username"
                        [required]="true"
-                       [maxlength]="20" [counter]="true" (ionInput)="checkUsername($event)"></ion-input>
+                       [maxlength]="20" [counter]="true" (ionInput)="checkUsername($event)"
+                       (ionBlur)="checkUsernameExists(newUser.username)"></ion-input>
             <ion-label *ngIf="!isValidUsername(newUser.username) && !(newUser.username.length === 0)">
               {{ 'SIGNUP.Username-WarningMessage' | translate }}
+            </ion-label>
+            <ion-label *ngIf="usernameExists">
+              {{ 'SIGNUP.UsernameExists' | translate }}
             </ion-label>
           </div>
         </ion-item>
@@ -40,7 +48,8 @@
                        [(ngModel)]="newUser.password" [maxlength]="128" [required]="true">
               <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
             </ion-input>
-            <ion-label *ngIf="!isValidPassword(newUser.password) && !(newUser.password.length === 0)" style="white-space: pre-line">
+            <ion-label *ngIf="!isValidPassword(newUser.password) && !(newUser.password.length === 0)"
+                       style="white-space: pre-line">
               {{ 'SIGNUP.Password-WarningMessage' | translate }}
             </ion-label>
           </div>
