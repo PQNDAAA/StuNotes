@@ -16,8 +16,7 @@ export class UsernameFormPage implements OnInit {
   username: string = "";
   usernameExists: boolean = false;
 
-  constructor(private api: Api, private router: Router, private authService: Auth,
-              private appService : App) {}
+  constructor(private api: Api, private authService: Auth) {}
 
   ngOnInit() {
   }
@@ -35,10 +34,10 @@ export class UsernameFormPage implements OnInit {
     return this.authService.isValidUsername(username);
   }
 
-  valid(usernameForm: NgForm) {
+  submitUsername(usernameForm: NgForm) {
     if (usernameForm.valid) {
       this.api.modifyUsername(this.username).subscribe(async () => {
-        await this.appService.checkToken();
+        await this.authService.checkToken();
       }, error => {
         console.log(error.message);
       });

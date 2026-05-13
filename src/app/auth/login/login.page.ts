@@ -4,7 +4,7 @@ import {NgForm} from "@angular/forms";
 import {Router} from "@angular/router";
 import {LoginInterface} from "./interface/login-interface";
 import {AppComponent} from "../../app.component";
-import {Platform} from "@ionic/angular";
+import {LoadingController, Platform} from "@ionic/angular";
 import {Auth} from "../auth";
 import {App} from "../../app";
 
@@ -23,37 +23,46 @@ export class LoginPage implements OnInit {
 
   isIos = false;
 
-  constructor(private api: Api, private router: Router, private platform: Platform, private auth: Auth,
-              private appService : App) {
+  loginInProgress = false;
+
+  constructor(private api: Api, private platform: Platform, private authService: Auth, private loadingCtrl: LoadingController) {
     this.isIos = this.platform.is('ios');
   }
 
   ngOnInit() {
   }
 
-  valid(form: NgForm) {
+  async onLogin(form: NgForm) {
     if (form.valid) {
+      const loading = await this.loadingCtrl.create({
+        spinner: 'crescent',
+      });
+      await loading.present();
+      this.loginInProgress = true;
+
       this.api.login(this.currentUser).subscribe(async response => {
         const str = JSON.stringify(response);
         const result = JSON.parse(str);
         localStorage.setItem('token', result.accessToken);
-        await this.appService.checkToken();
-      }, error => {
-        console.error(error.error.message);
+
+        await this.authService.checkToken();
+
+        await loading.dismiss();
+        this.loginInProgress = false;
+      }, async error => {
+        await loading.dismiss();
+        this.loginInProgress = false;
+        console.error(error.error.message ?? 'Login failed');
       });
     }
   }
 
   async loginWithApple() {
-    await this.auth.loginWithApple();
+    await this.authService.loginWithApple();
   }
 
   async loginWithGoogle() {
-    await this.auth.loginWithGoogle();
-  }
-
-  get isLogging() {
-    return this.auth.loginInProgress;
+    await this.authService.loginWithGoogle();
   }
 
   getUser() {
@@ -67,6 +76,6 @@ export class LoginPage implements OnInit {
   }
 
    isValidEmail(email: string) {
-    return this.auth.isValidEmail(email);
+    return this.authService.isValidEmail(email);
   }
 }

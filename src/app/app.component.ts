@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
   checkApp() {
     this.platform.ready().then(() => {
       this.platform.resume.subscribe(async () => {
-        if(this.authService.loginInProgress) return;
-        await this.appService.checkToken();
+        if(this.authService.loginWithInProgress) return;
+        await this.authService.onAppResume();
         console.log("Reload de l'app fait.");
       });
     });
@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
       apple: Capacitor.getPlatform() === 'ios' ? {} : undefined
     });
-    await this.appService.checkToken();
+    await this.authService.checkToken();
 
     setTimeout(async () => {
       await SplashScreen.hide({

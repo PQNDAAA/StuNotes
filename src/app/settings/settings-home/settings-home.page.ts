@@ -5,8 +5,7 @@ import {Observable} from "rxjs";
 import {TranslateService} from "@ngx-translate/core";
 import {LocalNotificationService} from "../../notifications/service/local-notification-service";
 import {CardsService} from "../../cards/cards-service/cards-service";
-import {Cardstatus} from "../../cards/cards-enum/cardstatus";
-import {Router} from "@angular/router";
+import {Auth} from "../../auth/auth";
 
 @Component({
   selector: 'app-settings-home',
@@ -23,7 +22,7 @@ export class SettingsHomePage implements OnInit {
 
   constructor(private settingsService: Settings, private translate: TranslateService,
               private localNotification: LocalNotificationService, private cards: CardsService,
-              private router: Router) {
+              private authService: Auth) {
     this.settings$ = this.settingsService.settingsHome$;
   }
 
@@ -81,13 +80,19 @@ export class SettingsHomePage implements OnInit {
     }
   }
 
-  async logOut(){
-    localStorage.removeItem('token');
-    await this.localNotification.clearAllScheduledTasks();
-    await this.router.navigate(['/login']);
+  async logOut() {
+    await this.authService.removeToken();
   }
 
-  async clearAllScheduledTasks(){await this.localNotification.clearAllScheduledTasks();}
-  get getCurrentLanguage(): string {return this.translate.getCurrentLang();}
-  get getAllLanguages() {return this.translate.getLangs();}
+  async clearAllScheduledTasks() {
+    await this.localNotification.clearAllScheduledTasks();
+  }
+
+  get getCurrentLanguage(): string {
+    return this.translate.getCurrentLang();
+  }
+
+  get getAllLanguages() {
+    return this.translate.getLangs();
+  }
 }

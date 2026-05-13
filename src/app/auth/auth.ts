@@ -11,10 +11,10 @@ import {App} from "../app";
 })
 export class Auth {
 
-  loginInProgress = false;
+  loginWithInProgress = false;
 
   constructor(private api: Api, private router: Router, private loadingCtrl: LoadingController,
-              private appService : App) {
+              private appService: App) {
   }
 
   async loginWithGoogle() {
@@ -24,7 +24,7 @@ export class Auth {
 
     try {
       await loading.present();
-      this.loginInProgress = true;
+      this.loginWithInProgress = true;
 
       const result = await SocialLogin.login({
         provider: 'google',
@@ -48,7 +48,7 @@ export class Auth {
           if (result.isNewUser) {
             await this.router.navigate(['/username-form']);
           } else {
-            await this.appService.checkToken();
+            await this.checkToken();
           }
           await loading.dismiss();
         });
@@ -57,7 +57,7 @@ export class Auth {
       await loading.dismiss();
       console.log(err);
     } finally {
-      this.loginInProgress = false;
+      this.loginWithInProgress = false;
     }
   }
 
@@ -68,7 +68,7 @@ export class Auth {
 
     try {
       await loading.present();
-      this.loginInProgress = true;
+      this.loginWithInProgress = true;
 
       const result = await SocialLogin.login({
         provider: 'apple',
@@ -96,7 +96,7 @@ export class Auth {
           if (result.isNewUser) {
             await this.router.navigate(['/username-form']);
           } else {
-            await this.appService.checkToken();
+            await this.checkToken();
           }
           await loading.dismiss();
         });
@@ -105,8 +105,34 @@ export class Auth {
       await loading.dismiss();
       console.log(err);
     } finally {
-      this.loginInProgress = false;
+      this.loginWithInProgress = false;
     }
+  }
+
+  async checkToken() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      await this.router.navigate(['/landing']);
+      console.log("Token not found");
+      return;
+    }
+
+    this.api.getUserById().subscribe(async response => {
+      const str = JSON.stringify(response);
+      const value = JSON.parse(str);
+
+      if (!value) {
+        await this.removeToken();
+      } else {
+        await this.appService.initApp();
+        await this.router.navigate(['/tabs']);
+      }
+    }, async error => {
+      if (error.status == 401) {
+        await this.removeToken();
+      }
+    });
   }
 
   async checkUsernameExists(username: string): Promise<boolean> {
@@ -122,13 +148,23 @@ export class Auth {
   }
 
   async checkEmailExists(email: string): Promise<boolean> {
-    if(!this.isValidEmail(email)) return false;
+    if (!this.isValidEmail(email)) return false;
 
     let value: boolean;
     const result = await firstValueFrom(this.api.checkEmailExists(email));
     const str = JSON.stringify(result);
     value = JSON.parse(str);
     return value;
+  }
+
+  async removeToken() {
+    localStorage.removeItem("token");
+    console.log("Token removed");
+    await this.router.navigate(['/login']);
+  }
+
+  async onAppResume() {
+    await this.checkToken();
   }
 
   isValidUsername(username: string): boolean {
@@ -138,4 +174,5 @@ export class Auth {
   isValidEmail(email: string) {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z.-]{2,}$/.test(email);
   }
+
 }

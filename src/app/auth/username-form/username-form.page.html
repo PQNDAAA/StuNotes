@@ -19,7 +19,7 @@
           </div>
         </ion-item>
         <ion-button id="validbtn" expand="block" class="validBtn" [disabled]="!usernameForm.valid || !isValidForm()"
-                    [strong]="true" (click)="valid(usernameForm)">{{ 'GENERAL.SaveButton' | translate }}
+                    [strong]="true" (click)="submitUsername(usernameForm)">{{ 'GENERAL.SaveButton' | translate }}
         </ion-button>
       </form>
     </ion-card-content>

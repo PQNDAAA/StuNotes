@@ -3,7 +3,7 @@
     <ion-card-header>
       <ion-card-title>{{ 'SIGNUP.CreateAnAccountTitle' | translate }}</ion-card-title>
       <ion-card-subtitle>{{ 'SIGNUP.HaveAccount' | translate }}
-        <ion-button class="changeMethodBtn" fill="clear" [routerLink]="['/login']">{{ 'LOGIN.Login' | translate }}→
+        <ion-button class="changeMethodBtn" fill="clear" [routerLink]="['/login']">{{ 'LOGIN.Login' | translate }} →
         </ion-button>
       </ion-card-subtitle>
     </ion-card-header>
@@ -61,7 +61,7 @@
         </ion-item>
         <ion-button id="validbtn" expand="block" class="validBtn"
                     [disabled]="!signupForm.valid || !(isValidForm())"
-                    [strong]="true" (click)="valid(signupForm)">{{ 'SIGNUP.SignUpBtn' | translate }}
+                    [strong]="true" (click)="onSignup(signupForm)">{{ 'SIGNUP.SignUpBtn' | translate }}
         </ion-button>
       </form>
     </ion-card-content>

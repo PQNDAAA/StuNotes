@@ -3,6 +3,8 @@ import {SignupInterface} from "./interface/signup-interface";
 import {Api} from "../../api/services/api";
 import {NgForm} from "@angular/forms";
 import {Auth} from "../auth";
+import {LoadingController, ModalController} from "@ionic/angular";
+import {SignupApprovedPage} from "../signup-approved/signup-approved.page";
 
 @Component({
   selector: 'app-signup',
@@ -22,18 +24,40 @@ export class SignupPage implements OnInit {
   emailExists: boolean = false;
   usernameExists: boolean = false;
 
-  constructor(private api: Api, private authService: Auth) {
+  signupInProgress: boolean = false;
+
+  constructor(private api: Api, private authService: Auth, private modalCtrl: ModalController,
+              private loadingCtrl: LoadingController) {
   }
 
   ngOnInit() {
   }
 
-  // FINIR LA VALIDATION DE L INSCRIPTION et ajouter dans username form le check username (exists)
-  valid(form: NgForm) {
+  async onSignup(form: NgForm) {
     if (form.valid) {
-      this.api.createUser(this.newUser).subscribe(response => {
+      const loading = await this.loadingCtrl.create({
+        spinner: 'crescent',
+      });
+
+      await loading.present();
+      this.signupInProgress = true;
+
+      this.api.createUser(this.newUser).subscribe(async response => {
+        await loading.dismiss();
+        this.signupInProgress = false;
+
+        const modal = await this.modalCtrl.create({
+          component: SignupApprovedPage,
+          breakpoints: [0.28, 0.3, 0.32],
+          initialBreakpoint: 0.3
+        });
+        await modal.present();
+        this.clearNewUser();
         console.log(response);
-      }, error => {
+
+      }, async error => {
+        await loading.dismiss();
+        this.signupInProgress = false;
         console.log(error.error.message);
       });
     }
@@ -73,5 +97,14 @@ export class SignupPage implements OnInit {
   isValidForm(): boolean {
     return this.isValidPassword(this.newUser.password) && this.isValidUsername(this.newUser.username) &&
       this.isValidEmail(this.newUser.email) && !this.emailExists && !this.usernameExists;
+  }
+
+  private clearNewUser() {
+    this.newUser = {
+      dateOfBirthday: "",
+      email: "",
+      password: "",
+      username: ""
+    };
   }
 }

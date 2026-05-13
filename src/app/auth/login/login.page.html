@@ -24,7 +24,7 @@
         <ion-input-password-toggle slot="end" color="medium"></ion-input-password-toggle>
       </ion-input>
       </ion-item>
-      <ion-button id="validbtn"  expand="block" class="validBtn" (click)="valid(loginForm)"
+      <ion-button id="validbtn"  expand="block" class="validBtn" (click)="onLogin(loginForm)"
                   [disabled]="!loginForm.valid || !(isValidEmail(currentUser.email))" [strong]="true">{{ 'LOGIN.Login' | translate}}
       </ion-button>
 
