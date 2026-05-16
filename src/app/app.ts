@@ -10,24 +10,35 @@ import {LanguageService} from "./language/language-service/language-service";
 import {Router} from "@angular/router";
 import {FilterService} from "./home/filter/service/filter-service";
 import {firstValueFrom} from "rxjs";
+import {TagsService} from "./tags/tags-service/tags-service";
 
 @Injectable({
   providedIn: 'root',
 })
 export class App {
 
-  constructor(private fcm: Fcm, private lns: LocalNotificationService, private cards: CardsService) {
+  constructor(private fcm: Fcm, private lns: LocalNotificationService, private cards: CardsService,
+              private tagsService: TagsService, private cardsService: CardsService) {
   }
 
   async initApp() {
     await this.initNotifications();
     await this.checkTasks();
-    console.log("Token existing");
   }
 
   async initNotifications() {
     await this.checkLocalNotifications();
     this.fcm.initPush();
+  }
+
+  async initElements(){
+    await this.tagsService.initTags();
+    await this.cardsService.initCards();
+  }
+
+  async initAllElements(){
+    await this.initElements();
+    await this.initApp();
   }
 
   private async checkLocalNotifications() {

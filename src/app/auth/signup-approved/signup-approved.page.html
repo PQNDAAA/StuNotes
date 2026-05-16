@@ -6,7 +6,11 @@
 
 <ion-content>
   <div class="container">
-    <ion-label>Vous pouvez désormais vous connecter</ion-label>
-    <ion-button id="validbtn" expand="block" class="validBtn" (click)="goToLogin()">Connexion</ion-button>
+    <div class="success-icon">
+      <ion-icon name="checkmark-outline"></ion-icon>
+    </div>
+    <ion-label id="signup-approved-title">Compte crée avec succés !</ion-label>
+    <ion-label id="signup-approved-subtitle">Vous pouvez désormais accéder à votre compte.</ion-label>
+    <ion-button id="validbtn" expand="block" class="validBtn" (click)="goToLogin()">Se connecter</ion-button>
   </div>
 </ion-content>

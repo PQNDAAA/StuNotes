@@ -63,6 +63,9 @@
                     [disabled]="!signupForm.valid || !(isValidForm())"
                     [strong]="true" (click)="onSignup(signupForm)">{{ 'SIGNUP.SignUpBtn' | translate }}
         </ion-button>
+        <ion-button id="validbtn" expand="block" class="validBtn"
+                    [strong]="true" (click)="testModal()">{{ 'SIGNUP.SignUpBtn' | translate }}
+        </ion-button>
       </form>
     </ion-card-content>
   </ion-card>

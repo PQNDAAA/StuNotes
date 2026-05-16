@@ -48,7 +48,8 @@ export class Auth {
           if (result.isNewUser) {
             await this.router.navigate(['/username-form']);
           } else {
-            await this.checkToken();
+            await this.appService.initAllElements()
+            await this.router.navigate(['/tabs']);
           }
           await loading.dismiss();
         });
@@ -96,7 +97,8 @@ export class Auth {
           if (result.isNewUser) {
             await this.router.navigate(['/username-form']);
           } else {
-            await this.checkToken();
+            await this.appService.initAllElements()
+            await this.router.navigate(['/tabs']);
           }
           await loading.dismiss();
         });

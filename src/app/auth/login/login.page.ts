@@ -25,7 +25,8 @@ export class LoginPage implements OnInit {
 
   loginInProgress = false;
 
-  constructor(private api: Api, private platform: Platform, private authService: Auth, private loadingCtrl: LoadingController) {
+  constructor(private api: Api, private platform: Platform, private authService: Auth, private loadingCtrl: LoadingController,
+              private app: App, private router: Router) {
     this.isIos = this.platform.is('ios');
   }
 
@@ -45,7 +46,7 @@ export class LoginPage implements OnInit {
         const result = JSON.parse(str);
         localStorage.setItem('token', result.accessToken);
 
-        await this.authService.checkToken();
+        await this.authService.initAllElements();
 
         await loading.dismiss();
         this.loginInProgress = false;

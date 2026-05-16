@@ -48,8 +48,8 @@ export class SignupPage implements OnInit {
 
         const modal = await this.modalCtrl.create({
           component: SignupApprovedPage,
-          breakpoints: [0.28, 0.3, 0.32],
-          initialBreakpoint: 0.3
+          breakpoints: [0.48, 0.5, 0.52],
+          initialBreakpoint: 0.5
         });
         await modal.present();
         this.clearNewUser();
@@ -61,6 +61,15 @@ export class SignupPage implements OnInit {
         console.log(error.error.message);
       });
     }
+  }
+
+  async testModal(){
+    const modal = await this.modalCtrl.create({
+      component: SignupApprovedPage,
+      breakpoints: [0.33, 0.35, 0.37],
+      initialBreakpoint: 0.35
+    });
+    await modal.present();
   }
 
   checkUsername(event: any) {

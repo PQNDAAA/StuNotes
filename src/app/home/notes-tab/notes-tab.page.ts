@@ -23,9 +23,6 @@ export class NotesTabPage implements OnInit {
   defaultStatus = Cardstatus.InProgress;
 
   constructor(private cs: CardsService, private cardStatusService : CardStatusService) {
-
-    console.log(this.cardStatusService.statusColorLanguage);
-
     this.cards = this.cs.cards$;
     this.countsCards = this.cs.countCards$;
   }

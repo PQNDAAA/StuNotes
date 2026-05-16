@@ -3,10 +3,31 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  gap: 14px;
+  gap: 10px;
   padding: 24px;
+  border-radius: 9999px;
+}
 
+.success-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: #d8f3d9;
+}
+
+.success-icon ion-icon {
+  color: #2dd55b;
+  font-size: 24px;
+}
+
+#signup-approved-title{
+  font-size: 18px;
+}
+
+#signup-approved-subtitle{
+  font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  font-weight: 500;
 }

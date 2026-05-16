@@ -15,6 +15,10 @@ ion-list{
   padding: 20px;
 }
 
+.custom-modal ion-toolbar:first-of-type {
+  padding-top: var(--ion-safe-area-top);
+}
+
 .custom-modal{
   --border-radius: 20px;
 
