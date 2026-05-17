@@ -7,6 +7,7 @@ import {AppComponent} from "../../app.component";
 import {LoadingController, Platform} from "@ionic/angular";
 import {Auth} from "../auth";
 import {App} from "../../app";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -41,20 +42,22 @@ export class LoginPage implements OnInit {
       await loading.present();
       this.loginInProgress = true;
 
-      this.api.login(this.currentUser).subscribe(async response => {
+      try {
+        const response = await firstValueFrom(this.api.login(this.currentUser));
+        // On stocke le token
         const str = JSON.stringify(response);
         const result = JSON.parse(str);
         localStorage.setItem('token', result.accessToken);
 
-        await this.authService.initAllElements();
-
+        //On init les elements de l'app
+        await this.app.initAllElements();
+        await this.router.navigate(['/tabs']);
+      } catch (error: any) {
+        console.error(error.error.message ?? "Login failed.");
+      } finally {
         await loading.dismiss();
         this.loginInProgress = false;
-      }, async error => {
-        await loading.dismiss();
-        this.loginInProgress = false;
-        console.error(error.error.message ?? 'Login failed');
-      });
+      }
     }
   }
 

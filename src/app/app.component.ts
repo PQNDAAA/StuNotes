@@ -59,7 +59,11 @@ export class AppComponent implements OnInit {
 
       apple: Capacitor.getPlatform() === 'ios' ? {} : undefined
     });
-    await this.authService.checkToken();
+
+    const isConnected = await this.authService.checkToken();
+    if(isConnected) {
+      await this.appService.initAllElements();
+    }
 
     setTimeout(async () => {
       await SplashScreen.hide({

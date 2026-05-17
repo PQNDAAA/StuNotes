@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {LoadingController} from "@ionic/angular";
 import {firstValueFrom} from "rxjs";
 import {App} from "../app";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root',
@@ -21,11 +22,10 @@ export class Auth {
     const loading = await this.loadingCtrl.create({
       spinner: 'crescent',
     });
+    await loading.present();
+    this.loginWithInProgress = true;
 
     try {
-      await loading.present();
-      this.loginWithInProgress = true;
-
       const result = await SocialLogin.login({
         provider: 'google',
         options: {
@@ -39,25 +39,25 @@ export class Auth {
 
         console.log("Utilisateur Android: ", req.profile.name, req.profile.email);
 
-        this.api.googleSignup(idToken).subscribe(async response => {
-          const str = JSON.stringify(response);
-          const result = JSON.parse(str);
-          localStorage.setItem('token', result.accessToken);
-          console.log("Nouveau utilisateur : ", result.isNewUser);
+        const response = await firstValueFrom(this.api.googleSignup(idToken));
+        // On stocke le token
+        const str = JSON.stringify(response);
+        const parse = JSON.parse(str);
+        localStorage.setItem('token', parse.accessToken);
 
-          if (result.isNewUser) {
-            await this.router.navigate(['/username-form']);
-          } else {
-            await this.appService.initAllElements()
-            await this.router.navigate(['/tabs']);
-          }
-          await loading.dismiss();
-        });
+        console.log("Nouveau utilisateur : ", parse.isNewUser);
+
+        if (parse.isNewUser) {
+          await this.router.navigate(['/username-form']);
+        } else {
+          await this.appService.initAllElements()
+          await this.router.navigate(['/tabs']);
+        }
       }
     } catch (err) {
-      await loading.dismiss();
-      console.log(err);
+      console.error(err);
     } finally {
+      await loading.dismiss();
       this.loginWithInProgress = false;
     }
   }
@@ -66,11 +66,10 @@ export class Auth {
     const loading = await this.loadingCtrl.create({
       spinner: 'crescent',
     });
+    await loading.present();
+    this.loginWithInProgress = true;
 
     try {
-      await loading.present();
-      this.loginWithInProgress = true;
-
       const result = await SocialLogin.login({
         provider: 'apple',
         options: {scopes: ['email', 'name']}
@@ -82,81 +81,86 @@ export class Auth {
         const email = req.profile.email
         const user = req.profile.user;
 
-        if (!idToken || !email || !user) {
-          await loading.dismiss();
-          return;
-        }
+        if (!idToken || !email || !user) return;
 
         console.log("Utilisateur Apple: ", req);
 
-        this.api.appleSignup(idToken, email, user).subscribe(async response => {
-          const str = JSON.stringify(response);
-          const result = JSON.parse(str);
-          localStorage.setItem('token', result.accessToken);
+        const response = await firstValueFrom(this.api.appleSignup(idToken, email, user));
+        // On stocke le token
+        const str = JSON.stringify(response);
+        const parse = JSON.parse(str);
+        localStorage.setItem('token', parse.accessToken);
 
-          if (result.isNewUser) {
-            await this.router.navigate(['/username-form']);
-          } else {
-            await this.appService.initAllElements()
-            await this.router.navigate(['/tabs']);
-          }
-          await loading.dismiss();
-        });
+        if (parse.isNewUser) {
+          await this.router.navigate(['/username-form']);
+        } else {
+          //On init les elements de l'app
+          await this.appService.initAllElements();
+          await this.router.navigate(['/tabs']);
+        }
       }
-    } catch (err) {
-      await loading.dismiss();
-      console.log(err);
+    } catch (e) {
+      console.error(e);
     } finally {
+      await loading.dismiss();
       this.loginWithInProgress = false;
     }
   }
 
-  async checkToken() {
+  async checkToken(): Promise<boolean> {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      await this.router.navigate(['/landing']);
-      console.log("Token not found");
-      return;
-    }
+    try {
+      if (!token) {
+        await this.router.navigate(['/landing']);
+        console.error("Token not found");
+        return false;
+      }
 
-    this.api.getUserById().subscribe(async response => {
+      const response = await firstValueFrom(this.api.getUserById());
       const str = JSON.stringify(response);
       const value = JSON.parse(str);
 
       if (!value) {
         await this.removeToken();
-      } else {
-        await this.appService.initApp();
-        await this.router.navigate(['/tabs']);
+        return false;
       }
-    }, async error => {
-      if (error.status == 401) {
-        await this.removeToken();
+      return true;
+    } catch (err) {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) {
+          await this.removeToken();
+          return false;
+        }
       }
-    });
+      return false;
+    } finally {
+      console.log("Check token finished.");
+    }
   }
 
   async checkUsernameExists(username: string): Promise<boolean> {
-    if (!this.isValidUsername(username)) return false;
-
-    let value: boolean;
-
-    const result = await firstValueFrom(this.api.checkUsernameExists(username));
-
-    const str = JSON.stringify(result);
-    value = JSON.parse(str);
-    return value;
+    try {
+      if (!this.isValidUsername(username)) return false;
+      const result = await firstValueFrom(this.api.checkUsernameExists(username));
+      const str = JSON.stringify(result);
+      return JSON.parse(str);
+    } catch (e) {
+      console.error("[checkUsernameExists] Error: ", e);
+      return false;
+    }
   }
 
   async checkEmailExists(email: string): Promise<boolean> {
-    if (!this.isValidEmail(email)) return false;
-
-    let value: boolean;
-    const result = await firstValueFrom(this.api.checkEmailExists(email));
-    const str = JSON.stringify(result);
-    value = JSON.parse(str);
-    return value;
+    try {
+      if (!this.isValidEmail(email)) return false;
+      const result = await firstValueFrom(this.api.checkEmailExists(email));
+      const str = JSON.stringify(result);
+      return JSON.parse(str);
+    } catch (e) {
+      console.error("[checkEmailExists] Error: ", e);
+      return false;
+    }
   }
 
   async removeToken() {
@@ -166,7 +170,10 @@ export class Auth {
   }
 
   async onAppResume() {
-    await this.checkToken();
+    const hasToken = await this.checkToken();
+    if (hasToken) {
+      await this.appService.initApp();
+    }
   }
 
   isValidUsername(username: string): boolean {
