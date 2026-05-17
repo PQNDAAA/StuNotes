@@ -39,6 +39,7 @@ export class UsernameFormPage implements OnInit {
     if (usernameForm.valid) {
       this.api.modifyUsername(this.username).subscribe(async () => {
         await this.appService.initAllElements();
+        this.appService.setReady();
         await this.router.navigate(['/tabs']);
       }, error => {
         console.log(error.message);
