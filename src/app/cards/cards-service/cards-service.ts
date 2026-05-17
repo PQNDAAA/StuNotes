@@ -32,6 +32,7 @@ export class CardsService {
   }
 
   async initCards() {
+    console.log("Init Cards");
     await this.refreshCards();
   }
 
@@ -173,6 +174,7 @@ export class CardsService {
       console.log("Le statut de la tâche n°", card.id + " a bien été changé dû à son échéance", card);
       await this.getCardsDB.put(card);
     }));
+    console.log("[SyncOverdueTasks] finsihed");
     await this.refreshCards();
   }
 
@@ -212,6 +214,7 @@ export class CardsService {
       }
       await this.getCardsDB.put(card);
     }));
+    console.log("[SyncTaskReminders] finsihed");
     await this.refreshCards();
   }
 

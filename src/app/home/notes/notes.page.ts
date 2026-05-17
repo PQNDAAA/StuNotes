@@ -13,6 +13,7 @@ import {DatepickerValue} from "ngxsmk-datepicker";
 import {FilterService} from "../filter/service/filter-service";
 import {LocalNotificationService} from "../../notifications/service/local-notification-service";
 import {TranslateService} from "@ngx-translate/core";
+import {App} from "../../app";
 
 @Component({
   selector: 'app-notes',
@@ -23,17 +24,17 @@ import {TranslateService} from "@ngx-translate/core";
 export class NotesPage implements OnInit {
 
   //Data source
-  cards$: Observable<Card[]>;
-  subjects$: Observable<Tags[]>;
-  filter$: Observable<FilterInterface>;
+  cards$!: Observable<Card[]>;
+  subjects$!: Observable<Tags[]>;
+  filter$!: Observable<FilterInterface>;
 
   //Filters streams
   private statusFilter$ = new BehaviorSubject<Cardstatus>(Cardstatus.InProgress);
   private searchFilter$ = new BehaviorSubject<string>('');
 
   //Output view
-  results$: Observable<Card[]>;
-  cardsByFilters$: Observable<Card[]>;
+  results$!: Observable<Card[]>;
+  cardsByFilters$!: Observable<Card[]>;
   hasResultData = true;
 
   defaultStatus = Cardstatus.InProgress;
@@ -51,57 +52,59 @@ export class NotesPage implements OnInit {
 
   constructor(private mc: ModalController, private cs: CardsService,
               private subjectsService: TagsService, private filterService: FilterService
-              , private notificationService: LocalNotificationService, private translate: TranslateService,
-              private ac: AlertController) {
-    this.cards$ = this.cs.cards$;
-    this.subjects$ = this.subjectsService.tags$;
-    this.filter$ = this.filterService.filters$;
+              ,private translate: TranslateService, private ac: AlertController, private appService: App) {
 
-   // this.notificationService.notificationActionPerformed$.subscribe(id => {this.openTaskLocalNotificationPopup(id);});
+    if (this.appService.isReady) {
+      this.cards$ = this.cs.cards$;
+      this.subjects$ = this.subjectsService.tags$;
+      this.filter$ = this.filterService.filters$;
 
-    this.cardsByFilters$ = combineLatest([
-      this.cards$,
-      this.filter$,
-      this.searchFilter$,
-    ]).pipe(
-      map(([cards, filters, query]) => {
+      // this.notificationService.notificationActionPerformed$.subscribe(id => {this.openTaskLocalNotificationPopup(id);});
 
-        return cards.filter(card => {
+      this.cardsByFilters$ = combineLatest([
+        this.cards$,
+        this.filter$,
+        this.searchFilter$,
+      ]).pipe(
+        map(([cards, filters, query]) => {
 
-          const matchDate = filters.date !== null
-            ? this.handleDateFilter(card.deadline)
-            : true;
+          return cards.filter(card => {
 
-          const matchSubjects = filters.tags.size > 0
-            ? filters.tags.has(card.tag.trim())
-            : true;
+            const matchDate = filters.date !== null
+              ? this.handleDateFilter(card.deadline)
+              : true;
 
-          const matchSearch = query
-            ? card.name.toLowerCase().includes(query)
-            : true;
+            const matchSubjects = filters.tags.size > 0
+              ? filters.tags.has(card.tag.trim())
+              : true;
 
-          const matchImportant = filters.important
-            ? card.important === true
-            : true;
+            const matchSearch = query
+              ? card.name.toLowerCase().includes(query)
+              : true;
 
-          return matchSearch && matchSubjects && matchDate && matchImportant;
-        });
-      }),
-      tap(cardsFilter => this.cs.refreshCountCards(cardsFilter)),
-      tap(cardsFilter => console.log("Cartes Filtrées: ", cardsFilter))
-    );
+            const matchImportant = filters.important
+              ? card.important === true
+              : true;
 
-    this.results$ = combineLatest([
-      this.statusFilter$,
-      this.cardsByFilters$
-    ]).pipe(
-      map(([status, cardsFilter]) => {
-        return cardsFilter.filter(card => {
-          return card.status.trim() === status;
-        });
-      }),
-      tap(cards => this.hasResultData = cards.length > 0)
-    );
+            return matchSearch && matchSubjects && matchDate && matchImportant;
+          });
+        }),
+        tap(cardsFilter => this.cs.refreshCountCards(cardsFilter)),
+        tap(cardsFilter => console.log("Cartes Filtrées: ", cardsFilter))
+      );
+
+      this.results$ = combineLatest([
+        this.statusFilter$,
+        this.cardsByFilters$
+      ]).pipe(
+        map(([status, cardsFilter]) => {
+          return cardsFilter.filter(card => {
+            return card.status.trim() === status;
+          });
+        }),
+        tap(cards => this.hasResultData = cards.length > 0)
+      );
+    }
   }
 
   ngOnInit() {

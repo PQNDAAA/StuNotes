@@ -9,6 +9,7 @@ import {App} from "./app";
 import {SocialLogin} from "@capgo/capacitor-social-login";
 import {Capacitor} from "@capacitor/core";
 import {Auth} from "./auth/auth";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
   settings!: ISettingsHome;
 
   constructor(private settingsService: Settings, private platform: Platform, private translate: TranslateService,
-              private languageService: LanguageService, private appService: App, private authService: Auth) {
+              private languageService: LanguageService, private appService: App, private authService: Auth,
+              private router: Router) {
 
     this.translate.addLangs(['fr', 'en']);
     this.checkApp();
@@ -63,6 +65,8 @@ export class AppComponent implements OnInit {
     const isConnected = await this.authService.checkToken();
     if(isConnected) {
       await this.appService.initAllElements();
+      this.appService.setReady();
+      await this.router.navigate(['/tabs']);
     }
 
     setTimeout(async () => {

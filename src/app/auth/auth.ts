@@ -50,7 +50,8 @@ export class Auth {
         if (parse.isNewUser) {
           await this.router.navigate(['/username-form']);
         } else {
-          await this.appService.initAllElements()
+          await this.appService.initAllElements();
+          this.appService.setReady();
           await this.router.navigate(['/tabs']);
         }
       }
@@ -96,6 +97,7 @@ export class Auth {
         } else {
           //On init les elements de l'app
           await this.appService.initAllElements();
+          this.appService.setReady();
           await this.router.navigate(['/tabs']);
         }
       }

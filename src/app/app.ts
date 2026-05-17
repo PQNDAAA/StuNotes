@@ -9,16 +9,23 @@ import {TranslateService} from "@ngx-translate/core";
 import {LanguageService} from "./language/language-service/language-service";
 import {Router} from "@angular/router";
 import {FilterService} from "./home/filter/service/filter-service";
-import {firstValueFrom} from "rxjs";
+import {BehaviorSubject, firstValueFrom} from "rxjs";
 import {TagsService} from "./tags/tags-service/tags-service";
+import {Tags} from "./tags/tags-interface/tags";
 
 @Injectable({
   providedIn: 'root',
 })
 export class App {
 
+  isReady = false;
+
   constructor(private fcm: Fcm, private lns: LocalNotificationService, private cards: CardsService,
               private tagsService: TagsService, private cardsService: CardsService) {
+  }
+
+  setReady(){
+    this.isReady = true;
   }
 
   async initApp() {

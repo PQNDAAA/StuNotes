@@ -19,6 +19,7 @@ export class TagsService{
   constructor() {}
 
   async initTags(){
+    console.log("Init Tags");
     await this.refreshTags();
   }
 

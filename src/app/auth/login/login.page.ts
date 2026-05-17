@@ -51,6 +51,7 @@ export class LoginPage implements OnInit {
 
         //On init les elements de l'app
         await this.app.initAllElements();
+        this.app.setReady();
         await this.router.navigate(['/tabs']);
       } catch (error: any) {
         console.error(error.error.message ?? "Login failed.");
