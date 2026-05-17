@@ -53,7 +53,6 @@ export class NotesPage implements OnInit {
   constructor(private mc: ModalController, private cs: CardsService,
               private subjectsService: TagsService, private filterService: FilterService
               ,private translate: TranslateService, private ac: AlertController, private appService: App) {
-
     if (this.appService.isReady) {
       this.cards$ = this.cs.cards$;
       this.subjects$ = this.subjectsService.tags$;
