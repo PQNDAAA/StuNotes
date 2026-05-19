@@ -27,10 +27,6 @@ const routes: Routes = [
     loadChildren: () => import('./settings/settings-data-notes/settings-data-notes.module').then(m => m.SettingsDataNotesPageModule)
   },
   {
-    path: 'account',
-    loadChildren: () => import('./profile/account/account.module').then(m => m.AccountPageModule)
-  },
-  {
     path: 'first-launch',
     loadChildren: () => import('./first-launch/first-launch.module').then( m => m.FirstLaunchPageModule)
   },
@@ -53,7 +49,8 @@ const routes: Routes = [
   {
     path: 'signup-approved',
     loadChildren: () => import('./auth/signup-approved/signup-approved.module').then(m => m.SignupApprovedPageModule)
-  }
+  },
+
 
 
 

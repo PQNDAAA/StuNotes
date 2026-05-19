@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('../../tags/tags.module').then(m => m.TagsPageModule)
       },
       {
+        path: 'profile',
+        loadChildren: () => import('../../profile/profile/profile.module').then(m => m.ProfilePageModule)
+      },
+      {
         path: '',
         redirectTo: 'notes',
         pathMatch: 'full'
