@@ -25,6 +25,7 @@
     "UsernameExists": "❌ Ce pseudonyme existe déjà",
     "Username-WarningMessage": "Au moins 3 caractères (a-z, 0-9, _ et -)",
     "Email-WarningMessage": "L'email n'est pas valide",
+    "Birthdate-WarningMessage": "Date invalide",
     "Password-WarningMessage": "Le mot de passe doit contenir au moins: \n- 8 caractères \n- Une majuscule \n- Une minuscule \n- Un chiffre \n- Un caractère spécial (!@#$%^&*_-+=)"
   },
   "HOME": {

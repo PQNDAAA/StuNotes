@@ -25,6 +25,7 @@
     "UsernameExists": "❌ This username already exists",
     "Username-WarningMessage": "Minimum 3 characters (a-z, 0-9, _ and -)",
     "Email-WarningMessage": "The email is not valid",
+    "Birthdate-WarningMessage": "Invalid Date",
     "Password-WarningMessage": "The password must contain at least: \n- 8 characters \n- One uppercase \n- One lowercase \n- One number \n- One special character (!@#$%^&*_-+=)"
   },
   "HOME": {

@@ -56,8 +56,15 @@
         </ion-item>
         <ion-item lines="none" class="inputElement">
           <ion-icon slot="start" name="gift-outline"></ion-icon>
-          <ion-input type="date" labelPlacement="stacked" label="{{'SIGNUP.DateBirthday' | translate}}"
-                     name="dateOfBirthday" [(ngModel)]="newUser.dateOfBirthday" [required]="true"></ion-input>
+          <div class="warning-input-container">
+          <ion-input labelPlacement="stacked" label="{{'SIGNUP.DateBirthday' | translate}}" name="birthdate"
+                     [required]="true" [(ngModel)]="newUser.dateOfBirthday" (ionInput)="onDateInputChange($event)"
+                     [maxlength]="10" placeholder="jj/mm/aaaa">
+          </ion-input>
+          <ion-label *ngIf="!isValidBirthdate && newUser.dateOfBirthday.length >= 6" style="white-space: pre-line">
+            {{ 'SIGNUP.Birthdate-WarningMessage' | translate }}
+          </ion-label>
+          </div>
         </ion-item>
         <ion-button id="validbtn" expand="block" class="validBtn"
                     [disabled]="!signupForm.valid || !(isValidForm())"
