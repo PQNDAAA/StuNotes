@@ -3,9 +3,10 @@
     <ion-avatar>
       <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
     </ion-avatar>
-  <div class="user-maininformation">
-    <ion-label class="username">dylangvt_</ion-label>
-    <ion-label class="email">gayvallet.dylan&#64;gmail.com</ion-label>
+  <div class="user-maininformation" *ngIf="user$ | async as profile">
+    <ion-label class="username">{{profile.username}}</ion-label>
+    <ion-label class="email">{{profile.email}}</ion-label>
+    <ion-label class="email">{{profile.email}}</ion-label>
   </div>
 
   <ion-list lines="none">

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {BehaviorSubject} from "rxjs";
+import {defaultUser, UserInterface} from "../interface/user-interface";
 
 @Component({
   selector: 'app-profile',
@@ -8,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilePage implements OnInit {
 
-  constructor() { }
+  userSubject = new BehaviorSubject<UserInterface>(defaultUser);
+  user$ = this.userSubject.asObservable();
+
+  constructor() {
+  }
 
   ngOnInit() {
+    this.userSubject.subscribe(value => {
+      console.log(value);
+    });
   }
 
 }

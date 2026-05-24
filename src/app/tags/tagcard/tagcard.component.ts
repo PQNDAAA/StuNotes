@@ -2,8 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AlertController, IonicModule, ModalController} from "@ionic/angular";
 import {Tags} from "../tags-interface/tags";
 import {TagsService} from "../tags-service/tags-service";
-import {Haptics, ImpactStyle} from "@capacitor/haptics";
-import {async} from "rxjs";
 import {AddtagComponent} from "../addtag/addtag.component";
 import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
