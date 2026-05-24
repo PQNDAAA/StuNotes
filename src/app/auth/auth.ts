@@ -123,7 +123,7 @@ export class Auth {
       const str = JSON.stringify(response);
       const value = JSON.parse(str);
 
-      if (!value) {
+      if (!value.isExisting) {
         await this.removeToken();
         return false;
       }
