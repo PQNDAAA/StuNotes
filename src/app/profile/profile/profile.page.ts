@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 import {defaultUser, UserInterface} from "../interface/user-interface";
 import {Api} from "../../api/services/api";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-profile',
@@ -14,15 +15,26 @@ export class ProfilePage implements OnInit {
   userSubject = new BehaviorSubject<UserInterface>(defaultUser);
   user$ = this.userSubject.asObservable();
 
-  constructor(private apiService: Api) {
+  constructor(private apiService: Api, private translateService: TranslateService) {
   }
 
-  ngOnInit() {
-    this.apiService.getUserById().subscribe(response => {
-      const str = JSON.stringify(response);
-      const value = JSON.parse(str);
-      this.refreshUserValues({email: value.user.email, username: value.user.username,
-        birthDate: value.user.dateofbirthday});
+  ngOnInit(): void {
+    }
+
+  ionViewWillEnter() {
+    this.getUserValues();
+  }
+
+  getUserValues() {
+    this.apiService.getUserById().subscribe((response : any) => {
+      this.refreshUserValues({
+        email: response.user.email, username: response.user.username,
+        birthDate: new Date(response.user.dateofbirthday).toLocaleString(this.getCurrentLang(), {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      });
     }, (err) => {
       console.error(err.error.message);
     });
@@ -31,6 +43,10 @@ export class ProfilePage implements OnInit {
   refreshUserValues(value: UserInterface) {
     this.userSubject.next(value);
     console.log("[RefreshUserValues] finished");
+  }
+
+  getCurrentLang() {
+    return this.translateService.getCurrentLang();
   }
 
 }

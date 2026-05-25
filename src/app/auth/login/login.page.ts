@@ -43,11 +43,9 @@ export class LoginPage implements OnInit {
       this.loginInProgress = true;
 
       try {
-        const response = await firstValueFrom(this.api.login(this.currentUser));
+        const response : any = await firstValueFrom(this.api.login(this.currentUser));
         // On stocke le token
-        const str = JSON.stringify(response);
-        const result = JSON.parse(str);
-        localStorage.setItem('token', result.accessToken);
+        localStorage.setItem('token', response.accessToken);
 
         //On init les elements de l'app
         await this.app.initAllElements();

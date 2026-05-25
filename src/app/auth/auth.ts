@@ -39,15 +39,13 @@ export class Auth {
 
         console.log("Utilisateur Android: ", req.profile.name, req.profile.email);
 
-        const response = await firstValueFrom(this.api.googleSignup(idToken));
+        const response : any = await firstValueFrom(this.api.googleSignup(idToken));
         // On stocke le token
-        const str = JSON.stringify(response);
-        const parse = JSON.parse(str);
-        localStorage.setItem('token', parse.accessToken);
+        localStorage.setItem('token', response.accessToken);
 
-        console.log("Nouveau utilisateur : ", parse.isNewUser);
+        console.log("Nouveau utilisateur : ", response.isNewUser);
 
-        if (parse.isNewUser) {
+        if (response.isNewUser) {
           await this.router.navigate(['/username-form']);
         } else {
           await this.appService.initAllElements();
@@ -86,13 +84,11 @@ export class Auth {
 
         console.log("Utilisateur Apple: ", req);
 
-        const response = await firstValueFrom(this.api.appleSignup(idToken, email, user));
+        const response : any = await firstValueFrom(this.api.appleSignup(idToken, email, user));
         // On stocke le token
-        const str = JSON.stringify(response);
-        const parse = JSON.parse(str);
-        localStorage.setItem('token', parse.accessToken);
+        localStorage.setItem('token', response.accessToken);
 
-        if (parse.isNewUser) {
+        if (response.isNewUser) {
           await this.router.navigate(['/username-form']);
         } else {
           //On init les elements de l'app
@@ -119,11 +115,9 @@ export class Auth {
         return false;
       }
 
-      const response = await firstValueFrom(this.api.getUserById());
-      const str = JSON.stringify(response);
-      const value = JSON.parse(str);
+      const response : any = await firstValueFrom(this.api.getUserById());
 
-      if (!value.isExisting) {
+      if (!response.isExisting) {
         await this.removeToken();
         return false;
       }
@@ -144,9 +138,8 @@ export class Auth {
   async checkUsernameExists(username: string): Promise<boolean> {
     try {
       if (!this.isValidUsername(username)) return false;
-      const result = await firstValueFrom(this.api.checkUsernameExists(username));
-      const str = JSON.stringify(result);
-      return JSON.parse(str);
+      const result : any = await firstValueFrom(this.api.checkUsernameExists(username));
+      return result;
     } catch (e) {
       console.error("[checkUsernameExists] Error: ", e);
       return false;
@@ -156,9 +149,8 @@ export class Auth {
   async checkEmailExists(email: string): Promise<boolean> {
     try {
       if (!this.isValidEmail(email)) return false;
-      const result = await firstValueFrom(this.api.checkEmailExists(email));
-      const str = JSON.stringify(result);
-      return JSON.parse(str);
+      const result : any = await firstValueFrom(this.api.checkEmailExists(email));
+      return result;
     } catch (e) {
       console.error("[checkEmailExists] Error: ", e);
       return false;

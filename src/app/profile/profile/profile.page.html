@@ -8,6 +8,27 @@
       <ion-label class="email">{{ profile.email }}</ion-label>
     </div>
 
+    <ion-list class="stats-list" lines="none">
+      <ion-item class="stats-item" lines="none">
+        <div class="stats-content">
+        <ion-label class="stats-value">0</ion-label>
+        <ion-label class="stats-title">Tâches</ion-label>
+        </div>
+      </ion-item>
+      <ion-item class="stats-item" lines="none">
+        <div class="stats-content">
+        <ion-label class="stats-value">0</ion-label>
+        <ion-label class="stats-title">Matières</ion-label>
+        </div>
+      </ion-item>
+      <ion-item class="stats-item" lines="none">
+        <div class="stats-content">
+        <ion-label class="stats-value">0</ion-label>
+        <ion-label class="stats-title">Groupes</ion-label>
+        </div>
+      </ion-item>
+    </ion-list>
+
     <ion-list lines="none" *ngIf="user$ | async as profile">
       <ion-list-header>Mes Informations</ion-list-header>
 
