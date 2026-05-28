@@ -68,4 +68,9 @@ export class TagsService{
     this.tagsSubject.next(allTags);
     console.log(allTags);
   }
+
+  async countTags() : Promise<number>{
+    const allTags = await this.getTags();
+    return allTags.length;
+  }
 }

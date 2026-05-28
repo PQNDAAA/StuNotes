@@ -44,6 +44,11 @@ export class CardsService {
     return this.getCardsDB.toArray();
   }
 
+  async getCountCards(): Promise<number> {
+    const allCards = await this.getCards();
+    return allCards.length;
+  }
+
   async refreshCards() {
     const allCards = await this.getCards();
     this.cardsSubject.next(allCards);

@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, firstValueFrom} from "rxjs";
 import {defaultUser, UserInterface} from "../interface/user-interface";
 import {Api} from "../../api/services/api";
 import {TranslateService} from "@ngx-translate/core";
+import {TagsService} from "../../tags/tags-service/tags-service";
+import {LoadingController} from "@ionic/angular";
+import {CardsService} from "../../cards/cards-service/cards-service";
 
 @Component({
   selector: 'app-profile',
@@ -15,14 +18,45 @@ export class ProfilePage implements OnInit {
   userSubject = new BehaviorSubject<UserInterface>(defaultUser);
   user$ = this.userSubject.asObservable();
 
-  constructor(private apiService: Api, private translateService: TranslateService) {
+  tags = 0;
+  cards = 0;
+
+  isLoading = false;
+
+  constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
+              private cardsService: CardsService) {
   }
 
   ngOnInit(): void {
     }
 
-  ionViewWillEnter() {
-    this.getUserValues();
+  async ionViewWillEnter() {
+    console.log("Loading...");
+    this.isLoading = true;
+    try {
+      await Promise.all([firstValueFrom(this.apiService.getUserById()).then((response: any) => {
+        this.refreshUserValues({
+          email: response.user.email, username: response.user.username,
+          birthDate: new Date(response.user.dateofbirthday).toLocaleString(this.getCurrentLang(), {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
+        });
+      }),
+        this.cardsService.getCountCards().then(cards =>{
+          console.log("Nombre de tâches: ", cards);
+          this.cards = cards;
+        }),
+        this.tagsService.countTags().then(tags => {
+          console.log("Nombre de matières: ", tags);
+          this.tags = tags;
+        })
+      ]);
+    } finally {
+      console.log("Loading done");
+      this.isLoading = false;
+    }
   }
 
   getUserValues() {

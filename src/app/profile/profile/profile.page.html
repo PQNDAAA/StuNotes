@@ -1,5 +1,8 @@
 <ion-content class="elements-content">
-  <div class="profile-container">
+  <ion-item *ngIf="isLoading">
+    <ion-spinner name="circular"></ion-spinner>
+  </ion-item>
+  <div class="profile-container" *ngIf="!isLoading">
     <ion-avatar>
       <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
     </ion-avatar>
@@ -11,20 +14,20 @@
     <ion-list class="stats-list" lines="none">
       <ion-item class="stats-item" lines="none">
         <div class="stats-content">
-        <ion-label class="stats-value">0</ion-label>
-        <ion-label class="stats-title">Tâches</ion-label>
+          <ion-label class="stats-value">{{ cards }}</ion-label>
+          <ion-label class="stats-title">Tâches</ion-label>
         </div>
       </ion-item>
       <ion-item class="stats-item" lines="none">
         <div class="stats-content">
-        <ion-label class="stats-value">0</ion-label>
-        <ion-label class="stats-title">Matières</ion-label>
+          <ion-label class="stats-value">{{ tags }}</ion-label>
+          <ion-label class="stats-title">Matières</ion-label>
         </div>
       </ion-item>
       <ion-item class="stats-item" lines="none">
         <div class="stats-content">
-        <ion-label class="stats-value">0</ion-label>
-        <ion-label class="stats-title">Groupes</ion-label>
+          <ion-label class="stats-value">0</ion-label>
+          <ion-label class="stats-title">Groupes</ion-label>
         </div>
       </ion-item>
     </ion-list>
@@ -33,46 +36,46 @@
       <ion-list-header>Mes Informations</ion-list-header>
 
       <div class="items-container">
-      <ion-item lines="none">
-        <div class="icon-container">
-          <ion-icon name="person-outline"></ion-icon>
-        </div>
-        <div class="information-container">
-          <ion-label class="information-label-stacked">Nom d'utilisateur</ion-label>
-          <ion-label class="information-label">{{ profile.username }}</ion-label>
-        </div>
-        <ion-button fill="clear" slot="end">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
+        <ion-item lines="none">
+          <div class="icon-container">
+            <ion-icon name="person-outline"></ion-icon>
+          </div>
+          <div class="information-container">
+            <ion-label class="information-label-stacked">Nom d'utilisateur</ion-label>
+            <ion-label class="information-label">{{ profile.username }}</ion-label>
+          </div>
+          <ion-button fill="clear" slot="end">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
 
-      <ion-item lines="none">
-        <div class="icon-container">
-          <ion-icon name="mail-outline"></ion-icon>
-        </div>
+        <ion-item lines="none">
+          <div class="icon-container">
+            <ion-icon name="mail-outline"></ion-icon>
+          </div>
 
-        <div class="information-container">
-          <ion-label class="information-label-stacked">Email</ion-label>
-          <ion-label class="information-label">{{ profile.email }}</ion-label>
-        </div>
-        <ion-button fill="clear" slot="end">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
+          <div class="information-container">
+            <ion-label class="information-label-stacked">Email</ion-label>
+            <ion-label class="information-label">{{ profile.email }}</ion-label>
+          </div>
+          <ion-button fill="clear" slot="end">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
 
-      <ion-item lines="none">
-        <div class="icon-container">
-          <ion-icon name="calendar-outline"></ion-icon>
-        </div>
+        <ion-item lines="none">
+          <div class="icon-container">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </div>
 
-        <div class="information-container">
-          <ion-label class="information-label-stacked">Date de naissance</ion-label>
-          <ion-label class="information-label">{{ profile.birthDate }}</ion-label>
-        </div>
-        <ion-button fill="clear" slot="end">
-          <ion-icon name="create-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
+          <div class="information-container">
+            <ion-label class="information-label-stacked">Date de naissance</ion-label>
+            <ion-label class="information-label">{{ profile.birthDate }}</ion-label>
+          </div>
+          <ion-button fill="clear" slot="end">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
       </div>
     </ion-list>
 
