@@ -23,6 +23,9 @@ export class ProfilePage implements OnInit {
 
   isLoading = false;
 
+  elapsed = 0;
+  intervalId : ReturnType<typeof setInterval> | null = null;
+
   constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
               private cardsService: CardsService) {
   }
@@ -31,6 +34,9 @@ export class ProfilePage implements OnInit {
     }
 
   async ionViewWillEnter() {
+    this.intervalId = setInterval(() => {
+      this.elapsed+=4;
+    }, 4);
     console.log("Loading...");
     this.isLoading = true;
     try {
@@ -54,6 +60,12 @@ export class ProfilePage implements OnInit {
         })
       ]);
     } finally {
+      if(this.intervalId){
+        clearInterval(this.intervalId);
+        this.intervalId = null;
+        console.log("Le page de profil a chargé en " + this.elapsed + "ms");
+        this.elapsed = 0;
+      }
       console.log("Loading done");
       this.isLoading = false;
     }

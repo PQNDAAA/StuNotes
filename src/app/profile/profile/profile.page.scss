@@ -5,8 +5,18 @@
   justify-content: center;
 
   margin-top: 50px;
-
 }
+.spinner-item{
+  border: none;
+}
+
+.spinner-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
 .user-maininformation{
   display: flex;
   flex-direction: column;
