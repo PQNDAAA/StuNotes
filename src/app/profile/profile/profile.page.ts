@@ -26,6 +26,8 @@ export class ProfilePage implements OnInit {
   elapsed = 0;
   intervalId : ReturnType<typeof setInterval> | null = null;
 
+  isEditing = false;
+
   constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
               private cardsService: CardsService) {
   }
@@ -93,6 +95,15 @@ export class ProfilePage implements OnInit {
 
   getCurrentLang() {
     return this.translateService.getCurrentLang();
+  }
+
+  startEditing() {
+    if(this.isEditing) return;
+    this.isEditing = true;
+  }
+
+  closeEditing() {
+    this.isEditing = false;
   }
 
 }
