@@ -1,3 +1,13 @@
-<p>
-  information-card works!
-</p>
+<ion-item lines="none">
+  <div class="icon-container">
+    <ion-icon name="calendar-outline"></ion-icon>
+  </div>
+
+  <div class="information-container">
+    <ion-label class="information-label-stacked">Date de naissance</ion-label>
+    <ion-label class="information-label">{{ profile.birthDate }}</ion-label>
+  </div>
+  <ion-button fill="clear" slot="end">
+    <ion-icon name="create-outline"></ion-icon>
+  </ion-button>
+</ion-item>

@@ -1,0 +1,47 @@
+.icon-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+
+  height: 36px;
+  width: 36px;
+
+  background-color: #FFF0E6;
+
+  border-radius: 28%;
+}
+
+.information-container{
+  gap: 2px;
+}
+
+.information-label-stacked {
+  color: var(--ion-color-medium);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.information-label{
+  font-size: 14px;
+}
+
+ion-item{
+  border: 0.5px solid #EEE4DA;
+  padding: 14px 16px;
+
+}
+
+ion-icon{
+  color: #ff8228;
+  font-size: 18px;
+}
+
+.input-editelement{
+  border: 1.5px solid #EEE4DA;
+  border-radius: 8px;
+  font-size: 15px;
+  min-height: 30px;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}

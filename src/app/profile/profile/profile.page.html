@@ -4,6 +4,7 @@
     <ion-spinner name="circular"></ion-spinner>
   </ion-item>
   </div>
+
   <div class="profile-container" *ngIf="!isLoading">
     <ion-avatar>
       <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
@@ -67,19 +68,7 @@
           </ion-button>
         </ion-item>
 
-        <ion-item lines="none">
-          <div class="icon-container">
-            <ion-icon name="calendar-outline"></ion-icon>
-          </div>
-
-          <div class="information-container">
-            <ion-label class="information-label-stacked">Date de naissance</ion-label>
-            <ion-label class="information-label">{{ profile.birthDate }}</ion-label>
-          </div>
-          <ion-button fill="clear" slot="end">
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
+        <app-information-card [profile]="profile"></app-information-card>
       </div>
     </ion-list>
 

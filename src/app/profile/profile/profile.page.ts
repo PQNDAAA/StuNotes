@@ -65,6 +65,7 @@ export class ProfilePage implements OnInit {
       if(this.intervalId){
         clearInterval(this.intervalId);
         this.intervalId = null;
+
         console.log("Le page de profil a chargé en " + this.elapsed + "ms");
         this.elapsed = 0;
       }
