@@ -40,11 +40,17 @@
 
       <div class="items-container">
         <app-information-card [value]="profile.username" title="Nom d'utilisateur" icon="person-outline"
-                              (editingChange)="handleEditing($event)" [index]="1" [activeIndex]="activeEditingIndex"></app-information-card>
+                              (editingChange)="handleEditing($event)" [index]="1"
+                              [activeIndex]="activeEditingIndex" fieldKey="username"
+                              (editingSuccessfully)="loadProfileData()"></app-information-card>
         <app-information-card [value]="profile.email" title="Email" icon="mail-outline"
-                              (editingChange)="handleEditing($event)" [index]="2" [activeIndex]="activeEditingIndex"></app-information-card>
+                              (editingChange)="handleEditing($event)" [index]="2"
+                              [activeIndex]="activeEditingIndex" fieldKey="email"
+                              (editingSuccessfully)="loadProfileData()"></app-information-card>
         <app-information-card [value]="profile.birthDate" title="Date de naissance" icon="calendar-outline"
-                              (editingChange)="handleEditing($event)" [index]="3" [activeIndex]="activeEditingIndex"></app-information-card>
+                              (editingChange)="handleEditing($event)" [index]="3"
+                              [activeIndex]="activeEditingIndex" fieldKey="dateofbirthday"
+                              (editingSuccessfully)="loadProfileData()"></app-information-card>
       </div>
     </ion-list>
 

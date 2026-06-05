@@ -14,6 +14,7 @@ import {CardsService} from "../../cards/cards-service/cards-service";
 })
 export class ProfilePage implements OnInit {
 
+  //UI
   userSubject = new BehaviorSubject<UserInterface>(defaultUser);
   user$ = this.userSubject.asObservable();
 
@@ -25,8 +26,6 @@ export class ProfilePage implements OnInit {
   elapsed = 0;
   intervalId : ReturnType<typeof setInterval> | null = null;
 
-  userInformationIsEditing = false;
-
   activeEditingIndex: number = 0;
 
   constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
@@ -35,6 +34,10 @@ export class ProfilePage implements OnInit {
   ngOnInit(): void {}
 
   async ionViewWillEnter() {
+    await this.loadProfileData();
+  }
+
+  async loadProfileData(){
     this.intervalId = setInterval(() => {
       this.elapsed+=4;
     }, 4);
@@ -71,21 +74,6 @@ export class ProfilePage implements OnInit {
       console.log("Loading done");
       this.isLoading = false;
     }
-  }
-
-  getUserValues() {
-    this.apiService.getUserById().subscribe((response : any) => {
-      this.refreshUserValues({
-        email: response.user.email, username: response.user.username,
-        birthDate: new Date(response.user.dateofbirthday).toLocaleString(this.getCurrentLang(), {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      });
-    }, (err) => {
-      console.error(err.error.message);
-    });
   }
 
   refreshUserValues(value: UserInterface) {

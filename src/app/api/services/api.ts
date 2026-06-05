@@ -12,8 +12,8 @@ export class Api {
 
   constructor(private http: HttpClient) {}
 
-  getUsers() {
-    return this.http.get(`${this.baseUrl}/users`);
+  modifyUser(targetKey: string, newValue: string) {
+    return this.http.post(`${this.baseUrl}/users/profile`, {targetKey, newValue});
   }
 
   checkUsernameExists(username: string) {
@@ -33,13 +33,14 @@ export class Api {
   }
 
   getUserById(){
-    return this.http.get(`${this.baseUrl}/users/username`);
+    return this.http.get(`${this.baseUrl}/users/profile`);
   }
 
   createSubject(name: string) {
     return this.http.post(`${this.baseUrl}/users/createSubject`, { name });
   }
 
+  //A MODIFIER L URL COMME LE MODIFY USER
   modifyUsername(username: string){
     return this.http.post(`${this.baseUrl}/users/username/edit`, { username });
   }
