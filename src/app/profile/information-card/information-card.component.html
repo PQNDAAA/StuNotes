@@ -1,13 +1,15 @@
 <ion-item lines="none">
   <div class="icon-container">
-    <ion-icon name="calendar-outline"></ion-icon>
+    <ion-icon [name]="icon"></ion-icon>
   </div>
 
   <div class="information-container">
-    <ion-label class="information-label-stacked">Date de naissance</ion-label>
-    <ion-label class="information-label">{{ profile.birthDate }}</ion-label>
+    <ion-label class="information-label-stacked">{{ title }}</ion-label>
+    <ion-label class="information-label" *ngIf="!isEditing">{{ value }}</ion-label>
+    <ion-input *ngIf="isEditing" class="input-editelement" type="text" [value]="value"></ion-input>
   </div>
-  <ion-button fill="clear" slot="end">
+  <ion-button *ngIf="isEditing" (click)="closeEditing()">OK</ion-button>
+  <ion-button fill="clear" slot="end" (click)="startEditing()" *ngIf="!isEditing">
     <ion-icon name="create-outline"></ion-icon>
   </ion-button>
 </ion-item>

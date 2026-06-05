@@ -4,7 +4,6 @@ import {defaultUser, UserInterface} from "../interface/user-interface";
 import {Api} from "../../api/services/api";
 import {TranslateService} from "@ngx-translate/core";
 import {TagsService} from "../../tags/tags-service/tags-service";
-import {LoadingController} from "@ionic/angular";
 import {CardsService} from "../../cards/cards-service/cards-service";
 
 @Component({
@@ -26,14 +25,14 @@ export class ProfilePage implements OnInit {
   elapsed = 0;
   intervalId : ReturnType<typeof setInterval> | null = null;
 
-  isEditing = false;
+  userInformationIsEditing = false;
+
+  activeEditingIndex: number = 0;
 
   constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
-              private cardsService: CardsService) {
-  }
+              private cardsService: CardsService) {}
 
-  ngOnInit(): void {
-    }
+  ngOnInit(): void {}
 
   async ionViewWillEnter() {
     this.intervalId = setInterval(() => {
@@ -98,13 +97,8 @@ export class ProfilePage implements OnInit {
     return this.translateService.getCurrentLang();
   }
 
-  startEditing() {
-    if(this.isEditing) return;
-    this.isEditing = true;
-  }
-
-  closeEditing() {
-    this.isEditing = false;
+  handleEditing(value: number) {
+    this.activeEditingIndex = value;
   }
 
 }

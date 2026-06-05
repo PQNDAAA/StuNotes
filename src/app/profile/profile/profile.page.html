@@ -39,36 +39,12 @@
       <ion-list-header>Mes Informations</ion-list-header>
 
       <div class="items-container">
-        <ion-item lines="none">
-          <div class="icon-container">
-            <ion-icon name="person-outline"></ion-icon>
-          </div>
-          <div class="information-container">
-            <ion-label class="information-label-stacked">Nom d'utilisateur</ion-label>
-            <ion-label *ngIf="!isEditing" class="information-label">{{ profile.username }}</ion-label>
-            <ion-input *ngIf="isEditing" class="input-editelement" type="text" [value]="profile.username"></ion-input>
-          </div>
-          <ion-button *ngIf="isEditing" (click)="closeEditing()">OK</ion-button>
-          <ion-button fill="clear" slot="end" (click)="startEditing()" *ngIf="!isEditing">
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-
-        <ion-item lines="none">
-          <div class="icon-container">
-            <ion-icon name="mail-outline"></ion-icon>
-          </div>
-
-          <div class="information-container">
-            <ion-label class="information-label-stacked">Email</ion-label>
-            <ion-label class="information-label">{{ profile.email }}</ion-label>
-          </div>
-          <ion-button fill="clear" slot="end">
-            <ion-icon name="create-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
-
-        <app-information-card [profile]="profile"></app-information-card>
+        <app-information-card [value]="profile.username" title="Nom d'utilisateur" icon="person-outline"
+                              (editingChange)="handleEditing($event)" [index]="1" [activeIndex]="activeEditingIndex"></app-information-card>
+        <app-information-card [value]="profile.email" title="Email" icon="mail-outline"
+                              (editingChange)="handleEditing($event)" [index]="2" [activeIndex]="activeEditingIndex"></app-information-card>
+        <app-information-card [value]="profile.birthDate" title="Date de naissance" icon="calendar-outline"
+                              (editingChange)="handleEditing($event)" [index]="3" [activeIndex]="activeEditingIndex"></app-information-card>
       </div>
     </ion-list>
 
