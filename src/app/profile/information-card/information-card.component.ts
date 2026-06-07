@@ -5,6 +5,7 @@ import {NgIf} from "@angular/common";
 import {Api} from "../../api/services/api";
 import {FormsModule} from "@angular/forms";
 import {firstValueFrom} from "rxjs";
+import {Auth} from "../../auth/auth";
 
 @Component({
   selector: 'app-information-card',
@@ -27,10 +28,12 @@ export class InformationCardComponent  implements OnInit {
 
   newValue!: string;
 
+  isValidBirthday: boolean = true;
+
   @Output() editingChange = new EventEmitter<number>();
   @Output() editingSuccessfully = new EventEmitter<void>();
 
-  constructor(private api: Api) { }
+  constructor(private api: Api, private authService: Auth) { }
 
   ngOnInit() {
     this.newValue = this.value;
@@ -44,6 +47,7 @@ export class InformationCardComponent  implements OnInit {
 
   async closeEditing() {
     try{
+      if(this.fieldKey === 'dateofbirthday' && !this.isValidBirthday) return;
       if(this.newValue === this.value) return;
 
       const result = await firstValueFrom(this.api.modifyUser(this.fieldKey, this.newValue));
@@ -55,6 +59,20 @@ export class InformationCardComponent  implements OnInit {
       console.error(e);
     } finally {
       this.editingChange.emit(0);
+    }
+  }
+
+  onDateInputChange(event: any) {
+    let value = event.target.value.replace(/\D/g, ''); //Chiffres uniquement
+    value = this.authService.onDateInputChanged(value); //Sous forme 19'/'12...
+    event.target.value = value;
+
+    if(value.length === 10){
+      this.isValidBirthday = this.authService.checkBirthDate(value);
+      console.log(this.isValidBirthday);
+    } else {
+      this.isValidBirthday = false;
+      console.log(this.isValidBirthday);
     }
   }
 

@@ -47,11 +47,7 @@ export class ProfilePage implements OnInit {
       await Promise.all([firstValueFrom(this.apiService.getUserById()).then((response: any) => {
         this.refreshUserValues({
           email: response.user.email, username: response.user.username,
-          birthDate: new Date(response.user.dateofbirthday).toLocaleString(this.getCurrentLang(), {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })
+          birthDate: new Date(response.user.dateofbirthday).toLocaleDateString(this.getCurrentLang())
         });
       }),
         this.cardsService.getCountCards().then(cards =>{

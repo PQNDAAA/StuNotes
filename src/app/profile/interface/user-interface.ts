@@ -5,7 +5,7 @@ export interface UserInterface {
 }
 
 export const defaultUser : UserInterface = {
-  email:"ezadzadzaf",
-  username:"gzgzfzaa",
+  email:"",
+  username:"",
   birthDate:"",
 }

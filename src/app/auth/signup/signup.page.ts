@@ -108,36 +108,13 @@ export class SignupPage implements OnInit {
 
   onDateInputChange(event: any) {
     let value = event.target.value.replace(/\D/g, ''); //Chiffres uniquement
-    if (value.length >= 3) {
-      value = value.slice(0, 2) + '/' + value.slice(2);
-    }
-    if (value.length >= 6) {
-      value = value.slice(0, 5) + '/' + value.slice(5);
-    }
-    event.target.value = value;
+    event.target.value = this.authService.onDateInputChanged(value);
 
     if(value.length === 10) {
-      this.isValidBirthdate = this.checkBirthDate(value);
+      this.isValidBirthdate = this.authService.checkBirthDate(value);
     } else {
       this.isValidBirthdate = false;
     }
-  }
-
-  checkBirthDate(value: string): boolean {
-    //Split va décomposer la date selon le séparateur "/" en créant une liste ordonnée => 06/11/2003 => 06 , 11 , 2003.
-    const [day, month, year] = value.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-
-    if (
-      date.getFullYear() !== year ||
-      date.getMonth() !== month - 1 ||
-      date.getDate() !== day
-    ) return false;
-
-    const maxDate = new Date();
-    const minDate = new Date(new Date(new Date().setFullYear(new Date().getFullYear() - 120)));
-
-    return date >= minDate && date <= maxDate;
   }
 
   private clearNewUser() {

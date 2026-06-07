@@ -178,4 +178,31 @@ export class Auth {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z.-]{2,}$/.test(email);
   }
 
+  onDateInputChanged(value : any) {
+    if(value.length >= 3){
+      value = value.slice(0,2) + '/' + value.slice(2);
+    }
+    if(value.length >= 6){
+      value = value.slice(0,5) + '/' + value.slice(5);
+    }
+    return value;
+  }
+
+  checkBirthDate(value: string): boolean {
+    //Split va décomposer la date selon le séparateur "/" en créant une liste ordonnée => 06/11/2003 => 06 , 11 , 2003.
+    const [day, month, year] = value.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month - 1 ||
+      date.getDate() !== day
+    ) return false;
+
+    const maxDate = new Date();
+    const minDate = new Date(new Date(new Date().setFullYear(new Date().getFullYear() - 120)));
+
+    return date >= minDate && date <= maxDate;
+  }
+
 }
