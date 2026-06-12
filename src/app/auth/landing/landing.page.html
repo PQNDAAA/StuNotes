@@ -15,14 +15,14 @@
     </div>
 
     <ion-list class="features-list" lines="none">
-      <ion-label class="feature">📝 Notes</ion-label>
-      <ion-label class="feature">📚 Matières</ion-label>
-      <ion-label class="feature">👥 Groupes</ion-label>
+      <ion-label class="feature">📝 {{ 'SETTINGS.Tasks' | translate}}</ion-label>
+      <ion-label class="feature">📚 {{ 'SETTINGS.Subjects' | translate}}</ion-label>
+      <ion-label class="feature">👥 {{ 'HOME.Groups' | translate}}</ion-label>
     </ion-list>
 
     <ion-list class="cta-list" lines="none">
-      <ion-button expand="block" class="signup-button" [routerLink]="['/signup']">Créer un compte</ion-button>
-      <ion-button expand="block" fill="outline" class="login-button" [routerLink]="['/login']">Se connecter</ion-button>
+      <ion-button expand="block" class="signup-button" [routerLink]="['/signup']">{{'SIGNUP.CreateAnAccountTitle' | translate}}</ion-button>
+      <ion-button expand="block" fill="outline" class="login-button" [routerLink]="['/login']">{{ 'LOGIN.Login' | translate}}</ion-button>
     </ion-list>
 
 
