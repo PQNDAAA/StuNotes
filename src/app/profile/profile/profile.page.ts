@@ -24,22 +24,24 @@ export class ProfilePage implements OnInit {
   isLoading = false;
 
   elapsed = 0;
-  intervalId : ReturnType<typeof setInterval> | null = null;
+  intervalId: ReturnType<typeof setInterval> | null = null;
 
   activeEditingIndex: number = 0;
 
   constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
-              private cardsService: CardsService) {}
+              private cardsService: CardsService) {
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   async ionViewWillEnter() {
     await this.loadProfileData();
   }
 
-  async loadProfileData(){
+  async loadProfileData() {
     this.intervalId = setInterval(() => {
-      this.elapsed+=4;
+      this.elapsed += 4;
     }, 4);
     console.log("Loading...");
     this.isLoading = true;
@@ -47,20 +49,20 @@ export class ProfilePage implements OnInit {
       await Promise.all([firstValueFrom(this.apiService.getUserById()).then((response: any) => {
         this.refreshUserValues({
           email: response.user.email, username: response.user.username,
-          birthDate: new Date(response.user.dateofbirthday).toLocaleDateString(this.getCurrentLang())
+          birthDate: new Date(this.sliceDate(response.user.dateofbirthday)).toLocaleDateString(this.getCurrentLang())
         });
       }),
-        this.cardsService.getCountCards().then(cards =>{
+        this.cardsService.getCountCards().then(cards => {
           console.log("Nombre de tâches: ", cards);
           this.cards = cards;
         }),
         this.tagsService.countTags().then(tags => {
           console.log("Nombre de matières: ", tags);
           this.tags = tags;
-        })
+        }),
       ]);
     } finally {
-      if(this.intervalId){
+      if (this.intervalId) {
         clearInterval(this.intervalId);
         this.intervalId = null;
 
@@ -74,11 +76,19 @@ export class ProfilePage implements OnInit {
 
   refreshUserValues(value: UserInterface) {
     this.userSubject.next(value);
+    console.log(this.userSubject.value);
     console.log("[RefreshUserValues] finished");
   }
 
   getCurrentLang() {
     return this.translateService.getCurrentLang();
+  }
+
+  sliceDate(date: string){
+    const day = date.slice(0,2);
+    const month = date.slice(3,5);
+    const year = date.slice(6,10);
+    return `${year}-${month}-${day}`;
   }
 
   handleEditing(value: number) {
