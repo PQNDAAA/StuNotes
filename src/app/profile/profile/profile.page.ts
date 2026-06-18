@@ -49,7 +49,7 @@ export class ProfilePage implements OnInit {
       await Promise.all([firstValueFrom(this.apiService.getUserById()).then((response: any) => {
         this.refreshUserValues({
           email: response.user.email, username: response.user.username,
-          birthDate: new Date(response.user.dateofbirthday).toISOString().slice(0, 10),
+          birthDate: response.user.dateofbirthday,
         });
         console.log("API: ",response.user);
       }),

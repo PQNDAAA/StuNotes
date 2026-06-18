@@ -18,7 +18,7 @@ import {TranslateService} from "@ngx-translate/core";
   ],
   styleUrls: ['./information-card.component.scss']
 })
-export class InformationCardComponent  implements OnInit {
+export class InformationCardComponent implements OnInit {
 
   @Input() value!: string;
   @Input() title!: string;
@@ -34,27 +34,26 @@ export class InformationCardComponent  implements OnInit {
   @Output() editingChange = new EventEmitter<number>();
   @Output() editingSuccessfully = new EventEmitter<void>();
 
-  constructor(private api: Api, private authService: Auth, private translateService: TranslateService) { }
+  constructor(private api: Api, private authService: Auth, private translateService: TranslateService) {
+  }
 
   ngOnInit() {
     this.newValue = this.value;
   }
 
   startEditing() {
-    if(!this.activeIndex){
+    if (!this.activeIndex) {
       this.editingChange.emit(this.index);
     }
   }
 
   async closeEditing() {
-    try{
-      if(this.fieldKey === 'dateofbirthday' && !this.isValidBirthday) return;
-      if(this.newValue === this.value) return;
+    try {
+      if (this.fieldKey === 'dateofbirthday' && !this.isValidBirthday) return;
+      if (this.newValue === this.value) return;
 
-      const date = this.newValue.slice(0,10);
-
-      const result = await firstValueFrom(this.api.modifyUser(this.fieldKey, date));
-      if(result){
+      const result = await firstValueFrom(this.api.modifyUser(this.fieldKey, this.newValue));
+      if (result) {
         console.log("La BDD a bien été modifié ", result);
         this.editingSuccessfully.emit();
       }
@@ -70,7 +69,7 @@ export class InformationCardComponent  implements OnInit {
     value = this.authService.onDateInputChanged(value); //Sous forme 19'/'12...
     event.target.value = value;
 
-    if(value.length === 10){
+    if (value.length === 10) {
       this.isValidBirthday = this.authService.checkBirthDate(value);
       console.log(this.isValidBirthday);
     } else {
@@ -79,9 +78,8 @@ export class InformationCardComponent  implements OnInit {
     }
   }
 
-  loadValue(){
-    if(this.fieldKey !== 'dateofbirthday') return;
-
+  loadValue() {
+    if (this.fieldKey !== 'dateofbirthday') return;
     return new Date(this.value).toLocaleDateString(this.getCurrentLang(),
       {
         day: '2-digit',
@@ -90,7 +88,9 @@ export class InformationCardComponent  implements OnInit {
       });
   }
 
-  get isEditing(): boolean {return this.activeIndex === this.index;}
+  get isEditing(): boolean {
+    return this.activeIndex === this.index;
+  }
 
   getCurrentLang() {
     return this.translateService.getCurrentLang();

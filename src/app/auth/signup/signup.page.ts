@@ -17,7 +17,7 @@ import {CardsService} from "../../cards/cards-service/cards-service";
 export class SignupPage implements OnInit {
 
   newUser: SignupInterface = {
-    dateOfBirthday:"",
+    dateOfBirthday:"2000-01-01",
     email: "",
     password: "",
     username: ""
@@ -103,12 +103,13 @@ export class SignupPage implements OnInit {
 
   isValidForm(): boolean {
     return this.isValidPassword(this.newUser.password) && this.isValidUsername(this.newUser.username) &&
-      this.isValidEmail(this.newUser.email) && !this.emailExists && !this.usernameExists && this.isValidBirthdate;
+      this.isValidEmail(this.newUser.email) && !this.emailExists && !this.usernameExists;
   }
 
   onDateInputChange(event: any) {
     let value = event.target.value.replace(/\D/g, ''); //Chiffres uniquement
-    event.target.value = this.authService.onDateInputChanged(value);
+    value = this.authService.onDateInputChanged(value);
+    event.target.value = value;
 
     if(value.length === 10) {
       this.isValidBirthdate = this.authService.checkBirthDate(value);
@@ -119,7 +120,7 @@ export class SignupPage implements OnInit {
 
   private clearNewUser() {
     this.newUser = {
-      dateOfBirthday: "",
+      dateOfBirthday: "2000-01-01",
       email: "",
       password: "",
       username: ""
