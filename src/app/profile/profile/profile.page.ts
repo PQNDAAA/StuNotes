@@ -49,8 +49,9 @@ export class ProfilePage implements OnInit {
       await Promise.all([firstValueFrom(this.apiService.getUserById()).then((response: any) => {
         this.refreshUserValues({
           email: response.user.email, username: response.user.username,
-          birthDate: new Date(this.sliceDate(response.user.dateofbirthday)).toLocaleDateString(this.getCurrentLang())
+          birthDate: new Date(response.user.dateofbirthday).toISOString().slice(0, 10),
         });
+        console.log("API: ",response.user);
       }),
         this.cardsService.getCountCards().then(cards => {
           console.log("Nombre de tâches: ", cards);
@@ -76,19 +77,12 @@ export class ProfilePage implements OnInit {
 
   refreshUserValues(value: UserInterface) {
     this.userSubject.next(value);
-    console.log(this.userSubject.value);
+    console.log("UI: ", this.userSubject.value);
     console.log("[RefreshUserValues] finished");
   }
 
   getCurrentLang() {
     return this.translateService.getCurrentLang();
-  }
-
-  sliceDate(date: string){
-    const day = date.slice(0,2);
-    const month = date.slice(3,5);
-    const year = date.slice(6,10);
-    return `${year}-${month}-${day}`;
   }
 
   handleEditing(value: number) {

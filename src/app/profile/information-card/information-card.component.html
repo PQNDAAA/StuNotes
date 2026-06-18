@@ -5,9 +5,22 @@
 
   <div class="information-container">
     <ion-label class="information-label-stacked">{{ title }}</ion-label>
-    <ion-label class="information-label" *ngIf="!isEditing">{{ value }}</ion-label>
-    <ion-input class="input-editelement" *ngIf="fieldKey === 'dateofbirthday' && isEditing"
-               [(ngModel)]="newValue" (ionInput)="onDateInputChange($event)" [maxlength]="10"></ion-input>
+    <ion-label class="information-label" *ngIf="!isEditing">{{ loadValue() ?? value }}</ion-label>
+
+    <ion-datetime-button *ngIf="fieldKey === 'dateofbirthday' && isEditing" datetime="date"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true" *ngIf="fieldKey === 'dateofbirthday' && isEditing">
+      <ng-template>
+        <ion-datetime id="date"
+                      presentation="date"
+                      prefer-wheel="true"
+                      min="1900-01-01"
+                      max="2010-12-31"
+                      [locale]="getCurrentLang()" [(ngModel)]="newValue">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+
     <ion-input *ngIf=" fieldKey !== 'dateofbirthday' && isEditing" class="input-editelement" type="text"
                [(ngModel)]="newValue"></ion-input>
   </div>
