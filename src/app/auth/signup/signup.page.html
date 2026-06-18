@@ -56,8 +56,8 @@
         </ion-item>
         <ion-item lines="none" class="inputElement">
           <ion-icon slot="start" name="gift-outline"></ion-icon>
-          <ion-datetime-button datetime="signup-birthdate" name="birthdate"></ion-datetime-button>
 
+          <ion-datetime-button datetime="signup-birthdate" name="birthdate"></ion-datetime-button>
           <ion-modal [keepContentsMounted]="true">
             <ng-template>
               <ion-datetime id="signup-birthdate"
@@ -68,6 +68,7 @@
                             [(ngModel)]="newUser.dateOfBirthday"></ion-datetime>
             </ng-template>
           </ion-modal>
+
         </ion-item>
         <ion-button id="validbtn" expand="block" class="validBtn"
                     [disabled]="!signupForm.valid || !(isValidForm())"

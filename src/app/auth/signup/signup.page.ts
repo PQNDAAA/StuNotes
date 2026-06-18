@@ -7,6 +7,7 @@ import {LoadingController, ModalController} from "@ionic/angular";
 import {SignupApprovedPage} from "../signup-approved/signup-approved.page";
 import {TranslateService} from "@ngx-translate/core";
 import {CardsService} from "../../cards/cards-service/cards-service";
+import {firstValueFrom} from "rxjs";
 
 @Component({
   selector: 'app-signup',
@@ -33,40 +34,40 @@ export class SignupPage implements OnInit {
 
 
   constructor(private api: Api, private authService: Auth, private modalCtrl: ModalController,
-              private loadingCtrl: LoadingController, private translate: TranslateService,
-              private cardsService: CardsService) {
+              private loadingCtrl: LoadingController) {
   }
 
   ngOnInit() {
   }
 
   async onSignup(form: NgForm) {
-    if (form.valid) {
-      const loading = await this.loadingCtrl.create({
-        spinner: 'crescent',
-      });
+    if (!form.valid) return;
 
-      await loading.present();
-      this.signupInProgress = true;
+    const loading = await this.loadingCtrl.create({
+      spinner: 'crescent',
+    });
 
-      this.api.createUser(this.newUser).subscribe(async response => {
-        await loading.dismiss();
-        this.signupInProgress = false;
+    try{
+        await loading.present();
+        this.signupInProgress = true;
 
-        const modal = await this.modalCtrl.create({
-          component: SignupApprovedPage,
-          breakpoints: [0.48, 0.5, 0.52],
-          initialBreakpoint: 0.5
-        });
-        await modal.present();
-        this.clearNewUser();
-        console.log(response);
+        const response = await firstValueFrom(this.api.createUser(this.newUser));
 
-      }, async error => {
-        await loading.dismiss();
-        this.signupInProgress = false;
-        console.log(error.error.message);
-      });
+        if(response) {
+          const modal = await this.modalCtrl.create({
+            component: SignupApprovedPage,
+            breakpoints: [0.48, 0.5, 0.52],
+            initialBreakpoint: 0.5
+          });
+          await modal.present();
+          this.clearNewUser();
+          console.log(response);
+        }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      await loading.dismiss();
+      this.signupInProgress = false;
     }
   }
 
@@ -104,18 +105,6 @@ export class SignupPage implements OnInit {
   isValidForm(): boolean {
     return this.isValidPassword(this.newUser.password) && this.isValidUsername(this.newUser.username) &&
       this.isValidEmail(this.newUser.email) && !this.emailExists && !this.usernameExists;
-  }
-
-  onDateInputChange(event: any) {
-    let value = event.target.value.replace(/\D/g, ''); //Chiffres uniquement
-    value = this.authService.onDateInputChanged(value);
-    event.target.value = value;
-
-    if(value.length === 10) {
-      this.isValidBirthdate = this.authService.checkBirthDate(value);
-    } else {
-      this.isValidBirthdate = false;
-    }
   }
 
   private clearNewUser() {

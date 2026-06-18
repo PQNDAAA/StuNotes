@@ -64,20 +64,6 @@ export class InformationCardComponent implements OnInit {
     }
   }
 
-  onDateInputChange(event: any) {
-    let value = event.target.value.replace(/\D/g, ''); //Chiffres uniquement
-    value = this.authService.onDateInputChanged(value); //Sous forme 19'/'12...
-    event.target.value = value;
-
-    if (value.length === 10) {
-      this.isValidBirthday = this.authService.checkBirthDate(value);
-      console.log(this.isValidBirthday);
-    } else {
-      this.isValidBirthday = false;
-      console.log(this.isValidBirthday);
-    }
-  }
-
   loadValue() {
     if (this.fieldKey !== 'dateofbirthday') return;
     return new Date(this.value).toLocaleDateString(this.getCurrentLang(),
@@ -95,6 +81,4 @@ export class InformationCardComponent implements OnInit {
   getCurrentLang() {
     return this.translateService.getCurrentLang();
   }
-
-
 }
