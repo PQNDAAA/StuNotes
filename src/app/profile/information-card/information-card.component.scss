@@ -38,12 +38,17 @@ ion-icon{
 }
 
 .input-editelement{
-  border: 1.5px solid #EEE4DA;
-  border-radius: 8px;
+  --color: #1a1a1a;
+  --placeholder-color: #aaa;
   font-size: 15px;
+
   min-height: 30px;
+
   --padding-start: 8px;
   --padding-end: 8px;
+
+  border: 1.5px solid #EEE4DA;
+  border-radius: 8px;
 }
 
 ion-datetime{

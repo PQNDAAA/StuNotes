@@ -21,8 +21,15 @@
       </ng-template>
     </ion-modal>
 
-    <ion-input *ngIf=" fieldKey !== 'dateofbirthday' && isEditing" class="input-editelement" type="text"
-               [(ngModel)]="newValue"></ion-input>
+    <div class="warning-input-container">
+      <ion-input *ngIf=" fieldKey === 'username' && isEditing" class="input-editelement" type="text"
+                 [(ngModel)]="newValue" [maxlength]="20" [counter]="true" (ionInput)="checkInput($event)"></ion-input>
+      <ion-input *ngIf=" fieldKey === 'email' && isEditing" class="input-editelement" type="text"
+                 [(ngModel)]="newValue" (ionInput)="checkInput($event)"></ion-input>
+      <ion-label *ngIf="!isValidInput && !(newValue.length === 0) && isEditing">
+        {{ (fieldKey === "email" ? 'SIGNUP.Email-WarningMessage' : fieldKey === "username" ? 'SIGNUP.Username-WarningMessage' : "") | translate }}
+      </ion-label>
+    </div>
   </div>
   <ion-button *ngIf="isEditing" (click)="closeEditing()">OK</ion-button>
   <ion-button fill="clear" slot="end" (click)="startEditing()" *ngIf="!isEditing">

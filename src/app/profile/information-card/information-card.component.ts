@@ -6,7 +6,7 @@ import {Api} from "../../api/services/api";
 import {FormsModule} from "@angular/forms";
 import {firstValueFrom} from "rxjs";
 import {Auth} from "../../auth/auth";
-import {TranslateService} from "@ngx-translate/core";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-information-card',
@@ -14,7 +14,8 @@ import {TranslateService} from "@ngx-translate/core";
   imports: [
     IonicModule,
     NgIf,
-    FormsModule
+    FormsModule,
+    TranslatePipe
   ],
   styleUrls: ['./information-card.component.scss']
 })
@@ -29,7 +30,8 @@ export class InformationCardComponent implements OnInit {
 
   newValue!: string;
 
-  isValidBirthday: boolean = true;
+  isValidInput: boolean = true;
+
 
   @Output() editingChange = new EventEmitter<number>();
   @Output() editingSuccessfully = new EventEmitter<void>();
@@ -49,8 +51,7 @@ export class InformationCardComponent implements OnInit {
 
   async closeEditing() {
     try {
-      if (this.fieldKey === 'dateofbirthday' && !this.isValidBirthday) return;
-      if (this.newValue === this.value) return;
+      if (this.newValue === this.value || !this.isValidInput) return;
 
       const result = await firstValueFrom(this.api.modifyUser(this.fieldKey, this.newValue));
       if (result) {
@@ -72,6 +73,24 @@ export class InformationCardComponent implements OnInit {
         month: '2-digit',
         year: 'numeric',
       });
+  }
+
+  checkInput(event: any) {
+    const value = event.target.value;
+
+    switch (this.fieldKey) {
+      case 'username':
+        this.newValue = value.replace(/[^a-zA-Z0-9_-]/g, '');
+        event.target.value = this.newValue;
+
+        this.isValidInput = this.authService.isValidUsername(this.newValue);
+        break;
+      case 'email':
+        this.isValidInput = this.authService.isValidEmail(this.newValue);
+        break;
+      default:
+        break;
+    }
   }
 
   get isEditing(): boolean {
