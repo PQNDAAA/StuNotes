@@ -132,5 +132,9 @@
   },
   "PROFILE": {
     "Information": "My Information"
+  },
+  "LANDING": {
+    "1": "Your tasks, your subjects,",
+    "2": "all in one place"
   }
 }

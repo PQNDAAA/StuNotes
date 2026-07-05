@@ -128,5 +128,12 @@
   "CUSTOMREMINDERS": {
     "AddDate": "Ajouter une date",
     "ListCustomReminders": "Liste des rappels personnalisés :"
+  },
+  "PROFILE": {
+  "Information": "My Information"
+  },
+  "LANDING": {
+    "1": "Tes notes, tes matières,",
+    "2": "tout en un seul endroit"
   }
 }
