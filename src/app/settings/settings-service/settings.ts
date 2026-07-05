@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import Dexie, {Table} from "dexie";
 import {BehaviorSubject} from "rxjs";
 import {default_settings, ISettingsHome} from "../settings-interface/isettings-home";
 import {SettingsDB} from "../settings-db/settings-db";

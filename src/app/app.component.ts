@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
     await this.initMainApp();
 
     this.settingsService.settingsHome$.subscribe(async data => {
-      document.body.classList.toggle('dark', data.darkMode);
+      document.body.classList.toggle('dark', data.darkMode === 'dark-mode');
       this.settings = data;
     });
   }

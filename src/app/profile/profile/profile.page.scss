@@ -80,8 +80,14 @@ ion-avatar {
   overflow: hidden;
 }
 
+//Prend le dernier component de la liste
+.items-container:last-child{
+  border-bottom: none;
+}
+
 ion-list {
   width: 100%;
+  background-color: transparent;
 }
 
 ion-list-header{

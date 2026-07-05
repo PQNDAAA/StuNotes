@@ -1,6 +1,6 @@
 export interface ISettingsHome {
   id: number,
-  darkMode: boolean,
+  darkMode: string,
   reminders: boolean,
   manualReminders: boolean,
   urgentDeadlineAlerts: boolean,
@@ -11,7 +11,7 @@ export interface ISettingsHome {
 
 export const default_settings : ISettingsHome = {
   id: 1,
-  darkMode: false,
+  darkMode: "light-mode",
   reminders: true,
   manualReminders: false,
   urgentDeadlineAlerts: false,

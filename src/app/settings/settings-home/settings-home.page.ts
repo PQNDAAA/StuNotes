@@ -80,6 +80,15 @@ export class SettingsHomePage implements OnInit {
     }
   }
 
+  async segmentChanged(event: any) {
+    const value = event.target.value;
+    const modeUpdated = {...this.settings, darkMode: value };
+
+    document.body.classList.toggle('dark', value === 'dark-mode');
+
+    await this.settingsService.changeSettingsValue(modeUpdated);
+  }
+
   async logOut() {
     await this.authService.removeToken();
   }
