@@ -8,6 +8,7 @@ import { ProfilePageRoutingModule } from './profile-routing.module';
 
 import { ProfilePage } from './profile.page';
 import {InformationCardComponent} from "../information-card/information-card.component";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {InformationCardComponent} from "../information-card/information-card.com
         FormsModule,
         IonicModule,
         ProfilePageRoutingModule,
-        InformationCardComponent
+        InformationCardComponent,
+        TranslatePipe
     ],
   declarations: [ProfilePage]
 })

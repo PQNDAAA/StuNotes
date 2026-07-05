@@ -18,28 +18,28 @@
       <ion-item class="stats-item" lines="none">
         <div class="stats-content">
           <ion-label class="stats-value">{{ cards }}</ion-label>
-          <ion-label class="stats-title">Tâches</ion-label>
+          <ion-label class="stats-title">{{ 'SETTINGS.Tasks' | translate }}</ion-label>
         </div>
       </ion-item>
       <ion-item class="stats-item" lines="none">
         <div class="stats-content">
           <ion-label class="stats-value">{{ tags }}</ion-label>
-          <ion-label class="stats-title">Matières</ion-label>
+          <ion-label class="stats-title">{{ 'SETTINGS.Subjects' | translate }}</ion-label>
         </div>
       </ion-item>
       <ion-item class="stats-item" lines="none">
         <div class="stats-content">
           <ion-label class="stats-value">0</ion-label>
-          <ion-label class="stats-title">Groupes</ion-label>
+          <ion-label class="stats-title">{{ 'HOME.Groups' | translate }}</ion-label>
         </div>
       </ion-item>
     </ion-list>
 
     <ion-list lines="none" *ngIf="user$ | async as profile">
-      <ion-list-header>Mes Informations</ion-list-header>
+      <ion-list-header>{{ 'PROFILE.Information' | translate }}</ion-list-header>
 
       <div class="items-container">
-        <app-information-card [value]="profile.username" title="Nom d'utilisateur" icon="person-outline"
+        <app-information-card [value]="profile.username" [title]="'SIGNUP.Username' | translate" icon="person-outline"
                               (editingChange)="handleEditing($event)" [index]="1"
                               [activeIndex]="activeEditingIndex" fieldKey="username"
                               (editingSuccessfully)="loadProfileData()"></app-information-card>
@@ -47,7 +47,7 @@
                               (editingChange)="handleEditing($event)" [index]="2"
                               [activeIndex]="activeEditingIndex" fieldKey="email"
                               (editingSuccessfully)="loadProfileData()"></app-information-card>
-        <app-information-card [value]="profile.birthDate" title="Date de naissance" icon="calendar-outline"
+        <app-information-card [value]="profile.birthDate" [title]="'SIGNUP.DateBirthday' | translate" icon="calendar-outline"
                               (editingChange)="handleEditing($event)" [index]="3"
                               [activeIndex]="activeEditingIndex" fieldKey="dateofbirthday"
                               (editingSuccessfully)="loadProfileData()"></app-information-card>

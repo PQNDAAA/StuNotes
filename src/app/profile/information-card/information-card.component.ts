@@ -38,7 +38,7 @@ export class InformationCardComponent implements OnInit {
 
   constructor(private api: Api, private authService: Auth, private translateService: TranslateService) {
   }
-
+// FACTORISER EN UNE SEULE LIGNE LE ION INPUT LIGNE 25
   ngOnInit() {
     this.newValue = this.value;
   }

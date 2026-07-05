@@ -129,5 +129,8 @@
   "CUSTOMREMINDERS": {
     "AddDate": "Add date",
     "ListCustomReminders": "List of custom reminders :"
+  },
+  "PROFILE": {
+    "Information": "My Information"
   }
 }
