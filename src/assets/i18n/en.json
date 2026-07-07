@@ -44,6 +44,7 @@
     "Tasks": "Tasks",
     "Subjects": "Subjects",
     "DarkMode": "Dark Mode",
+    "LightMode": "Light Mode",
     "Reminders": "Smart reminders",
     "UrgentAlerts": "Enable urgent deadline alerts",
     "DeleteAllNotes": "Delete all tasks",

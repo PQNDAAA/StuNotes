@@ -5,6 +5,8 @@ import {Api} from "../../api/services/api";
 import {TranslateService} from "@ngx-translate/core";
 import {TagsService} from "../../tags/tags-service/tags-service";
 import {CardsService} from "../../cards/cards-service/cards-service";
+import {ActionSheetController} from "@ionic/angular";
+import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +15,9 @@ import {CardsService} from "../../cards/cards-service/cards-service";
   standalone: false
 })
 export class ProfilePage implements OnInit {
+
+  //Camera
+  photoSelected = "";
 
   //UI
   userSubject = new BehaviorSubject<UserInterface>(defaultUser);
@@ -29,10 +34,53 @@ export class ProfilePage implements OnInit {
   activeEditingIndex: number = 0;
 
   constructor(private apiService: Api, private translateService: TranslateService, private tagsService: TagsService,
-              private cardsService: CardsService) {
+              private cardsService: CardsService, private actionSheetController: ActionSheetController) {
   }
 
   ngOnInit(): void {
+  }
+
+  async openPhotoOptions(){
+    // On instance notre actionsheet qui va nous permettre de choisir entre les options.
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Photo de profil',
+      buttons: [
+        {
+          text: 'Prendre une photo',
+          icon: 'camera-outline',
+          handler: () => this.takePhoto(CameraSource.Camera),
+        },
+        {
+          text: 'Choisir depuis la galerie',
+          icon: 'image-outline',
+          handler: () => this.takePhoto(CameraSource.Photos),
+        },
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          icon: 'close-outline',
+        },
+      ],
+    });
+    await actionSheet.present();
+  }
+
+  async takePhoto(source: CameraSource){
+    try {
+      const image = await Camera.getPhoto({
+        quality: 80,
+        resultType: CameraResultType.Base64,
+        source,
+        width: 512,
+        height: 512,
+      });
+
+      this.photoSelected = `data:image/${image.format};base64,${image.base64String}`;
+      console.log(this.photoSelected);
+    } catch (error) {
+      // L'utilisateur a annulé, ou permission refusée — on ignore silencieusement l'annulation
+      console.error('Photo cancelled or error: ', error);
+    }
   }
 
   async ionViewWillEnter() {

@@ -7,8 +7,11 @@
 
   <div class="profile-container" *ngIf="!isLoading">
     <ion-avatar>
-      <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg"/>
+      <img alt="Profile Photo" [src]="photoSelected || 'https://ionicframework.com/docs/img/demos/avatar.svg'"/>
     </ion-avatar>
+    <div class="edit-badge" (click)="openPhotoOptions()">
+      <ion-icon name="camera-outline"></ion-icon>
+    </div>
     <div class="user-maininformation" *ngIf="user$ | async as profile">
       <ion-label class="username">{{ profile.username }}</ion-label>
       <ion-label class="email">{{ profile.email }}</ion-label>

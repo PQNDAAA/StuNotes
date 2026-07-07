@@ -28,8 +28,8 @@
   </ion-item>
   <ion-item [button]="true" [detail]="false">
     <ion-segment [value]="this.settings.darkMode" (ionChange)="segmentChanged($event)">
-      <ion-segment-button value="light-mode">Light Mode</ion-segment-button>
-      <ion-segment-button value="dark-mode">Dark Mode</ion-segment-button>
+      <ion-segment-button value="light-mode">{{'SETTINGS.LightMode' | translate}}</ion-segment-button>
+      <ion-segment-button value="dark-mode">{{'SETTINGS.DarkMode' | translate}}</ion-segment-button>
     </ion-segment>
   </ion-item>
 </ion-list>

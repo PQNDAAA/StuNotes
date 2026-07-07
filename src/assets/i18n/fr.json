@@ -44,6 +44,7 @@
     "Tasks": "Tâches",
     "Subjects": "Matières",
     "DarkMode": "Mode Sombre",
+    "LightMode": "Mode Clair",
     "Reminders": "Rappels intelligents",
     "UrgentAlerts": "Alertes échéances urgentes",
     "DeleteAllNotes": "Supprimer toutes les tâches",
@@ -130,7 +131,7 @@
     "ListCustomReminders": "Liste des rappels personnalisés :"
   },
   "PROFILE": {
-  "Information": "My Information"
+  "Information": "Mes informations"
   },
   "LANDING": {
     "1": "Tes notes, tes matières,",
