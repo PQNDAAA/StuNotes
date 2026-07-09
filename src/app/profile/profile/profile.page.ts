@@ -43,7 +43,6 @@ export class ProfilePage implements OnInit {
   async openPhotoOptions(){
     // On instance notre actionsheet qui va nous permettre de choisir entre les options.
     const actionSheet = await this.actionSheetController.create({
-      header: 'Photo de profil',
       buttons: [
         {
           text: 'Prendre une photo',
