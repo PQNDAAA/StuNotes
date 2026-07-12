@@ -74,10 +74,40 @@ export class ProfilePage implements OnInit {
         height: 512,
       });
 
-      this.photoSelected = `data:image/${image.format};base64,${image.base64String}`;
-      console.log(this.photoSelected);
+      let blob : Blob;
+
+      if(image.webPath){
+        const response = await fetch(image.webPath);
+        blob = await response.blob();
+      } else if(image.base64String) {
+        const dataUrl = `data:image/${image.format};base64,${image.base64String}`;
+        const response = await fetch(dataUrl);
+        blob = await response.blob();
+      } else {
+        throw new Error("Unable to download image");
+      }
+      await this.uploadPhoto(blob);
     } catch (error) {
       // L'utilisateur a annulé, ou permission refusée — on ignore silencieusement l'annulation
+      console.error('Photo cancelled or error: ', error);
+    }
+  }
+
+  private async uploadPhoto(blob: Blob){
+    try{
+      console.log('blob reçu:', blob);
+      console.log('blob size:', blob?.size);
+      console.log('blob type:', blob?.type);
+
+      const formData = new FormData();
+      formData.append('photo', blob, 'photo.jpg');
+
+      const result = await firstValueFrom(this.apiService.updatePhoto(formData));
+
+      if(result){
+        console.log(result);
+      }
+    } catch (error) {
       console.error('Photo cancelled or error: ', error);
     }
   }

@@ -42,7 +42,7 @@ export class Api {
 
   //A MODIFIER L URL COMME LE MODIFY USER
   modifyUsername(username: string){
-    return this.http.post(`${this.baseUrl}/users/username/edit`, { username });
+    return this.http.patch(`${this.baseUrl}/users/username/edit`, { username });
   }
 
   appleSignup(identityToken: string, email: string, name: string){
@@ -50,5 +50,9 @@ export class Api {
 }
   googleSignup(idToken: any){
     return this.http.post(`${this.baseUrl}/auth/google/signup`, { idToken });
+  }
+
+  updatePhoto(photo: FormData){
+    return this.http.patch(`${this.baseUrl}/users/me/photo`, photo);
   }
 }
