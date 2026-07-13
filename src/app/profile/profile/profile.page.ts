@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BehaviorSubject, firstValueFrom} from "rxjs";
+import {BehaviorSubject, first, firstValueFrom} from "rxjs";
 import {defaultUser, UserInterface} from "../interface/user-interface";
 import {Api} from "../../api/services/api";
 import {TranslateService} from "@ngx-translate/core";
@@ -15,10 +15,6 @@ import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
   standalone: false
 })
 export class ProfilePage implements OnInit {
-
-  //Camera
-  photoSelected = "";
-
   //UI
   userSubject = new BehaviorSubject<UserInterface>(defaultUser);
   user$ = this.userSubject.asObservable();
@@ -93,22 +89,20 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  private async uploadPhoto(blob: Blob){
-    try{
-      console.log('blob reçu:', blob);
-      console.log('blob size:', blob?.size);
-      console.log('blob type:', blob?.type);
-
+  private async uploadPhoto(blob: Blob) {
+    try {
       const formData = new FormData();
       formData.append('photo', blob, 'photo.jpg');
 
-      const result = await firstValueFrom(this.apiService.updatePhoto(formData));
+      await firstValueFrom(this.apiService.updatePhoto(formData));
 
-      if(result){
-        console.log(result);
+      try {
+        await this.loadProfileData();
+      } catch (error) {
+        console.error("Failed to reload the profile", error);
       }
     } catch (error) {
-      console.error('Photo cancelled or error: ', error);
+      console.error('Failed to upload the photo', error);
     }
   }
 
@@ -122,11 +116,12 @@ export class ProfilePage implements OnInit {
     }, 4);
     console.log("Loading...");
     this.isLoading = true;
+
     try {
-      await Promise.all([firstValueFrom(this.apiService.getUserById()).then((response: any) => {
+      await Promise.all([firstValueFrom(this.apiService.getUserById()).then(async (response: any) => {
         this.refreshUserValues({
           email: response.user.email, username: response.user.username,
-          birthDate: response.user.dateofbirthday,
+          birthDate: response.user.dateofbirthday, photo_url: await this.getPhotoUrl(),
         });
         console.log("API: ",response.user);
       }),
@@ -162,8 +157,17 @@ export class ProfilePage implements OnInit {
     return this.translateService.getCurrentLang();
   }
 
+  async getPhotoUrl() : Promise<string | null> {
+    try {
+      const result = await firstValueFrom(this.apiService.getMyPhoto());
+      return URL.createObjectURL(result);
+    } catch (error) {
+      console.error('Get Photo error: ', error);
+      return null;
+    }
+  }
+
   handleEditing(value: number) {
     this.activeEditingIndex = value;
   }
-
 }

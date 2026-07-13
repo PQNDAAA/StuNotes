@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {SignupInterface} from "../../auth/signup/interface/signup-interface";
 import {LoginInterface} from "../../auth/login/interface/login-interface";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -54,5 +55,9 @@ export class Api {
 
   updatePhoto(photo: FormData){
     return this.http.patch(`${this.baseUrl}/users/me/photo`, photo);
+  }
+
+  getMyPhoto() : Observable<Blob>{
+    return this.http.get(`${this.baseUrl}/users/me/photo`, {responseType: "blob"});
   }
 }
