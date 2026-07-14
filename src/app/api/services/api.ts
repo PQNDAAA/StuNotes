@@ -60,4 +60,8 @@ export class Api {
   getMyPhoto() : Observable<Blob>{
     return this.http.get(`${this.baseUrl}/users/me/photo`, {responseType: "blob"});
   }
+
+  deletePhoto(){
+    return this.http.delete(`${this.baseUrl}/users/me/photo`);
+  }
 }

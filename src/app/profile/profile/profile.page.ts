@@ -51,6 +51,11 @@ export class ProfilePage implements OnInit {
           handler: () => this.takePhoto(CameraSource.Photos),
         },
         {
+          text: 'Supprimer la photo de profil',
+          icon: 'people-outline',
+          handler: () => this.deletePhoto(),
+        },
+        {
           text: 'Annuler',
           role: 'cancel',
           icon: 'close-outline',
@@ -110,6 +115,7 @@ export class ProfilePage implements OnInit {
     await this.loadProfileData();
   }
 
+  //FAIRE UN CATCH ERROR
   async loadProfileData() {
     this.intervalId = setInterval(() => {
       this.elapsed += 4;
@@ -164,6 +170,20 @@ export class ProfilePage implements OnInit {
     } catch (error) {
       console.error('Get Photo error: ', error);
       return null;
+    }
+  }
+
+  async deletePhoto(){
+    try {
+       const result : any = await firstValueFrom(this.apiService.deletePhoto());
+       console.log(result.message);
+      try {
+        await this.loadProfileData();
+      } catch (error) {
+        console.error("Failed to reload the profile", error);
+      }
+    } catch (error) {
+      console.error('Error deleting photo', error);
     }
   }
 
