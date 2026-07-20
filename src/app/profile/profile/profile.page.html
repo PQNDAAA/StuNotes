@@ -9,9 +9,11 @@
     <ion-avatar>
       <img alt="Profile Photo" [src]="profile.photo_url || 'https://ionicframework.com/docs/img/demos/avatar.svg'"/>
     </ion-avatar>
-    <div class="edit-badge" (click)="openPhotoOptions()">
-      <ion-icon name="camera-outline"></ion-icon>
-    </div>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="openPhotoOptions()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
     <div class="user-maininformation">
       <ion-label class="username">{{ profile.username }}</ion-label>
       <ion-label class="email">{{ profile.email }}</ion-label>
