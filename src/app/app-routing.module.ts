@@ -49,7 +49,15 @@ const routes: Routes = [
   {
     path: 'signup-approved',
     loadChildren: () => import('./auth/signup-approved/signup-approved.module').then(m => m.SignupApprovedPageModule)
+  },  {
+    path: 'forgotten-password',
+    loadChildren: () => import('./auth/forgotten-password/forgotten-password.module').then( m => m.ForgottenPasswordPageModule)
   },
+  {
+    path: 'forgotten-password-reset',
+    loadChildren: () => import('./auth/forgotten-password-reset/forgotten-password-reset.module').then( m => m.ForgottenPasswordResetPageModule)
+  },
+
 
 
 
