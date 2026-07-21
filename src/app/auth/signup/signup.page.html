@@ -70,7 +70,7 @@
           </ion-modal>
 
         </ion-item>
-        <ion-button id="validbtn" expand="block" class="validBtn"
+        <ion-button class="validBtn"
                     [disabled]="!signupForm.valid || !(isValidForm())"
                     [strong]="true" (click)="onSignup(signupForm)">{{ 'SIGNUP.SignUpBtn' | translate }}
         </ion-button>

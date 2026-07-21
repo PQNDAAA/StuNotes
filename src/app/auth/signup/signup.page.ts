@@ -5,8 +5,6 @@ import {NgForm} from "@angular/forms";
 import {Auth} from "../auth";
 import {LoadingController, ModalController} from "@ionic/angular";
 import {SignupApprovedPage} from "../signup-approved/signup-approved.page";
-import {TranslateService} from "@ngx-translate/core";
-import {CardsService} from "../../cards/cards-service/cards-service";
 import {firstValueFrom} from "rxjs";
 
 @Component({

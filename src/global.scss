@@ -302,13 +302,7 @@ ion-fab-button {
   --background-activated: #e6e6e6;
 }
 
-#validbtn {
-  --background: #ff8228;
-  --color: white;
-  --background-activated: #e6731f;
-}
-
-#validbtn, #cancelbtn {
+#cancelbtn {
   width: 100%;
   padding-bottom: 2%;
 }
@@ -435,7 +429,7 @@ ion-datetime::part(wheel-item active) {
     min-height: unset;
   }
 
-  .validBtn {
+  ion-button.validBtn {
     margin-top: 24px;
     --border-radius: 14px;
     --padding-top: 18px;
@@ -445,6 +439,12 @@ ion-datetime::part(wheel-item active) {
     font-weight: 600;
     font-size: 15px;
     letter-spacing: 0.02em;
+
+    width: 100%;
+
+    --background: #ff8228;
+    --color: white;
+    --background-activated: #e6731f;
   }
 
   // 5. INPUTS

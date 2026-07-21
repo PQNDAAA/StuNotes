@@ -14,7 +14,7 @@ export class Api {
   constructor(private http: HttpClient) {}
 
   modifyUser(targetKey: string, newValue: string) {
-    return this.http.post(`${this.baseUrl}/users/profile`, {targetKey, newValue});
+    return this.http.patch(`${this.baseUrl}/users/profile`, {targetKey, newValue});
   }
 
   checkUsernameExists(username: string) {

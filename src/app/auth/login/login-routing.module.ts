@@ -6,8 +6,13 @@ import { LoginPage } from './login.page';
 const routes: Routes = [
   {
     path: '',
-    component: LoginPage
+    component: LoginPage,
   },
+  {
+    path: 'forgotten-password',
+    loadChildren: () =>
+      import('../forgotten-password/forgotten-password.module').then(m => m.ForgottenPasswordPageModule)
+  }
 ];
 
 @NgModule({

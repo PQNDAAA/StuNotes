@@ -18,11 +18,11 @@
     </ion-list>
 
     <div id="formbtn">
-      <ion-button id="validbtn" slot="end" (click)="valid(subjectForm)"
+      <ion-button class="validBtn" (click)="valid(subjectForm)"
                   [disabled]="!subjectForm.valid" [strong]="true">
         {{ 'GENERAL.SaveButton' | translate }}
       </ion-button>
-      <ion-button id="cancelbtn" slot="end" (click)="closePopUp()">
+      <ion-button id="cancelbtn" (click)="closePopUp()">
         {{ 'GENERAL.CancelButton' | translate }}
       </ion-button>
     </div>

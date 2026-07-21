@@ -25,11 +25,11 @@
       </ion-input>
       </ion-item>
         <ion-item lines="none" class="forgottenPassword">
-          <ion-button class="changeMethodBtn" fill="clear" slot="end">
+          <ion-button class="changeMethodBtn" fill="clear" slot="end" [routerLink]="'forgotten-password'">
             <ion-label>Mot de passe oublié?</ion-label>
           </ion-button>
         </ion-item>
-      <ion-button id="validbtn"  expand="block" class="validBtn" (click)="onLogin(loginForm)"
+      <ion-button class="validBtn" (click)="onLogin(loginForm)"
                   [disabled]="!loginForm.valid || !(isValidEmail(currentUser.email))" [strong]="true">{{ 'LOGIN.Login' | translate}}
       </ion-button>
 

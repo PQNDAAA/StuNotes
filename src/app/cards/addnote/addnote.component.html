@@ -101,10 +101,10 @@
     </ion-list>
 
     <div id="formbtn">
-      <ion-button id="validbtn" slot="end" (click)="valid(taskForm)" [disabled]="!taskForm.valid" [strong]="true">
+      <ion-button class="validBtn" (click)="valid(taskForm)" [disabled]="!taskForm.valid" [strong]="true">
         {{ 'GENERAL.SaveButton' | translate }}
       </ion-button>
-      <ion-button id="cancelbtn" slot="end" (click)="closePopUp()">
+      <ion-button id="cancelbtn" (click)="closePopUp()">
         {{ 'GENERAL.CancelButton' | translate }}
       </ion-button>
     </div>
